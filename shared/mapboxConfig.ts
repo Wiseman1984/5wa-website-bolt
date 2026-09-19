@@ -1,0 +1,9 @@
+export const MAPBOX_DARK_STYLE = "mapbox://styles/mapbox/dark-v11";
+export const FLAT_MAP_PROJECTION = "mercator" as const;
+export const FLAT_MAP_MIN_ZOOM = 1.5;
+export const FLAT_MAP_MAX_ZOOM = 12;
+export const FLAT_MAP_RENDER_WORLD_COPIES = false;
+export const MAPBOX_WATER_COLOR = "#050a14";
+export const MAPBOX_LAND_COLOR = "#0f172a";
+export const MAPBOX_COUNTRY_BORDER_COLOR = "#0c7a8a";
+export const MAPBOX_COASTLINE_COLOR = "#0a5060";
