@@ -16,6 +16,7 @@ type GroqChatResponse = {
   choices?: Array<{
     message?: {
       content?: string | null;
+      reasoning?: string | null;
     };
   }>;
 };
@@ -25,7 +26,7 @@ export function buildGroqChatPayload(params: GroqChatParams) {
     model: GUARDIAN_GROQ_MODEL,
     messages: params.messages,
     temperature: 0.2,
-    max_completion_tokens: params.maxCompletionTokens ?? 650,
+    max_completion_tokens: params.maxCompletionTokens ?? 4096,
     stream: false,
   };
 }
@@ -43,15 +44,17 @@ export async function invokeGroqChat(params: GroqChatParams) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(buildGroqChatPayload(params)),
-    signal: AbortSignal.timeout(30_000),
+    signal: AbortSignal.timeout(45_000),
   });
 
   if (!response.ok) {
-    throw new Error(`Groq request failed with status ${response.status}`);
+    const body = await response.text().catch(() => "");
+    throw new Error(`Groq request failed with status ${response.status}: ${body.slice(0, 200)}`);
   }
 
   const result = (await response.json()) as GroqChatResponse;
-  const content = result.choices?.[0]?.message?.content?.trim();
+  const msg = result.choices?.[0]?.message;
+  const content = msg?.content?.trim() || msg?.reasoning?.trim();
   if (!content) {
     throw new Error("Groq returned an empty response");
   }

@@ -199,7 +199,7 @@ export const guardianAiRouter = router({
             ...input.conversation.map((message) => ({ role: message.role, content: message.content })),
             { role: "user", content: input.question },
           ],
-          maxCompletionTokens: 900,
+          maxCompletionTokens: 4096,
         });
 
         return {
