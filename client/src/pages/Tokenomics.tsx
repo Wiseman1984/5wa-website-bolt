@@ -1,5 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import OnChainDashboard from "@/components/OnChainDashboard";
 import { ENGLISH_CONTENT } from "@shared/i18n";
 import { Zap, Globe, Vote, Heart, Award } from "lucide-react";
 import { usePageMeta } from "@/hooks/usePageMeta";
@@ -227,6 +228,13 @@ export default function Tokenomics() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* On-Chain Transparency Dashboard */}
+      <section className="py-16 md:py-24 bg-card/50">
+        <div className="container max-w-5xl">
+          <OnChainDashboard />
         </div>
       </section>
 

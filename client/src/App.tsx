@@ -9,6 +9,7 @@ import { LanguageProvider } from "./contexts/LanguageContext";
 
 const Home = lazy(() => import("./pages/Home"));
 const Platform = lazy(() => import("./pages/Platform"));
+const RealCases = lazy(() => import("./pages/RealCases"));
 const Tokenomics = lazy(() => import("./pages/Tokenomics"));
 const Airdrop = lazy(() => import("./pages/Airdrop").then((m) => ({ default: m.Airdrop })));
 const Whitepaper = lazy(() => import("./pages/Whitepaper"));
@@ -20,6 +21,7 @@ function Router() {
       <Switch>
         <Route path={"/"} component={Home} />
         <Route path={"/platform"} component={Platform} />
+        <Route path={"/real-cases"} component={RealCases} />
         <Route path={"/guardian"} component={Guardian} />
         <Route path={"/tokenomics"} component={Tokenomics} />
         <Route path={"/airdrop"} component={Airdrop} />
