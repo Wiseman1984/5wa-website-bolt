@@ -59,14 +59,7 @@ export default function Whitepaper() {
   };
 
   const downloadPDF = () => {
-    const link = document.createElement("a");
-    link.href = "/api/download/whitepaper";
-    link.download = "5WA-Whitepaper-V5.pdf";
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    window.print();
   };
 
   return (
@@ -88,16 +81,13 @@ export default function Whitepaper() {
           </h1>
           <p className="text-xl text-slate-400 mb-6">Redefining Consensus: From Digital Encryption to Physical Resilience in the Age of AGI and Web3</p>
           <div className="h-1 w-24 mx-auto bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mb-8"></div>
-          <a
-            href="/api/download/whitepaper"
-            download="5WA-Whitepaper-V5.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-all text-white font-semibold shadow-lg hover:shadow-xl"
+          <button
+            onClick={downloadPDF}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-all text-white font-semibold shadow-lg hover:shadow-xl cursor-pointer"
           >
             <Download size={20} />
             Download PDF
-          </a>
+          </button>
         </div>
 
         <div className="relative">

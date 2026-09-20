@@ -304,3 +304,72 @@ html {
   list-style-position: inside !important;
   padding-left: 0 !important;
 }
+
+@media print {
+  body {
+    background: white !important;
+    color: #1e293b !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide non-content elements */
+  nav,
+  footer,
+  .fixed,
+  details.group {
+    display: none !important;
+  }
+
+  /* Reset dark backgrounds for readability */
+  [class*="bg-slate-800"],
+  [class*="bg-slate-700"],
+  [class*="bg-gradient"] {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Make all text dark for printing */
+  [class*="text-slate-300"],
+  [class*="text-slate-400"],
+  [class*="text-slate-500"] {
+    color: #334155 !important;
+  }
+
+  [class*="text-cyan-300"],
+  [class*="text-cyan-400"],
+  [class*="text-blue-300"],
+  [class*="text-blue-400"] {
+    color: #0f172a !important;
+  }
+
+  [class*="text-green-400"] {
+    color: #166534 !important;
+  }
+
+  h1, h2, h3, h4 {
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+  }
+
+  /* Ensure gradient text prints */
+  .bg-clip-text {
+    -webkit-text-fill-color: #0f172a !important;
+    background: none !important;
+  }
+
+  a {
+    color: #1e40af !important;
+    text-decoration: underline !important;
+  }
+
+  code {
+    background: #f1f5f9 !important;
+    color: #1e293b !important;
+  }
+
+  /* Page margins */
+  @page {
+    margin: 1.5cm;
+  }
+}
