@@ -209,10 +209,11 @@ export const guardianAiRouter = router({
           readOnly: true as const,
         };
       } catch (error) {
-        console.error("[Guardian AI] Request failed:", error);
+        const errorDetail = error instanceof Error ? error.message : String(error);
+        console.error("[Guardian AI] Request failed:", errorDetail, error);
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Guardian AI is temporarily unavailable. The Location OpSec Guide remains available.",
+          message: `Guardian AI error: ${errorDetail}`,
         });
       }
     }),

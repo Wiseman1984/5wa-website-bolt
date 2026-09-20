@@ -109,13 +109,14 @@ export default function GuardianAiPanel({ regionId, scenarioId, language }: Guar
       });
 
       setMessages((current) => [...current, { role: "assistant", content: result.answer }]);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("[Guardian AI] Chat request failed:", error);
+      const serverMsg = error && typeof error === "object" && "message" in error ? String((error as { message: string }).message) : "";
       setMessages((current) => [
         ...current,
         {
           role: "assistant",
-          content: copy.unavailable,
+          content: serverMsg || copy.unavailable,
         },
       ]);
     }
