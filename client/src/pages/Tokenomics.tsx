@@ -106,7 +106,7 @@ export default function Tokenomics() {
             {/* 3D Allocation Pie Chart */}
             <div className="rounded-xl overflow-hidden border border-border/50" style={{ boxShadow: '0 0 20px rgba(59, 130, 246, 0.1)' }}>
               <img
-                src="/manus-storage/5WA_3D_allocation_pie_059dfc43.webp"
+                src="/5wa-allocation-pie.webp"
                 alt="$5WA Token Allocation — 75% Locked, 20% Ecosystem, 5% Initial"
                 className="w-full h-auto"
               />
@@ -172,7 +172,7 @@ export default function Tokenomics() {
           {/* 3D Unlock Curve Image */}
           <div className="rounded-xl overflow-hidden border border-border/50" style={{ boxShadow: '0 0 20px rgba(59, 130, 246, 0.15)' }}>
             <img
-              src="/manus-storage/5WA_3D_unlock_curve_c95f1e4c.webp"
+              src="/5wa-unlock-curve.webp"
               alt="$5WA 24-Month Linear Unlock Curve"
               className="w-full h-auto"
             />

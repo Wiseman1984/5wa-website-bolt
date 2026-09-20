@@ -36,7 +36,7 @@ function Router() {
 // - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
 //   to keep consistent foreground/background color across components
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-const SITE_BG = "/manus-storage/bg_option_D_enhanced_750fa344.png";
+const SITE_BG = "";
 function App() {
   return (
     <ErrorBoundary>
@@ -50,11 +50,6 @@ function App() {
             <div
               className="min-h-screen"
               style={{
-                backgroundImage: `url(${SITE_BG})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundAttachment: 'fixed',
-                backgroundRepeat: 'no-repeat',
                 backgroundColor: '#030712',
               }}
             >

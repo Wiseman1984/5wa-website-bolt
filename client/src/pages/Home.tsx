@@ -79,9 +79,9 @@ export default function Home() {
           <div className="max-w-3xl mx-auto text-center">
             <div className="flex justify-center mb-8">
               <img
-                src="/manus-storage/5wa-web_7427c5e1.png"
+                src="/5wa-coinlogo.png"
                 alt="5WA Token Logo"
-                className="w-32 h-32 drop-shadow-lg"
+                className="w-32 h-32 drop-shadow-lg rounded-full"
               />
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-4 text-foreground">
