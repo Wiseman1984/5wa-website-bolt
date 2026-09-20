@@ -171,11 +171,6 @@ export default defineConfig({
     reportCompressedSize: false,
     rollupOptions: {
       external: ["mapbox-gl", "globe.gl", "react-globe.gl"],
-      preserveEntrySignatures: "strict",
-      output: {
-        preserveModules: true,
-        preserveModulesRoot: "src",
-      },
     },
   },
   server: {
