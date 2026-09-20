@@ -260,14 +260,14 @@ export function AIChatBox({
 
                     <div
                       className={cn(
-                        "max-w-[80%] rounded-lg px-4 py-2.5",
+                        "max-w-[80%] rounded-lg px-4 py-2.5 overflow-hidden",
                         message.role === "user"
                           ? "bg-primary text-primary-foreground"
                           : "bg-muted text-foreground"
                       )}
                     >
                       {message.role === "assistant" ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-sm prose-headings:font-semibold prose-headings:mt-3 prose-headings:mb-1 prose-p:text-[13px] prose-p:leading-relaxed prose-li:text-[13px] prose-ul:my-1 prose-ol:my-1 prose-h1:text-base prose-h2:text-sm prose-h3:text-sm [&>*:first-child]:mt-0 prose-ul:list-inside prose-ol:list-inside prose-ul:pl-0 prose-ol:pl-0">
+                        <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-sm prose-headings:font-semibold prose-headings:mt-3 prose-headings:mb-1 prose-p:text-[13px] prose-p:leading-relaxed prose-li:text-[13px] prose-ul:my-1 prose-ol:my-1 prose-h1:text-base prose-h2:text-sm prose-h3:text-sm [&>*:first-child]:mt-0 prose-ul:pl-4 prose-ol:pl-4">
                           <Streamdown>{message.content}</Streamdown>
                         </div>
                       ) : (
