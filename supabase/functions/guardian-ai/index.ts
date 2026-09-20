@@ -177,12 +177,35 @@ RESPONSE FORMAT:${format}`;
 }
 
 // ---------------------------------------------------------------------------
+// Fetch GROQ_API_KEY from Supabase app_secrets table (service role only)
+// ---------------------------------------------------------------------------
+
+async function getGroqApiKey(): Promise<string> {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!supabaseUrl || !serviceRoleKey) throw new Error("Missing Supabase env");
+
+  const res = await fetch(
+    `${supabaseUrl}/rest/v1/app_secrets?key=eq.GROQ_API_KEY&select=value`,
+    {
+      headers: {
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+      },
+    }
+  );
+  if (!res.ok) throw new Error(`Failed to fetch API key: ${res.status}`);
+  const rows = await res.json();
+  if (!rows?.[0]?.value) throw new Error("GROQ_API_KEY not found in app_secrets");
+  return rows[0].value;
+}
+
+// ---------------------------------------------------------------------------
 // Groq call
 // ---------------------------------------------------------------------------
 
 async function callGroq(messages: Array<{ role: string; content: string }>) {
-  const apiKey = Deno.env.get("GROQ_API_KEY");
-  if (!apiKey) throw new Error("GROQ_API_KEY not configured");
+  const apiKey = await getGroqApiKey();
 
   const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
