@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, BrainCircuit, Database, EyeOff, LockKeyhole, ShieldCheck } from "lucide-react";
 import { AIChatBox, type Message } from "@/components/AIChatBox";
 import { supabase } from "@/lib/supabase";
-import { trpc } from "@/lib/trpc";
 import { getOpsecGuide, type OpsecRegionId, type OpsecScenarioId } from "@shared/opsecGuide";
 import { getOpsecUiCopy } from "@shared/opsecUi";
 import type { Language } from "@shared/i18n";
@@ -22,14 +21,46 @@ interface GuardianAiPanelProps {
   language: Language;
 }
 
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+
+async function askGuardianEdge(payload: {
+  question: string;
+  regionId: OpsecRegionId;
+  scenarioId: OpsecScenarioId;
+  language: Language;
+  conversation: Array<{ role: "user" | "assistant"; content: string }>;
+  incidents: Array<{ title: string; country: string; publishedAt: string; attackType: string; severity: number | null; summary: string | null }>;
+}): Promise<{ answer: string; model: string }> {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    throw new Error("Supabase not configured");
+  }
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/guardian-ai`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    let msg = `Request failed (${res.status})`;
+    try { msg = JSON.parse(body).error || msg; } catch { /* use default */ }
+    throw new Error(msg);
+  }
+  const data = await res.json();
+  if (!data.answer) throw new Error("Empty response from Guardian AI");
+  return data;
+}
+
 export default function GuardianAiPanel({ regionId, scenarioId, language }: GuardianAiPanelProps) {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [incidents, setIncidents] = useState<PublicThreatIncident[]>([]);
   const [incidentStatus, setIncidentStatus] = useState<"loading" | "ready" | "unavailable">("loading");
   const copy = getOpsecUiCopy(language).guardian;
   const guide = useMemo(() => getOpsecGuide(regionId, scenarioId, language), [regionId, scenarioId, language]);
-
-  const askGuardian = trpc.guardianAi.ask.useMutation();
 
   useEffect(() => {
     let active = true;
@@ -64,7 +95,6 @@ export default function GuardianAiPanel({ regionId, scenarioId, language }: Guar
 
   useEffect(() => {
     setMessages([]);
-    askGuardian.reset();
   }, [regionId, scenarioId, language]);
 
   const relevantIncidents = useMemo(() => {
@@ -90,9 +120,10 @@ export default function GuardianAiPanel({ regionId, scenarioId, language }: Guar
       .map((message) => ({ role: message.role as "user" | "assistant", content: message.content as string }));
 
     setMessages((current) => [...current, userMessage]);
+    setIsLoading(true);
 
     try {
-      const result = await askGuardian.mutateAsync({
+      const result = await askGuardianEdge({
         question,
         regionId,
         scenarioId,
@@ -119,6 +150,8 @@ export default function GuardianAiPanel({ regionId, scenarioId, language }: Guar
           content: serverMsg || copy.unavailable,
         },
       ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -188,7 +221,7 @@ export default function GuardianAiPanel({ regionId, scenarioId, language }: Guar
           <AIChatBox
             messages={messages}
             onSendMessage={handleSendMessage}
-            isLoading={askGuardian.isPending}
+            isLoading={isLoading}
             suggestedPrompts={guide.suggestedQuestions}
             placeholder={copy.placeholder}
             emptyStateMessage={copy.emptyState}
