@@ -37,7 +37,6 @@ export default function Home() {
         const { data, error } = await supabase
           .from("threat_incidents")
           .select("id, country, published_at, attack_type, title, source_url, latitude, longitude, severity, ai_summary")
-          .gte("published_at", "2024-01-01")
           .neq("country", "Unknown")
           .order("published_at", { ascending: false });
 

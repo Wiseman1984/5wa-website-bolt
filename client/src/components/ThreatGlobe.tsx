@@ -255,7 +255,16 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
         .pointColor("color")
         .pointAltitude(0.01)
         .pointRadius("size")
-        .pointsMerge(false);
+        .pointsMerge(false)
+        // Pulsing rings around each incident point
+        .ringsData(pointsData)
+        .ringLat("lat")
+        .ringLng("lng")
+        .ringColor("color")
+        .ringMaxRadius(2.5)
+        .ringPropagationSpeed(1.5)
+        .ringRepeatPeriod(1400)
+        .ringAltitude(0.015);
 
       // Auto-rotate
       const controls = globe.controls();
@@ -536,6 +545,21 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
           },
         });
 
+        // Pulsing outer ring layer
+        map.addLayer({
+          id: "incidents-pulse",
+          type: "circle",
+          source: "incidents",
+          paint: {
+            "circle-radius": 4,
+            "circle-color": "transparent",
+            "circle-opacity": 0.6,
+            "circle-stroke-width": 2,
+            "circle-stroke-color": ["get", "color"],
+            "circle-stroke-opacity": 0.6,
+          },
+        });
+
         // Core dot layer
         map.addLayer({
           id: "incidents-core",
@@ -550,6 +574,19 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
             "circle-stroke-opacity": 0.5,
           },
         });
+
+        // Animate the pulse ring
+        let pulseFrame: number;
+        const animatePulse = (timestamp: number) => {
+          const t = (timestamp % 2000) / 2000;
+          const radius = 4 + t * 14;
+          const opacity = 0.6 * (1 - t);
+          map.setPaintProperty("incidents-pulse", "circle-radius", radius);
+          map.setPaintProperty("incidents-pulse", "circle-stroke-opacity", opacity);
+          pulseFrame = requestAnimationFrame(animatePulse);
+        };
+        pulseFrame = requestAnimationFrame(animatePulse);
+        map.on("remove", () => cancelAnimationFrame(pulseFrame));
 
         // Popup on hover
         const popup = new mapboxgl.default.Popup({
