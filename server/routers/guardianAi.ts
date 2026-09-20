@@ -205,7 +205,7 @@ export const guardianAiRouter = router({
         return {
           answer: extractGuardianResponse(response.content),
           model: response.model,
-          provider: "groq" as const,
+          provider: "platform" as const,
           readOnly: true as const,
         };
       } catch (error) {

@@ -1,5 +1,4 @@
-export const GUARDIAN_GROQ_MODEL = "openai/gpt-oss-20b";
-export const GROQ_CHAT_COMPLETIONS_URL = "https://api.groq.com/openai/v1/chat/completions";
+import { invokeLLM, type Message } from "./llm";
 
 export type GroqChatMessage = {
   role: "system" | "user" | "assistant";
@@ -11,56 +10,46 @@ export type GroqChatParams = {
   maxCompletionTokens?: number;
 };
 
-type GroqChatResponse = {
-  model?: string;
-  choices?: Array<{
-    message?: {
-      content?: string | null;
-      reasoning?: string | null;
-    };
-  }>;
-};
-
-export function buildGroqChatPayload(params: GroqChatParams) {
-  return {
-    model: GUARDIAN_GROQ_MODEL,
-    messages: params.messages,
-    temperature: 0.2,
-    max_completion_tokens: params.maxCompletionTokens ?? 4096,
-    stream: false,
-  };
-}
-
 export async function invokeGroqChat(params: GroqChatParams) {
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) {
-    throw new Error("GROQ_API_KEY is not configured");
-  }
+  const messages: Message[] = params.messages.map((m) => ({
+    role: m.role,
+    content: m.content,
+  }));
 
-  const response = await fetch(GROQ_CHAT_COMPLETIONS_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(buildGroqChatPayload(params)),
-    signal: AbortSignal.timeout(45_000),
+  const result = await invokeLLM({
+    messages,
+    maxTokens: params.maxCompletionTokens ?? 4096,
   });
 
-  if (!response.ok) {
-    const body = await response.text().catch(() => "");
-    throw new Error(`Groq request failed with status ${response.status}: ${body.slice(0, 200)}`);
+  const choice = result.choices?.[0];
+  if (!choice) {
+    throw new Error("LLM returned no choices");
   }
 
-  const result = (await response.json()) as GroqChatResponse;
-  const msg = result.choices?.[0]?.message;
-  const content = msg?.content?.trim() || msg?.reasoning?.trim();
+  const raw = choice.message?.content;
+  let content: string;
+
+  if (typeof raw === "string") {
+    content = raw.trim();
+  } else if (Array.isArray(raw)) {
+    content = raw
+      .filter(
+        (p): p is { type: "text"; text: string } =>
+          p.type === "text" && typeof p.text === "string"
+      )
+      .map((p) => p.text)
+      .join("\n")
+      .trim();
+  } else {
+    content = "";
+  }
+
   if (!content) {
-    throw new Error("Groq returned an empty response");
+    throw new Error("LLM returned an empty response");
   }
 
   return {
     content,
-    model: result.model || GUARDIAN_GROQ_MODEL,
+    model: result.model || "platform-llm",
   };
 }
