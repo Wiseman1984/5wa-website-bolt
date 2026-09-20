@@ -1,5 +1,5 @@
 import { ENGLISH_CONTENT } from "@shared/i18n";
-import { AlertTriangle, ExternalLink, MapPin, Calendar, DollarSign } from "lucide-react";
+import { TriangleAlert as AlertTriangle, ExternalLink, MapPin, Calendar, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
