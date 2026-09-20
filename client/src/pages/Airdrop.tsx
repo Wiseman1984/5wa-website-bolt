@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { AlertCircle, CheckCircle2, Share2, Zap, Gift, Clock, Brain, Trophy, Sparkles, X } from "lucide-react";
 import { NeonShieldRow } from "@/components/NeonShield";
-import { supabase, type AirdropSubmission } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Navigation from "@/components/Navigation";
@@ -33,6 +33,8 @@ export function Airdrop() {
   const [showResults, setShowResults] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  // Reward confirmed by the server after submission (authoritative)
+  const [confirmedReward, setConfirmedReward] = useState<number | null>(null);
 
   // Modal state — shows immediately after quiz submission
   const [showModal, setShowModal] = useState(false);
@@ -146,33 +148,48 @@ export function Airdrop() {
     setIsSubmitting(true);
 
     try {
-      const submission: AirdropSubmission = {
-        username: userName,
-        wallet_address: walletAddress.toLowerCase(),
-        tweet_url: tweetUrl,
-        score: score,
-        token_reward: reward,
-        question_ids: sessionQuestions.map((q) => q.id).join(","),
-        is_elite: isElite,
-      };
+      // Send only the raw answers; the server recomputes the score and reward
+      // from its own answer key. Nothing about the payout is trusted from here.
+      const answers: Record<string, string> = {};
+      for (const q of sessionQuestions) {
+        const chosenLabel = selectedAnswers[q.id];
+        if (!chosenLabel) continue;
+        const chosen = q.options.find((o) => o.displayLabel === chosenLabel);
+        if (chosen) answers[q.id] = chosen.originalKey;
+      }
 
-      const { error: insertError } = await supabase
-        .from("airdrop_submissions")
-        .insert([submission]);
+      const { data, error: rpcError } = await supabase.rpc("submit_airdrop", {
+        p_username: userName,
+        p_wallet_address: walletAddress.toLowerCase(),
+        p_tweet_url: tweetUrl,
+        p_question_ids: sessionQuestions.map((q) => q.id),
+        p_answers: answers,
+      });
 
-      if (insertError) {
-        if (insertError.code === "23505" || insertError.message?.includes("duplicate") || insertError.message?.includes("unique")) {
+      if (rpcError) {
+        console.error("[Airdrop] submission failed", rpcError);
+        const raw = rpcError.message ?? "";
+        if (raw.includes("duplicate_wallet") || rpcError.code === "23505") {
           setError("This wallet has already submitted. Each wallet address can only participate once.");
+        } else if (raw.includes("invalid_wallet")) {
+          setError(content.wallet.error);
+        } else if (raw.includes("invalid_tweet_url")) {
+          setError("Please enter a valid tweet URL (e.g., https://x.com/username/status/123...)");
+        } else if (raw.includes("invalid_username")) {
+          setError("Please enter a name between 1 and 60 characters.");
         } else {
-          setError(`Submission failed: ${insertError.message}`);
+          setError("Submission failed. Please check your details and try again.");
         }
         setIsSubmitting(false);
         return;
       }
 
+      const confirmed = data as { score?: number; token_reward?: number; is_elite?: boolean } | null;
+      setConfirmedReward(typeof confirmed?.token_reward === "number" ? confirmed.token_reward : reward);
       setSubmitted(true);
       setIsSubmitting(false);
     } catch (err) {
+      console.error("[Airdrop] network error", err);
       setError("Network error. Please try again.");
       setIsSubmitting(false);
     }
@@ -336,13 +353,13 @@ export function Airdrop() {
             <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-green-400 mb-2">{content.submit.success}</h2>
             <p className="text-gray-300 mb-4">
-              {content.submit.successMessage.replace("{amount}", String(reward))}
+              {content.submit.successMessage.replace("{amount}", String(confirmedReward ?? reward))}
             </p>
             <div className="bg-slate-800/80 rounded-lg p-4 mb-4 text-left space-y-2">
               <p className="text-sm text-gray-400">Username: <span className="text-white">{userName}</span></p>
               <p className="text-sm text-gray-400">Score: <span className="text-blue-400">{score}/{totalQuestions} Correct</span></p>
               <p className="text-sm text-gray-400">Level: <span className="text-blue-400">{tierInfo.level}</span></p>
-              <p className="text-sm text-gray-400">Reward: <span className={isElite ? "text-yellow-400 font-bold" : "text-green-400"}>{reward} 5WA{isElite ? " (Elite Guardian Bonus!)" : ""}</span></p>
+              <p className="text-sm text-gray-400">Reward: <span className={isElite ? "text-yellow-400 font-bold" : "text-green-400"}>{confirmedReward ?? reward} 5WA{isElite ? " (Elite Guardian Bonus!)" : ""}</span></p>
               <p className="text-sm text-gray-400">Wallet: <span className="text-white font-mono text-xs">{walletAddress}</span></p>
             </div>
             <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">

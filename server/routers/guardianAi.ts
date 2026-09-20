@@ -178,8 +178,10 @@ export const guardianAiRouter = router({
   ask: publicProcedure
     .input(guardianAskInputSchema)
     .mutation(async ({ input, ctx }) => {
-      const forwarded = ctx.req.headers["x-forwarded-for"];
-      const key = (Array.isArray(forwarded) ? forwarded[0] : forwarded?.split(",")[0])?.trim() || ctx.req.ip || "anonymous";
+      // Never key the limiter on a raw X-Forwarded-For value: it is fully
+      // client-controlled and would let a caller mint a fresh bucket per
+      // request. req.ip is derived by Express from the trusted proxy hop.
+      const key = ctx.req.ip || ctx.req.socket?.remoteAddress || "anonymous";
       enforceRateLimit(key);
 
       if (isImmediateDangerQuestion(input.question)) {

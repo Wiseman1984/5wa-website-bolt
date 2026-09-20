@@ -1,11 +1,27 @@
 import type { Express } from "express";
 import { ENV } from "./env";
 
+// Storage keys are flat asset names such as "bg_option_D_enhanced_750fa344.png",
+// optionally nested one or more folders deep. Anything outside this shape — in
+// particular "..", backslashes, leading slashes or percent-decoded traversal —
+// must never reach the signing backend.
+const SAFE_STORAGE_KEY = /^[A-Za-z0-9](?:[A-Za-z0-9._-]*\/)*[A-Za-z0-9._-]+$/;
+
+function isSafeStorageKey(key: string) {
+  if (key.length > 256) return false;
+  if (key.includes("..") || key.includes("\\") || key.includes("\0")) return false;
+  return SAFE_STORAGE_KEY.test(key);
+}
+
 export function registerStorageProxy(app: Express) {
   app.get("/manus-storage/*", async (req, res) => {
     const key = (req.params as Record<string, string>)[0];
     if (!key) {
       res.status(400).send("Missing storage key");
+      return;
+    }
+    if (!isSafeStorageKey(key)) {
+      res.status(400).send("Invalid storage key");
       return;
     }
     if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
