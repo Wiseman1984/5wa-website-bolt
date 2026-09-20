@@ -1,6 +1,9 @@
 {
   "build": {
     "command": "npm run build",
-    "output": "dist/public"
+    "output": "dist"
+  },
+  "start": {
+    "command": "NODE_ENV=production node dist/index.js"
   }
 }
