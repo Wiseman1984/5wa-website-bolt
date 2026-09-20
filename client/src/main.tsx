@@ -8,7 +8,12 @@ import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: 1 },
+    mutations: { retry: 0 },
+  },
+});
 
 const redirectToLoginIfUnauthorized = (error: unknown) => {
   if (!(error instanceof TRPCClientError)) return;
@@ -52,10 +57,25 @@ const trpcClient = trpc.createClient({
   ],
 });
 
-createRoot(document.getElementById("root")!).render(
-  <trpc.Provider client={trpcClient} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </trpc.Provider>
-);
+try {
+  createRoot(document.getElementById("root")!).render(
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </trpc.Provider>
+  );
+} catch (err) {
+  console.error("[Fatal] React failed to mount:", err);
+  const root = document.getElementById("root");
+  if (root) {
+    root.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#030712;color:#e5e7eb;font-family:system-ui,sans-serif;padding:2rem;text-align:center">
+        <div>
+          <h1 style="font-size:1.5rem;margin-bottom:1rem">Something went wrong</h1>
+          <p style="color:#9ca3af;margin-bottom:1.5rem">The page failed to load. Please try refreshing.</p>
+          <button onclick="location.reload()" style="padding:0.5rem 1.5rem;border-radius:0.5rem;background:#2563eb;color:white;border:none;cursor:pointer;font-size:1rem">Reload</button>
+        </div>
+      </div>`;
+  }
+}

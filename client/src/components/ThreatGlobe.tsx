@@ -26,8 +26,7 @@ import {
 } from "@shared/globeConfig";
 import { createLandPcbTraces, createPcbGlobeTexture } from "@/lib/globeTexture";
 
-// Mapbox GL CSS must be imported for the flat map
-import "mapbox-gl/dist/mapbox-gl.css";
+// Mapbox GL CSS loaded dynamically when switching to flat map view (external dep)
 
 interface ThreatIncident {
   id: string;
@@ -358,6 +357,13 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
     if (viewMode !== "map" || !mapContainerRef.current || !MAPBOX_TOKEN) return;
 
     let mounted = true;
+    // Inject mapbox CSS dynamically since mapbox-gl is an external dep
+    if (!document.querySelector('link[href*="mapbox-gl"]')) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = "https://cdn.jsdelivr.net/npm/mapbox-gl@3.28.1/dist/mapbox-gl.css";
+      document.head.appendChild(link);
+    }
     import("mapbox-gl").then((mapboxgl) => {
       if (!mounted || !mapContainerRef.current) return;
 
