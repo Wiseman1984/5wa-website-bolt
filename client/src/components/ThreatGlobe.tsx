@@ -704,6 +704,24 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
           className={`threat-mapbox-viewport absolute inset-0 rounded-none transition-opacity duration-400 ${viewMode === "map" && !transitioning ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           style={{ width: dimensions.width, height: dimensions.height, borderRadius: 0, clipPath: "none" }}
         />
+
+      {/* Fallback when Mapbox token is missing */}
+      {viewMode === "map" && !MAPBOX_TOKEN && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#060b14]">
+          <div className="text-center max-w-md px-6">
+            <div className="text-6xl mb-4">🗺️</div>
+            <h3 className="text-lg font-semibold text-cyan-400 mb-2">Flat Map Unavailable</h3>
+            <p className="text-sm text-gray-400 mb-4">The detailed flat map requires a Mapbox access token which is not configured yet. Switch back to Globe view to explore threat incidents.</p>
+            <button
+              onClick={handleTransitionToGlobe}
+              className="inline-flex items-center gap-1.5 bg-cyan-500/10 border border-cyan-500/40 text-cyan-400 px-4 py-2 rounded-lg text-sm font-medium hover:bg-cyan-500/20 transition-colors"
+            >
+              <GlobeIcon className="w-4 h-4" />
+              Back to Globe
+            </button>
+          </div>
+        </div>
+      )}
       </div>
 
       {/* Globe tooltip */}
