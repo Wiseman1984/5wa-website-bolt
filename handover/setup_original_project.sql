@@ -2,15 +2,14 @@
 -- Run this SQL on your ORIGINAL Supabase project (fpcztzngjapxgxvvpeds)
 -- via Supabase Dashboard → SQL Editor
 --
--- This creates:
---   1. quiz_answer_key table (private answer key)
---   2. CHECK constraints on airdrop_submissions
---   3. create_airdrop_entry function (server-side scoring)
---
--- Assumes airdrop_submissions and threat_incidents tables already exist.
+-- This does three things:
+--   1. Populates quiz_answer_key with the 18 quiz answers
+--   2. Replaces create_airdrop_entry with the 5-param version
+--      (adds p_question_ids for server-side session validation)
+--   3. Adds CHECK constraints on airdrop_submissions
 -- ============================================================
 
--- 1. Private answer key -------------------------------------------------------
+-- 1. Populate the private answer key -----------------------------------------
 CREATE TABLE IF NOT EXISTS public.quiz_answer_key (
   id text PRIMARY KEY,
   difficulty text NOT NULL CHECK (difficulty IN ('basic','intermediate','advanced')),
@@ -45,7 +44,7 @@ ON CONFLICT (id) DO UPDATE
       reward = EXCLUDED.reward,
       correct_key = EXCLUDED.correct_key;
 
--- 2. Bound the value-bearing columns on airdrop_submissions -----------------
+-- 2. Add CHECK constraints on airdrop_submissions ----------------------------
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'airdrop_score_range') THEN
@@ -70,7 +69,13 @@ BEGIN
   END IF;
 END $$;
 
--- 3. Server-side submission function -----------------------------------------
+-- 3. Replace create_airdrop_entry with the 5-param version -------------------
+-- This drops the old 4-param version and creates the new one that accepts
+-- p_question_ids for server-side session validation.
+DROP FUNCTION IF EXISTS public.create_airdrop_entry(text, text, text, jsonb);
+DROP FUNCTION IF EXISTS public.create_airdrop_entry(text, text, text, text);
+DROP FUNCTION IF EXISTS public.create_airdrop_entry(text, text, text, text[], jsonb);
+
 CREATE OR REPLACE FUNCTION public.create_airdrop_entry(
   p_username text,
   p_wallet_address text,
