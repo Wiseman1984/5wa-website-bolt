@@ -162,7 +162,6 @@ export function Airdrop() {
         p_username: userName,
         p_wallet_address: walletAddress.toLowerCase(),
         p_tweet_url: tweetUrl,
-        p_question_ids: sessionQuestions.map((q) => q.id),
         p_answers: answers,
       });
 
@@ -178,10 +177,6 @@ export function Airdrop() {
           message = "Please enter a valid tweet URL.";
         } else if (raw.includes("invalid_username")) {
           message = "Please enter a name between 1 and 60 characters.";
-        } else if (raw.includes("invalid_session")) {
-          message = "This quiz session is out of date. Please reload the page and try again.";
-        } else if (raw.includes("invalid_answers")) {
-          message = "Some quiz answers could not be verified. Please reload the page and try again.";
         } else {
           message = raw || message;
         }
@@ -190,7 +185,7 @@ export function Airdrop() {
         return;
       }
 
-      const confirmed = result as { score?: number; token_reward?: number; is_elite?: boolean } | null;
+      const confirmed = result as { score?: number; token_reward?: number; success?: boolean } | null;
       setConfirmedReward(typeof confirmed?.token_reward === "number" ? confirmed.token_reward : reward);
       setSubmitted(true);
       setIsSubmitting(false);
