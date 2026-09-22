@@ -34,28 +34,43 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const { data, error } = await supabase
-          .from("threat_incidents")
-          .select("id, country, published_at, attack_type, title, source_url, latitude, longitude, severity, ai_summary")
-          .neq("country", "Unknown")
-          .order("published_at", { ascending: false });
+        const PAGE_SIZE = 1000;
+        let allData: ThreatIncident[] = [];
+        let from = 0;
 
-        if (error) {
-          console.error("Supabase error:", error);
-          return;
+        // Paginate — Supabase REST API returns at most 1000 rows per request
+        while (true) {
+          const { data, error } = await supabase
+            .from("threat_incidents")
+            .select("id, country, published_at, attack_type, title, source_url, latitude, longitude, severity, ai_summary")
+            .neq("country", "Unknown")
+            .order("published_at", { ascending: false })
+            .range(from, from + PAGE_SIZE - 1);
+
+          if (error) {
+            console.error("Supabase error:", error);
+            return;
+          }
+          if (!data || data.length === 0) break;
+
+          allData = allData.concat(data);
+
+          if (data.length < PAGE_SIZE) break;
+          from += PAGE_SIZE;
         }
-        if (!data) return;
 
-        setIncidents(data);
+        if (allData.length === 0) return;
+
+        setIncidents(allData);
 
         // Calculate stats
-        const total = data.length;
+        const total = allData.length;
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        const last30 = data.filter(
+        const last30 = allData.filter(
           (d) => new Date(d.published_at) > thirtyDaysAgo
         ).length;
-        const regions = new Set(data.map((d) => d.country)).size;
+        const regions = new Set(allData.map((d) => d.country)).size;
 
         setStats({ total, last30, regions });
       } catch (err) {
