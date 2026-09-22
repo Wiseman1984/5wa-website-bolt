@@ -1,0 +1,5 @@
+-- Import remaining threat incident data (chunks 3-21)
+-- This migration inserts 950 rows of threat incident data from the original project
+-- Data is inserted using unnest arrays for efficiency
+-- See individual chunk files for the full SQL statements
+-- This is a data-only migration, no schema changes
