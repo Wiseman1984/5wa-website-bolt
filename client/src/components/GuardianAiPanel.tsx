@@ -24,6 +24,8 @@ interface GuardianAiPanelProps {
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+const GUARDIAN_URL = (import.meta.env.VITE_GUARDIAN_URL as string | undefined) || SUPABASE_URL;
+const GUARDIAN_ANON_KEY = (import.meta.env.VITE_GUARDIAN_ANON_KEY as string | undefined) || SUPABASE_ANON_KEY;
 
 async function askGuardianEdge(payload: {
   question: string;
@@ -33,14 +35,14 @@ async function askGuardianEdge(payload: {
   conversation: Array<{ role: "user" | "assistant"; content: string }>;
   incidents: Array<{ title: string; country: string; publishedAt: string; attackType: string; severity: number | null; summary: string | null }>;
 }): Promise<{ answer: string; model: string }> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  if (!GUARDIAN_URL || !GUARDIAN_ANON_KEY) {
     throw new Error("Supabase not configured");
   }
-  const res = await fetch(`${SUPABASE_URL}/functions/v1/guardian-ai`, {
+  const res = await fetch(`${GUARDIAN_URL}/functions/v1/guardian-ai`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      Authorization: `Bearer ${GUARDIAN_ANON_KEY}`,
     },
     body: JSON.stringify(payload),
   });
