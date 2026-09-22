@@ -107,6 +107,19 @@ function getSeverityLabel(severity: number | null | undefined): string {
   return "Low";
 }
 
+function getPulseTiming(id: string): { period: number; speed: number; offset: number } {
+  let hash = 0;
+  for (let index = 0; index < id.length; index += 1) {
+    hash = (hash * 31 + id.charCodeAt(index)) | 0;
+  }
+  const normalized = Math.abs(hash);
+  return {
+    period: 1100 + (normalized % 1300),
+    speed: 1.15 + (normalized % 70) / 100,
+    offset: (normalized % 1000) / 1000,
+  };
+}
+
 export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
   const [viewMode, setViewMode] = useState<"globe" | "map">("globe");
   const [transitioning, setTransitioning] = useState(false);
@@ -187,13 +200,18 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
   const pointsData = useMemo(() => {
     return incidents
       .filter((i) => i.latitude != null && i.longitude != null)
-      .map((i) => ({
-        lat: i.latitude!,
-        lng: i.longitude!,
-        color: getSeverityColor(i.severity),
-        size: 0.4,
-        incident: i,
-      }));
+      .map((i) => {
+        const pulse = getPulseTiming(i.id);
+        return {
+          lat: i.latitude!,
+          lng: i.longitude!,
+          color: getSeverityColor(i.severity),
+          size: 0.4,
+          pulsePeriod: pulse.period,
+          pulseSpeed: pulse.speed,
+          incident: i,
+        };
+      });
   }, [incidents]);
 
   // Initialize globe
@@ -262,8 +280,8 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
         .ringLng("lng")
         .ringColor("color")
         .ringMaxRadius(2.5)
-        .ringPropagationSpeed(1.5)
-        .ringRepeatPeriod(1400)
+        .ringPropagationSpeed((point: any) => point.pulseSpeed)
+        .ringRepeatPeriod((point: any) => point.pulsePeriod)
         .ringAltitude(0.015);
 
       // Auto-rotate
@@ -526,6 +544,7 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
                 published_at: i.published_at,
                 ai_summary: i.ai_summary || "",
                 color: getSeverityColor(i.severity),
+                pulseOffset: getPulseTiming(i.id).offset,
               },
             })),
         };
@@ -575,14 +594,25 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
           },
         });
 
-        // Animate the pulse ring
+        // Animate the pulse ring — each feature has a fixed pulseOffset so they desync
         let pulseFrame: number;
         const animatePulse = (timestamp: number) => {
           const t = (timestamp % 2000) / 2000;
-          const radius = 4 + t * 14;
-          const opacity = 0.6 * (1 - t);
-          map.setPaintProperty("incidents-pulse", "circle-radius", radius);
-          map.setPaintProperty("incidents-pulse", "circle-stroke-opacity", opacity);
+          // Data-driven radius: base 4 + phase * 14, where phase = (t + offset) mod 1
+          map.setPaintProperty("incidents-pulse", "circle-radius", [
+            "interpolate", ["linear"],
+            ["%", ["+", t, ["get", "pulseOffset"]], 1],
+            0, 4,
+            0.5, 4 + 0.5 * 14,
+            1, 4 + 14,
+          ] as any);
+          map.setPaintProperty("incidents-pulse", "circle-stroke-opacity", [
+            "interpolate", ["linear"],
+            ["%", ["+", t, ["get", "pulseOffset"]], 1],
+            0, 0.6,
+            0.5, 0.3,
+            1, 0,
+          ] as any);
           pulseFrame = requestAnimationFrame(animatePulse);
         };
         pulseFrame = requestAnimationFrame(animatePulse);

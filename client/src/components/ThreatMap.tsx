@@ -119,6 +119,16 @@ function getSeverityColor(severity: number | null | undefined): { fill: string; 
   }
 }
 
+function getPulseTiming(id: string): { duration: string; delay: number } {
+  let hash = 0;
+  for (let index = 0; index < id.length; index += 1) {
+    hash = (hash * 31 + id.charCodeAt(index)) | 0;
+  }
+  const normalized = Math.abs(hash);
+  const duration = 2.5 + (normalized % 24) / 10;
+  return { duration: `${duration}s`, delay: (normalized % 30) / 10 };
+}
+
 export default function ThreatMap({ incidents }: ThreatMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -394,12 +404,13 @@ export default function ThreatMap({ incidents }: ThreatMapProps) {
             >
               {(() => {
                 const colors = getSeverityColor(incident.severity);
+                const pulse = getPulseTiming(incident.id);
                 return (
                   <>
                     {/* Outer pulse ring */}
                     <circle cx={x} cy={y} r="8" fill="none" stroke={colors.pulse} strokeWidth="0.8" opacity={pulseOpacity}>
-                      <animate attributeName="r" values="3;9;3" dur={`${2.5 + (i % 3) * 0.5}s`} repeatCount="indefinite" />
-                      <animate attributeName="opacity" values={`${pulseOpacity};0;${pulseOpacity}`} dur={`${2.5 + (i % 3) * 0.5}s`} repeatCount="indefinite" />
+                      <animate attributeName="r" values="3;9;3" dur={pulse.duration} begin={pulse.delay} repeatCount="indefinite" />
+                      <animate attributeName="opacity" values={`${pulseOpacity};0;${pulseOpacity}`} dur={pulse.duration} begin={pulse.delay} repeatCount="indefinite" />
                     </circle>
                     {/* Inner glow */}
                     <circle cx={x} cy={y} r="3.75" fill={colors.pulse} stroke="none" opacity={Math.min(0.7, pulseOpacity + 0.1)} />
