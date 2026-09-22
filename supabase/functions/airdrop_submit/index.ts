@@ -21,7 +21,7 @@ Deno.serve(async (req: Request) => {
 
     try {
       const rows = await sql`
-        SELECT public.submit_airdrop(
+        SELECT public.create_airdrop_entry(
           ${p_username}::text,
           ${p_wallet_address}::text,
           ${p_tweet_url}::text,
