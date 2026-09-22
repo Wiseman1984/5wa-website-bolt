@@ -1,4 +1,4 @@
-// airdrop submission via direct DB connection — bypasses PostgREST schema cache
+// airdrop submission via direct DB connection — bypasses PostgREST schema cache (v2)
 import postgres from "npm:postgres@3.4.5";
 
 const corsHeaders = {
@@ -20,15 +20,13 @@ Deno.serve(async (req: Request) => {
     const sql = postgres(connectionString, { max: 1 });
 
     try {
-      const rows = await sql`
-        SELECT public.create_airdrop_entry(
-          ${p_username}::text,
-          ${p_wallet_address}::text,
-          ${p_tweet_url}::text,
-          ${sql.array(p_question_ids)}::text[],
-          ${sql.json(p_answers)}::jsonb
-        ) as result
-      `;
+      const ids: string[] = Array.isArray(p_question_ids) ? p_question_ids : [];
+      const answersJson = JSON.stringify(p_answers ?? {});
+
+      const rows = await sql.unsafe(
+        `SELECT public.create_airdrop_entry($1::text, $2::text, $3::text, $4::text[], $5::jsonb) as result`,
+        [p_username, p_wallet_address, p_tweet_url, ids, answersJson],
+      );
 
       await sql.end();
 
@@ -38,6 +36,12 @@ Deno.serve(async (req: Request) => {
       });
     } catch (dbErr: any) {
       await sql.end();
+
+      console.error("[airdrop_submit] DB error:", JSON.stringify({
+        message: dbErr?.message,
+        code: dbErr?.code,
+        stack: dbErr?.stack,
+      }));
 
       const raw = dbErr?.message ?? "";
       let message = "Submission failed. Please check your details and try again.";
@@ -53,6 +57,8 @@ Deno.serve(async (req: Request) => {
         message = "This quiz session is out of date. Please reload the page and try again.";
       } else if (raw.includes("invalid_answers")) {
         message = "Some quiz answers could not be verified. Please reload the page and try again.";
+      } else {
+        message = raw || message;
       }
 
       return new Response(JSON.stringify({ error: message }), {
