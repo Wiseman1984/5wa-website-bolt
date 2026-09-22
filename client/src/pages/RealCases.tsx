@@ -1,5 +1,5 @@
 import { ENGLISH_CONTENT } from "@shared/i18n";
-import { TriangleAlert as AlertTriangle, ExternalLink, MapPin, Calendar, DollarSign } from "lucide-react";
+import { TriangleAlert as AlertTriangle, ExternalLink, MapPin, Calendar, DollarSign, Radar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -65,9 +65,16 @@ export default function RealCases() {
             <h1 className="text-4xl sm:text-5xl font-bold">{content.realCases.title}</h1>
           </div>
           <p className="text-xl text-blue-400 mb-6">{content.realCases.subtitle}</p>
-          <p className="text-gray-400 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-gray-400 max-w-3xl mx-auto leading-relaxed mb-6">
             {content.realCases.description}
           </p>
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/40 text-blue-400 px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500/20 transition-colors"
+          >
+            <Radar className="w-4 h-4" />
+            View Live Threat Map
+          </a>
         </div>
       </div>
 

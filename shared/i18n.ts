@@ -277,7 +277,7 @@ export const contentEN: SiteContent = {
     burnMechanism: "Burn Mechanism",
     verification: "Dashboard",
     buyGuide: "How to Buy",
-    realCases: "Real Cases",
+    realCases: "Landmark Cases",
     securityGuide: "Security Guide",
     airdrop: "Airdrop",
     whitepaper: "Whitepaper",
@@ -557,10 +557,10 @@ export const contentEN: SiteContent = {
     },
   },
   realCases: {
-    title: "Real Cases",
-    subtitle: "Why Physical Security Matters",
+    title: "Landmark Cases",
+    subtitle: "Historical Cases That Changed the Industry",
     description:
-      "These are real-world cases of cryptocurrency holders who fell victim to physical attacks, kidnappings, and extortion. Their stories highlight the critical importance of physical security alongside digital security. We share these cases to raise awareness and emphasize that no amount of digital encryption can protect against physical threats.",
+      "These are landmark cases of cryptocurrency holders who fell victim to physical attacks, kidnappings, and extortion. These historical incidents shaped the industry's understanding of physical security risks. For real-time threat tracking of ongoing incidents worldwide, visit the Threat Map on our homepage.",
     cases: [
       {
         id: "case-1",
@@ -1085,7 +1085,7 @@ export const contentZH: SiteContent = {
     burnMechanism: "銷毀機制",
     verification: "驗證",
     buyGuide: "購買指南",
-    realCases: "案例分享",
+    realCases: "指標案例",
     securityGuide: "安全防護指南",
     airdrop: "空投",
     whitepaper: "白皮書",
@@ -1367,10 +1367,10 @@ export const contentZH: SiteContent = {
     },
   },
   realCases: {
-    title: "案例分享",
-    subtitle: "為什麼物理安全很重要",
+    title: "指標性案例",
+    subtitle: "改變產業認知的歷史案件",
     description:
-      "這些是加密貨幣持有者遭遇物理攻擊、綁架和勒索的真實案例。他們的故事強調了物理安全與數位安全同樣重要。我們分享這些案例是為了提高認識，強調沒有任何數位加密能夠保護免受物理威脅。",
+      "這些是加密貨幣持有者遭遇物理攻擊、綁架和勒索的指標性歷史案件。這些事件塑造了產業對物理安全風險的認知。如需即時追蹤全球正在發生的威脅事件，請至首頁的威脅地圖。",
     cases: [
       {
         id: "case-1",
