@@ -3,3 +3,6 @@ verify_jwt = false
 
 [functions.airdrop_submit]
 verify_jwt = false
+
+[functions.threat-sync]
+verify_jwt = false
