@@ -1,4 +1,4 @@
-// airdrop submission via Supabase JS client — handles type serialization natively
+// airdrop submission via Supabase JS client — handles type serialization natively (v7)
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
 const corsHeaders = {
