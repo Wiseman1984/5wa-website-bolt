@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, BrainCircuit, Database, EyeOff, LockKeyhole, ShieldCheck } from "lucide-react";
 import { AIChatBox, type Message } from "@/components/AIChatBox";
 import { supabase } from "@/lib/supabase";
+import { filterPhysicalSecurityIncidents } from "@shared/threatRelevance";
 import { getOpsecGuide, type OpsecRegionId, type OpsecScenarioId } from "@shared/opsecGuide";
 import { getOpsecUiCopy } from "@shared/opsecUi";
 import type { Language } from "@shared/i18n";
@@ -83,7 +84,7 @@ export default function GuardianAiPanel({ regionId, scenarioId, language }: Guar
         return;
       }
 
-      setIncidents((data ?? []) as PublicThreatIncident[]);
+      setIncidents(filterPhysicalSecurityIncidents((data ?? []) as PublicThreatIncident[]));
       setIncidentStatus("ready");
     }
 

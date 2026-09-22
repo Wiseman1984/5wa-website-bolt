@@ -7,6 +7,7 @@ import ThreatDashboard, { type ThreatIncident } from "@/components/ThreatDashboa
 import { ENGLISH_CONTENT } from "@shared/i18n";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { supabase } from "@/lib/supabase";
+import { filterPhysicalSecurityIncidents } from "@shared/threatRelevance";
 
 export default function Home() {
   const { hero } = ENGLISH_CONTENT.homepage;
@@ -47,18 +48,19 @@ export default function Home() {
           from += PAGE_SIZE;
         }
 
-        if (allData.length === 0) return;
+        const relevantIncidents = filterPhysicalSecurityIncidents(allData);
+        if (relevantIncidents.length === 0) return;
 
-        setIncidents(allData);
-        setFilteredIncidents(allData);
+        setIncidents(relevantIncidents);
+        setFilteredIncidents(relevantIncidents);
 
-        const total = allData.length;
+        const total = relevantIncidents.length;
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        const last30 = allData.filter(
+        const last30 = relevantIncidents.filter(
           (d) => new Date(d.published_at) > thirtyDaysAgo
         ).length;
-        const regions = new Set(allData.map((d) => d.country)).size;
+        const regions = new Set(relevantIncidents.map((d) => d.country)).size;
 
         setStats({ total, last30, regions });
       } catch (err) {
