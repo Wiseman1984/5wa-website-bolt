@@ -50,6 +50,44 @@ Deno.serve(async (req: Request) => {
       });
     }
 
+    // Mirror submission to the original Supabase project so the owner can view it
+    // in their own dashboard. Best-effort: failures here do not affect the user.
+    try {
+      const { data: secretRows } = await supabase
+        .from("app_secrets")
+        .select("key, value")
+        .in("key", ["SOURCE_SUPABASE_URL", "SOURCE_SUPABASE_SERVICE_KEY"]);
+
+      const secrets: Record<string, string> = {};
+      for (const row of secretRows ?? []) {
+        secrets[row.key] = row.value;
+      }
+
+      if (secrets["SOURCE_SUPABASE_URL"] && secrets["SOURCE_SUPABASE_SERVICE_KEY"]) {
+        const source = createClient(
+          secrets["SOURCE_SUPABASE_URL"],
+          secrets["SOURCE_SUPABASE_SERVICE_KEY"],
+        );
+
+        const result = typeof data === "object" && data !== null ? data : {};
+        const score = (result as Record<string, unknown>).score ?? 0;
+        const tokenReward = (result as Record<string, unknown>).token_reward ?? 0;
+        const isElite = (result as Record<string, unknown>).is_elite ?? false;
+
+        await source.from("airdrop_submissions").insert({
+          username: p_username,
+          wallet_address: p_wallet_address,
+          tweet_url: p_tweet_url,
+          score: Number(score),
+          token_reward: Number(tokenReward),
+          question_ids: (p_question_ids ?? []).join(","),
+          is_elite: Boolean(isElite),
+        });
+      }
+    } catch {
+      // Mirror is best-effort; do not fail the submission
+    }
+
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
