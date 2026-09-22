@@ -51,37 +51,12 @@ const physicalAttackTypes = new Set([
 
 export function isPhysicalSecurityIncident({
   title,
-  ai_summary,
-  attack_type,
 }: ThreatRelevanceInput): boolean {
   const normalizedTitle = (title ?? "").trim();
-  const normalizedSummary = (ai_summary ?? "").trim();
-  const normalizedType = (attack_type ?? "").toLowerCase().trim();
 
-  if (!normalizedTitle && !normalizedSummary) return false;
+  if (!normalizedTitle) return false;
 
-  if (physicalAttackTypes.has(normalizedType)) {
-    return true;
-  }
-
-  if (normalizedType && cryptoAttackTypePattern.test(normalizedType)) {
-    return false;
-  }
-
-  if (cryptoFinanceExcludePattern.test(normalizedTitle)) {
-    return false;
-  }
-
-  if (physicalThreatPattern.test(normalizedTitle)) {
-    return true;
-  }
-
-  if (normalizedType === "other" || !normalizedType) {
-    return false;
-  }
-
-  return physicalThreatPattern.test(normalizedSummary) &&
-    /\b(?:victim|victims|man|woman|family|home|house|residence|police|arrested|suspect|perpetrator|attacker)\b/i.test(normalizedSummary);
+  return physicalThreatPattern.test(normalizedTitle);
 }
 
 export function filterPhysicalSecurityIncidents<T extends ThreatRelevanceInput>(
