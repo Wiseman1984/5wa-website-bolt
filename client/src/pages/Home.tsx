@@ -49,20 +49,17 @@ export default function Home() {
         }
 
         const relevantIncidents = filterPhysicalSecurityIncidents(allData);
-        if (relevantIncidents.length === 0) return;
-
         setIncidents(relevantIncidents);
         setFilteredIncidents(relevantIncidents);
 
-        const total = relevantIncidents.length;
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        const last30 = relevantIncidents.filter(
+        const last30 = allData.filter(
           (d) => new Date(d.published_at) > thirtyDaysAgo
         ).length;
-        const regions = new Set(relevantIncidents.map((d) => d.country)).size;
+        const regions = new Set(allData.map((d) => d.country)).size;
 
-        setStats({ total, last30, regions });
+        setStats({ total: allData.length, last30, regions });
       } catch (err) {
         console.error("Failed to fetch threat data:", err);
       }
