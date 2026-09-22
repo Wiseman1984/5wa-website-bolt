@@ -13,6 +13,8 @@ import Navigation from "@/components/Navigation";
 
 const content = ENGLISH_CONTENT.airdrop;
 const SEASON1_DEADLINE = "September 30, 2026";
+const AIRDROP_END = new Date("2026-09-30T23:59:59Z");
+const isAirdropClosed = new Date() > AIRDROP_END;
 
 export function Airdrop() {
   usePageMeta({
@@ -67,7 +69,7 @@ export function Airdrop() {
 
   // Handle user name submission
   const handleUserNameSubmit = () => {
-    if (userName.trim()) {
+    if (userName.trim() || isAirdropClosed) {
       setUserNameSubmitted(true);
       setCurrentStep(1);
     }
@@ -294,7 +296,7 @@ export function Airdrop() {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 rounded-full px-4 py-1.5 mb-4">
             <Brain className="w-4 h-4 text-blue-400" />
-            <span className="text-sm text-blue-300 font-medium">Season 1: Physical Security Basics (Jul-Aug 2026)</span>
+            <span className="text-sm text-blue-300 font-medium">{isAirdropClosed ? "Season 1 Ended — Practice Mode" : "Season 1: Physical Security Basics (Jul-Aug 2026)"}</span>
           </div>
           <h1 className="text-4xl font-bold mb-2 text-blue-400">{content.title}</h1>
           <p className="text-xl text-blue-300 mb-4">{content.subtitle}</p>
@@ -318,6 +320,7 @@ export function Airdrop() {
         </div>
 
         {/* Flow Steps Indicator */}
+        {!isAirdropClosed && (
         <div className="max-w-2xl mx-auto mb-8">
           <div className="flex items-center justify-between relative">
             <div className="absolute top-4 left-0 right-0 h-0.5 bg-slate-700 z-0"></div>
@@ -344,6 +347,7 @@ export function Airdrop() {
             ))}
           </div>
         </div>
+        )}
       </div>
 
       {/* Success State */}
@@ -369,9 +373,215 @@ export function Airdrop() {
             </div>
           </Card>
         </div>
+      ) : isAirdropClosed ? (
+        <>
+          {/* Airdrop closed — quiz-only mode */}
+          <div className="max-w-4xl mx-auto mb-8 text-center">
+            <div className="inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/30 rounded-full px-4 py-1.5">
+              <Clock className="w-4 h-4 text-yellow-400" />
+              <span className="text-sm text-yellow-300 font-medium">Season 1 has ended — Quiz practice mode</span>
+            </div>
+          </div>
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <Card className="bg-slate-900/90 border-blue-500/30 p-6 mb-8">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-blue-400" />
+                    <h2 className="text-2xl font-bold text-blue-300">{content.checklist.title}</h2>
+                  </div>
+                  <span className="text-xs text-gray-500 bg-slate-800 px-2 py-1 rounded-full">
+                    6 of 18 questions
+                  </span>
+                </div>
+                <div className="mb-6">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-sm text-gray-400">Questions Answered</span>
+                    <span className="text-sm font-semibold text-blue-400">{Object.keys(selectedAnswers).length}/{totalQuestions}</span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-3">
+                    <div
+                      className="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full transition-all duration-300"
+                      style={{ width: `${(Object.keys(selectedAnswers).length / totalQuestions) * 100}%` }}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  {sessionQuestions.map((q, qIndex) => {
+                    const isAnswered = selectedAnswers[q.id] !== undefined;
+                    const isCorrect = showResults && selectedAnswers[q.id] === q.correctDisplayLabel;
+                    const isWrong = showResults && isAnswered && selectedAnswers[q.id] !== q.correctDisplayLabel;
+                    return (
+                      <div
+                        key={q.id}
+                        className={`p-4 rounded-lg border transition-all ${
+                          showResults
+                            ? isCorrect
+                              ? "border-green-500/50 bg-green-500/5"
+                              : isWrong
+                              ? "border-red-500/50 bg-red-500/5"
+                              : "border-slate-700 bg-slate-800/50"
+                            : isAnswered
+                            ? "border-blue-500/50 bg-blue-500/5"
+                            : "border-slate-700 bg-slate-800/50"
+                        }`}
+                      >
+                        <div className="flex items-start gap-3 mb-3">
+                          <span className="text-xs font-bold text-blue-500 bg-blue-500/10 border border-blue-500/30 rounded px-2 py-0.5 shrink-0 mt-0.5">
+                            Q{qIndex + 1}
+                          </span>
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-200">{q.question}</p>
+                            <span className={`text-xs mt-1 inline-block px-2 py-0.5 rounded-full ${
+                              q.difficulty === "basic"
+                                ? "bg-green-500/10 text-green-400"
+                                : q.difficulty === "intermediate"
+                                ? "bg-yellow-500/10 text-yellow-400"
+                                : "bg-red-500/10 text-red-400"
+                            }`}>
+                              {q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)} · {q.reward} 5WA
+                            </span>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-1 gap-2">
+                          {q.options.map((option) => {
+                            const isSelected = selectedAnswers[q.id] === option.displayLabel;
+                            const isCorrectOption = showResults && q.correctDisplayLabel === option.displayLabel;
+                            return (
+                              <button
+                                key={option.displayLabel}
+                                onClick={() => selectAnswer(q.id, option.displayLabel)}
+                                disabled={showResults}
+                                className={`text-left px-4 py-2.5 rounded-md border text-sm transition-all ${
+                                  showResults
+                                    ? isCorrectOption
+                                      ? "border-green-500 bg-green-500/20 text-green-300"
+                                      : isSelected && !isCorrectOption
+                                      ? "border-red-500 bg-red-500/20 text-red-300"
+                                      : "border-slate-700 text-gray-400"
+                                    : isSelected
+                                    ? "border-blue-500 bg-blue-500/20 text-blue-300"
+                                    : "border-slate-700 text-gray-300 hover:border-blue-500/50 hover:bg-blue-500/5"
+                                }`}
+                              >
+                                <span className="font-bold mr-2">{option.displayLabel})</span>
+                                {option.text}
+                                {showResults && isCorrectOption && <span className="ml-2 text-green-400">✓</span>}
+                                {showResults && isSelected && !isCorrectOption && <span className="ml-2 text-red-400">✗</span>}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        {showResults && (
+                          <div className="mt-3 p-3 rounded bg-slate-800/80 border border-slate-700">
+                            <p className="text-xs text-gray-400 leading-relaxed">
+                              <span className="font-semibold text-blue-400">Explanation: </span>
+                              {q.explanation}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                {!showResults && (
+                  <Button
+                    onClick={handleSubmitQuiz}
+                    disabled={Object.keys(selectedAnswers).length < 1}
+                    className="w-full mt-6 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {Object.keys(selectedAnswers).length >= 1
+                      ? `Submit Quiz (${Object.keys(selectedAnswers).length}/${totalQuestions} answered)`
+                      : `Answer at least 1 question`}
+                  </Button>
+                )}
+              </Card>
+            </div>
+            <div className="space-y-6">
+              {!showResults ? (
+                <Card className="bg-slate-900/90 border-blue-500/30 p-6">
+                  <div className="text-center py-8">
+                    <h3 className="text-lg font-semibold text-blue-300 mb-4">{content.scoring.title}</h3>
+                    <p className="text-sm text-gray-400">Answer the quiz questions and submit to see your results.</p>
+                    <p className="text-xs text-gray-500 mt-3">
+                      Questions are randomly selected from a pool of 18. Reload the page for a new set!
+                    </p>
+                  </div>
+                </Card>
+              ) : (
+                <>
+                  <Card className="bg-slate-900/90 border-blue-500/30 p-6">
+                    <h3 className="text-lg font-semibold text-blue-300 mb-4">{content.scoring.title}</h3>
+                    <div className="text-center mb-4">
+                      <div className="mb-2 flex justify-center">
+                        <NeonShieldRow count={totalQuestions} filledCount={score} size={36} />
+                      </div>
+                      <p className="text-2xl font-bold text-blue-300">{score} / {totalQuestions} Correct</p>
+                    </div>
+                    <div className="mb-4 p-3 rounded-lg bg-slate-800 border border-blue-500/20">
+                      <p className="text-sm text-gray-400 mb-1">Knowledge Level</p>
+                      <p className="text-lg font-semibold text-blue-400">{tierInfo.level}</p>
+                    </div>
+                    <p className="text-sm text-gray-300 mb-4">{tierInfo.message}</p>
+                    <p className="text-xs text-blue-300 italic">{tierInfo.suggestion}</p>
+                  </Card>
+                  {isElite ? (
+                    <Card className="bg-slate-900/90 border-yellow-500/50 p-6 relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-yellow-500/5 animate-pulse" />
+                      <div className="relative">
+                        <div className="flex items-center justify-center gap-2 mb-4">
+                          <Trophy className="w-6 h-6 text-yellow-400" />
+                          <h3 className="text-lg font-bold text-yellow-400">$5WA Elite Guardian</h3>
+                          <Sparkles className="w-5 h-5 text-yellow-400" />
+                        </div>
+                        <div className="text-center mb-4">
+                          <p className="text-5xl font-black text-yellow-400 mb-1">{ELITE_BONUS_REWARD}</p>
+                          <p className="text-sm text-yellow-300/80">5WA Tokens</p>
+                        </div>
+                        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 text-center">
+                          <p className="text-sm text-yellow-200 font-semibold mb-1">Hidden Achievement Unlocked!</p>
+                          <p className="text-xs text-yellow-300/70">You drew the rarest question combination AND answered all 6 correctly. Only ~0.03% of sessions qualify for this bonus.</p>
+                        </div>
+                      </div>
+                    </Card>
+                  ) : (
+                    <Card className="bg-slate-900/90 border-green-500/30 p-6">
+                      <h3 className="text-lg font-semibold text-green-400 mb-4">{content.rewards.title}</h3>
+                      <div className="text-center">
+                        <p className="text-4xl font-bold text-green-400 mb-2">{reward}</p>
+                        <p className="text-sm text-gray-400">5WA Tokens (max {REWARD_CAP})</p>
+                        <p className="text-xs text-gray-500 mt-2">Basic=100 · Intermediate=150 · Advanced=200 per correct answer</p>
+                      </div>
+                    </Card>
+                  )}
+                  <Card className="bg-slate-900/90 border-yellow-500/30 p-6 text-center">
+                    <p className="text-sm text-yellow-300 font-semibold mb-1">Season 1 Has Ended</p>
+                    <p className="text-xs text-gray-400">The airdrop reward claim period closed on {SEASON1_DEADLINE}. You can still practice the quiz to test your knowledge. Stay tuned for Season 2!</p>
+                  </Card>
+                </>
+              )}
+            </div>
+          </div>
+          {showResults && (
+            <div className="max-w-4xl mx-auto mt-12">
+              <Card className="bg-slate-900/90 border-blue-500/30 p-8">
+                <h2 className="text-2xl font-bold text-blue-300 mb-4">{content.narrative.title}</h2>
+                <div className="prose prose-invert max-w-none">
+                  <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">
+                    {content.narrative.content}
+                  </p>
+                </div>
+              </Card>
+            </div>
+          )}
+          {showResults && (
+            <div className="max-w-4xl mx-auto mt-12 text-center text-xs text-gray-500">
+              <p>{content.privacy}</p>
+            </div>
+          )}
+        </>
       ) : (
         <>
-          {/* User Name Input Section */}
           {!userNameSubmitted ? (
             <div className="max-w-2xl mx-auto mb-12">
               <Card className="bg-slate-900/90 border-blue-500/30 p-8">
