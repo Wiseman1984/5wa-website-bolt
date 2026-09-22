@@ -1,24 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AlertTriangle } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ThreatGlobe from "@/components/ThreatGlobe";
+import ThreatDashboard, { type ThreatIncident } from "@/components/ThreatDashboard";
 import { ENGLISH_CONTENT } from "@shared/i18n";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { supabase } from "@/lib/supabase";
-
-interface ThreatIncident {
-  id: string;
-  country: string;
-  published_at: string;
-  attack_type: string;
-  title: string;
-  source_url?: string;
-  latitude?: number | null;
-  longitude?: number | null;
-  severity?: number | null;
-  ai_summary?: string | null;
-}
 
 export default function Home() {
   const { hero } = ENGLISH_CONTENT.homepage;
@@ -29,6 +17,7 @@ export default function Home() {
   });
 
   const [incidents, setIncidents] = useState<ThreatIncident[]>([]);
+  const [filteredIncidents, setFilteredIncidents] = useState<ThreatIncident[]>([]);
   const [stats, setStats] = useState({ total: 0, last30: 0, regions: 0 });
 
   useEffect(() => {
@@ -38,7 +27,6 @@ export default function Home() {
         let allData: ThreatIncident[] = [];
         let from = 0;
 
-        // Paginate — Supabase REST API returns at most 1000 rows per request
         while (true) {
           const { data, error } = await supabase
             .from("threat_incidents")
@@ -62,8 +50,8 @@ export default function Home() {
         if (allData.length === 0) return;
 
         setIncidents(allData);
+        setFilteredIncidents(allData);
 
-        // Calculate stats
         const total = allData.length;
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -78,6 +66,10 @@ export default function Home() {
       }
     }
     fetchData();
+  }, []);
+
+  const handleFilterChange = useCallback((filtered: ThreatIncident[]) => {
+    setFilteredIncidents(filtered);
   }, []);
 
   return (
@@ -125,7 +117,6 @@ export default function Home() {
 
       {/* Threat Map Section */}
       <section id="threat-map" className="scroll-mt-20 py-16 md:py-24 relative overflow-hidden">
-        {/* Circuit board background texture */}
         <div className="absolute inset-0 opacity-5" style={{
           backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(0,255,255,0.1) 50px),
             repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(0,255,255,0.1) 50px)`,
@@ -158,7 +149,14 @@ export default function Home() {
           </div>
 
           {/* World Map */}
-          <ThreatGlobe incidents={incidents} />
+          <ThreatGlobe incidents={filteredIncidents} />
+
+          {/* Dashboard: Filters + Trend Stats + Incident List + Detail Modal */}
+          <ThreatDashboard
+            incidents={incidents}
+            filteredIncidents={filteredIncidents}
+            onFilterChange={handleFilterChange}
+          />
 
           {/* CTA */}
           <div className="text-center mt-8">
