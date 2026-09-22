@@ -1,5 +1,3 @@
-// airdrop submission via Supabase JS client — connects to the original project
-// (fpcztzngjapxgxvvpeds) using credentials passed from the frontend.
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
 const corsHeaders = {
@@ -17,8 +15,8 @@ Deno.serve(async (req: Request) => {
     const body = await req.json();
     const { p_username, p_wallet_address, p_tweet_url, p_question_ids, p_answers } = body;
 
-    const supabaseUrl = Deno.env.get("ORIGINAL_SUPABASE_URL")!;
-    const serviceKey = Deno.env.get("ORIGINAL_SUPABASE_SERVICE_KEY")!;
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, serviceKey);
 
     const { data, error } = await supabase.rpc("create_airdrop_entry", {
@@ -44,8 +42,6 @@ Deno.serve(async (req: Request) => {
         message = "This quiz session is out of date. Please reload the page and try again.";
       } else if (raw.includes("invalid_answers")) {
         message = "Some quiz answers could not be verified. Please reload the page and try again.";
-      } else {
-        message = raw || message;
       }
 
       return new Response(JSON.stringify({ error: message }), {

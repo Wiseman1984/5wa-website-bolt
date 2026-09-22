@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { AlertCircle, CheckCircle2, Share2, Zap, Gift, Clock, Brain, Trophy, Sparkles, X } from "lucide-react";
 import { NeonShieldRow } from "@/components/NeonShield";
-import { supabase } from "@/lib/supabase";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Navigation from "@/components/Navigation";
@@ -158,34 +157,45 @@ export function Airdrop() {
         if (chosen) answers[q.id] = chosen.originalKey;
       }
 
-      const finalReward = isElite ? ELITE_BONUS_REWARD : reward;
-      const questionIdsStr = sessionQuestions.map((q) => q.id).join(",");
+      const functionsUrl = import.meta.env.VITE_GUARDIAN_URL as string | undefined;
+      const functionsKey = import.meta.env.VITE_GUARDIAN_ANON_KEY as string | undefined;
+      if (!functionsUrl || !functionsKey) {
+        throw new Error("Submission service is not configured");
+      }
 
-      const { error: insertError } = await supabase.from("airdrop_submissions").insert({
-        username: userName,
-        wallet_address: walletAddress.toLowerCase(),
-        tweet_url: tweetUrl,
-        score,
-        token_reward: finalReward,
-        question_ids: questionIdsStr,
-        is_elite: isElite,
+      const response = await fetch(`${functionsUrl}/functions/v1/airdrop_submit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${functionsKey}`,
+        },
+        body: JSON.stringify({
+          p_username: userName.trim(),
+          p_wallet_address: walletAddress.toLowerCase(),
+          p_tweet_url: tweetUrl.trim(),
+          p_question_ids: sessionQuestions.map((q) => q.id),
+          p_answers: answers,
+        }),
       });
 
-      if (insertError) {
-        console.error("[Airdrop] submission failed", insertError);
-        const raw = insertError.message ?? "";
-        let message = "Submission failed. Please check your details and try again.";
-        if (raw.includes("duplicate") || insertError.code === "23505") {
-          message = "This wallet has already submitted. Each wallet address can only participate once.";
-        } else {
-          message = raw || message;
-        }
+      const result: unknown = await response.json();
+      if (!response.ok) {
+        const message = typeof result === "object" && result !== null && "error" in result && typeof result.error === "string"
+          ? result.error
+          : "Submission failed. Please check your details and try again.";
         setError(message);
         setIsSubmitting(false);
         return;
       }
 
-      setConfirmedReward(finalReward);
+      const resultRecord = typeof result === "object" && result !== null ? result as Record<string, unknown> : {};
+      const serverReward = typeof resultRecord.token_reward === "number"
+        ? resultRecord.token_reward
+        : typeof resultRecord.reward === "number"
+          ? resultRecord.reward
+          : isElite ? ELITE_BONUS_REWARD : reward;
+
+      setConfirmedReward(serverReward);
       setSubmitted(true);
       setIsSubmitting(false);
     } catch (err) {
