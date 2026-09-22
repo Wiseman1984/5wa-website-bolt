@@ -158,25 +158,25 @@ export function Airdrop() {
         if (chosen) answers[q.id] = chosen.originalKey;
       }
 
-      const { data: result, error: rpcError } = await supabase.rpc("create_airdrop_entry", {
-        p_username: userName,
-        p_wallet_address: walletAddress.toLowerCase(),
-        p_tweet_url: tweetUrl,
-        p_answers: answers,
+      const finalReward = isElite ? ELITE_BONUS_REWARD : reward;
+      const questionIdsStr = sessionQuestions.map((q) => q.id).join(",");
+
+      const { error: insertError } = await supabase.from("airdrop_submissions").insert({
+        username: userName,
+        wallet_address: walletAddress.toLowerCase(),
+        tweet_url: tweetUrl,
+        score,
+        token_reward: finalReward,
+        question_ids: questionIdsStr,
+        is_elite: isElite,
       });
 
-      if (rpcError) {
-        console.error("[Airdrop] submission failed", rpcError);
-        const raw = rpcError.message ?? "";
+      if (insertError) {
+        console.error("[Airdrop] submission failed", insertError);
+        const raw = insertError.message ?? "";
         let message = "Submission failed. Please check your details and try again.";
-        if (raw.includes("duplicate_wallet") || rpcError.code === "23505") {
+        if (raw.includes("duplicate") || insertError.code === "23505") {
           message = "This wallet has already submitted. Each wallet address can only participate once.";
-        } else if (raw.includes("invalid_wallet")) {
-          message = "Invalid wallet address.";
-        } else if (raw.includes("invalid_tweet_url")) {
-          message = "Please enter a valid tweet URL.";
-        } else if (raw.includes("invalid_username")) {
-          message = "Please enter a name between 1 and 60 characters.";
         } else {
           message = raw || message;
         }
@@ -185,8 +185,7 @@ export function Airdrop() {
         return;
       }
 
-      const confirmed = result as { score?: number; token_reward?: number; success?: boolean } | null;
-      setConfirmedReward(typeof confirmed?.token_reward === "number" ? confirmed.token_reward : reward);
+      setConfirmedReward(finalReward);
       setSubmitted(true);
       setIsSubmitting(false);
     } catch (err) {
