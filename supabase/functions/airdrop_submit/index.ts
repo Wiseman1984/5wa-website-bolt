@@ -1,4 +1,4 @@
-// airdrop submission via direct DB connection
+// airdrop submission via direct DB connection — bypasses PostgREST schema cache
 import postgres from "npm:postgres@3.4.5";
 
 const corsHeaders = {
