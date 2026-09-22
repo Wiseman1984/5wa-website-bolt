@@ -1,2 +1,5 @@
 [functions.guardian-ai]
 verify_jwt = false
+
+[functions.airdrop_submit]
+verify_jwt = false

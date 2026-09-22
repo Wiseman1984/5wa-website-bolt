@@ -150,8 +150,6 @@ export function Airdrop() {
     setIsSubmitting(true);
 
     try {
-      // Send only the raw answers; the server recomputes the score and reward
-      // from its own answer key. Nothing about the payout is trusted from here.
       const answers: Record<string, string> = {};
       for (const q of sessionQuestions) {
         const chosenLabel = selectedAnswers[q.id];
@@ -160,33 +158,32 @@ export function Airdrop() {
         if (chosen) answers[q.id] = chosen.originalKey;
       }
 
-      const { data, error: rpcError } = await supabase.rpc("submit_airdrop", {
-        p_username: userName,
-        p_wallet_address: walletAddress.toLowerCase(),
-        p_tweet_url: tweetUrl,
-        p_question_ids: sessionQuestions.map((q) => q.id),
-        p_answers: answers,
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/airdrop_submit`;
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          p_username: userName,
+          p_wallet_address: walletAddress.toLowerCase(),
+          p_tweet_url: tweetUrl,
+          p_question_ids: sessionQuestions.map((q) => q.id),
+          p_answers: answers,
+        }),
       });
 
-      if (rpcError) {
-        console.error("[Airdrop] submission failed", rpcError);
-        const raw = rpcError.message ?? "";
-        if (raw.includes("duplicate_wallet") || rpcError.code === "23505") {
-          setError("This wallet has already submitted. Each wallet address can only participate once.");
-        } else if (raw.includes("invalid_wallet")) {
-          setError(content.wallet.error);
-        } else if (raw.includes("invalid_tweet_url")) {
-          setError("Please enter a valid tweet URL (e.g., https://x.com/username/status/123...)");
-        } else if (raw.includes("invalid_username")) {
-          setError("Please enter a name between 1 and 60 characters.");
-        } else {
-          setError("Submission failed. Please check your details and try again.");
-        }
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !result) {
+        console.error("[Airdrop] submission failed", response.status, result);
+        setError(result?.error ?? "Submission failed. Please check your details and try again.");
         setIsSubmitting(false);
         return;
       }
 
-      const confirmed = data as { score?: number; token_reward?: number; is_elite?: boolean } | null;
+      const confirmed = result as { score?: number; token_reward?: number; is_elite?: boolean };
       setConfirmedReward(typeof confirmed?.token_reward === "number" ? confirmed.token_reward : reward);
       setSubmitted(true);
       setIsSubmitting(false);
