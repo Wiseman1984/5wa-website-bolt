@@ -43,6 +43,7 @@ interface ThreatIncident {
 
 interface ThreatGlobeProps {
   incidents: ThreatIncident[];
+  forcedViewMode?: "globe" | "map" | null;
 }
 
 function GlobeAmbientCircuit() {
@@ -120,8 +121,9 @@ function getPulseTiming(id: string): { period: number; speed: number; offset: nu
   };
 }
 
-export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
-  const [viewMode, setViewMode] = useState<"globe" | "map">("globe");
+export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobeProps) {
+  const [internalViewMode, setInternalViewMode] = useState<"globe" | "map">("globe");
+  const viewMode = forcedViewMode ?? internalViewMode;
   const [transitioning, setTransitioning] = useState(false);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; incident: ThreatIncident } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -144,7 +146,7 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
     scrollPositionRef.current = window.scrollY;
     setTransitioning(true);
     window.setTimeout(() => {
-      setViewMode("map");
+      setInternalViewMode("map");
       setTransitioning(false);
       setTooltip(null);
       restoreScrollPosition();
@@ -156,7 +158,7 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
     scrollPositionRef.current = window.scrollY;
     setTransitioning(true);
     window.setTimeout(() => {
-      setViewMode("globe");
+      setInternalViewMode("globe");
       setTransitioning(false);
       setTooltip(null);
       restoreScrollPosition();
@@ -377,7 +379,14 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
         globeRef.current = null;
       }
     };
-  }, [viewMode, dimensions.width, dimensions.height, pointsData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewMode, dimensions.width, dimensions.height]);
+
+  // Update globe points data without reinitializing
+  useEffect(() => {
+    if (viewMode !== "globe" || !globeRef.current) return;
+    globeRef.current.pointsData(pointsData).ringsData(pointsData);
+  }, [pointsData, viewMode]);
 
   // Initialize Mapbox flat map
   useEffect(() => {
@@ -550,6 +559,7 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
         };
 
         map.addSource("incidents", { type: "geojson", data: geojsonData });
+        mapRef.current = map;
 
         // Glow layer
         map.addLayer({
@@ -689,7 +699,36 @@ export default function ThreatGlobe({ incidents }: ThreatGlobeProps) {
         mapRef.current = null;
       }
     };
-  }, [handleTransitionToGlobe, incidents, restoreScrollPosition, viewMode]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleTransitionToGlobe, restoreScrollPosition, viewMode]);
+
+  // Update mapbox incident data without reinitializing
+  useEffect(() => {
+    if (viewMode !== "map" || !mapRef.current) return;
+    const source = mapRef.current.getSource("incidents");
+    if (!source) return;
+    const geojsonData: GeoJSON.FeatureCollection = {
+      type: "FeatureCollection",
+      features: incidents
+        .filter((i) => i.latitude != null && i.longitude != null)
+        .map((i) => ({
+          type: "Feature" as const,
+          geometry: { type: "Point" as const, coordinates: [i.longitude!, i.latitude!] },
+          properties: {
+            id: i.id,
+            title: i.title,
+            country: i.country,
+            attack_type: i.attack_type,
+            severity: i.severity,
+            published_at: i.published_at,
+            ai_summary: i.ai_summary || "",
+            color: getSeverityColor(i.severity),
+            pulseOffset: getPulseTiming(i.id).offset,
+          },
+        })),
+    };
+    source.setData(geojsonData);
+  }, [incidents, viewMode]);
 
   return (
     <div

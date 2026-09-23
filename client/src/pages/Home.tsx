@@ -22,16 +22,9 @@ export default function Home() {
   const [filteredIncidents, setFilteredIncidents] = useState<ThreatIncident[]>([]);
   const [timeFilteredIncidents, setTimeFilteredIncidents] = useState<ThreatIncident[]>([]);
   const [severityFilter, setSeverityFilter] = useState<"all" | "high" | "medium" | "low">("all");
+  const [timelinePlaying, setTimelinePlaying] = useState(false);
 
-  const stats = useMemo(() => {
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    return {
-      total: incidents.length,
-      last30: incidents.filter((incident) => new Date(incident.published_at) > thirtyDaysAgo).length,
-      regions: new Set(incidents.map((incident) => incident.country)).size,
-    };
-  }, [incidents]);
+  const [stats, setStats] = useState({ total: 0, last30: 0, regions: 0 });
 
   useEffect(() => {
     async function fetchData() {
@@ -58,6 +51,11 @@ export default function Home() {
 
           if (data.length < PAGE_SIZE) break;
           from += PAGE_SIZE;
+        }
+
+        if (allData.length === 0) {
+          console.warn("No threat incidents returned from database");
+          return;
         }
 
         const relevantIncidents = filterPhysicalSecurityIncidents(allData);
@@ -87,6 +85,10 @@ export default function Home() {
 
   const handleTimeFilter = useCallback((filtered: ThreatIncident[]) => {
     setTimeFilteredIncidents(filtered);
+  }, []);
+
+  const handlePlayStateChange = useCallback((playing: boolean) => {
+    setTimelinePlaying(playing);
   }, []);
 
   const severityFilteredIncidents = useMemo(() => {
@@ -200,10 +202,17 @@ export default function Home() {
           </div>
 
           {/* Timeline Replay + Heatmap */}
-          <TimelineSlider incidents={filteredIncidents} onTimeFilter={handleTimeFilter} />
+          <TimelineSlider
+            incidents={filteredIncidents}
+            onTimeFilter={handleTimeFilter}
+            onPlayStateChange={handlePlayStateChange}
+          />
 
-          {/* World Map */}
-          <ThreatGlobe incidents={severityFilteredIncidents} />
+          {/* World Map — auto-switch to flat map during timeline playback */}
+          <ThreatGlobe
+            incidents={severityFilteredIncidents}
+            forcedViewMode={timelinePlaying ? "map" : null}
+          />
 
           {/* Dashboard: Filters + Trend Stats + Incident List + Detail Modal */}
           <ThreatDashboard
