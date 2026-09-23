@@ -661,9 +661,10 @@ export default function Whitepaper() {
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>On-Chain Security API Integration (BlockSec Phalcon)</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Multi-Channel Alert System (Telegram, Discord, Email)</li>
                         <li className="flex gap-2"><span className="text-green-400">✅</span>Threat Level Filtering — severity-based filtering (High / Medium / Low) live on the threat map</li>
-                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Customizable alert thresholds — user-defined severity triggers for notifications</li>
+                        <li className="flex gap-2"><span className="text-green-400">✅</span>Personalized alert preferences — user-defined watch regions, severity thresholds, and alert types stored locally in browser</li>
+                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Customizable alert thresholds — server-side notification triggers</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Enhanced TIE with predictive capabilities</li>
-                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Guardian AI advanced tier — opt-in personalization and configurable alerts, subject to privacy and security review</li>
+                        <li className="flex gap-2"><span className="text-green-400">✅</span>Guardian AI personalization — local preferences panel for watch regions, severity thresholds, and alert types</li>
                       </ul>
                     </div>
                   </div>
@@ -681,7 +682,8 @@ export default function Whitepaper() {
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Mobile App (iOS/Android) — real-time alerts, GPS geofence warnings</li>
                         <li className="flex gap-2"><span className="text-green-400">✅</span>Privacy Toolkit V1 — interactive checklists for identity de-sensitization, travel mode hardening, and wallet risk analysis</li>
                         <li className="flex gap-2"><span className="text-green-400">✅</span>Personal Risk Assessment MVP — local questionnaire, transparent scoring, visual report, and targeted recommendations</li>
-                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Advanced Geospatial Analytics — threat prediction models</li>
+                        <li className="flex gap-2"><span className="text-green-400">✅</span>Advanced Geospatial Analytics — timeline replay slider and hotspot heatmap live on the threat map</li>
+                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Predictive threat models — forecasting and trend prediction</li>
                       </ul>
                     </div>
                   </div>

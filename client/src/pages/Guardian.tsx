@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, BrainCircuit, MapPinned, ShieldCheck } from "lucide-react";
 import Footer from "@/components/Footer";
 import GuardianAiPanel from "@/components/GuardianAiPanel";
+import GuardianPrefsPanel from "@/components/GuardianPrefsPanel";
 import Navigation from "@/components/Navigation";
 import OpsecLanguageSwitch from "@/components/OpsecLanguageSwitch";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -111,6 +112,7 @@ export default function Guardian() {
               </div>
             </div>
 
+            <GuardianPrefsPanel />
             <GuardianAiPanel regionId={regionId} scenarioId={scenarioId} language={language} />
           </div>
         </section>

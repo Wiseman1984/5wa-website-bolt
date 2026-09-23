@@ -3,6 +3,7 @@ import { AlertTriangle, Filter } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ThreatGlobe from "@/components/ThreatGlobe";
+import TimelineSlider from "@/components/TimelineSlider";
 import ThreatDashboard, { type ThreatIncident } from "@/components/ThreatDashboard";
 import { ENGLISH_CONTENT } from "@shared/i18n";
 import { usePageMeta } from "@/hooks/usePageMeta";
@@ -19,6 +20,7 @@ export default function Home() {
 
   const [incidents, setIncidents] = useState<ThreatIncident[]>([]);
   const [filteredIncidents, setFilteredIncidents] = useState<ThreatIncident[]>([]);
+  const [timeFilteredIncidents, setTimeFilteredIncidents] = useState<ThreatIncident[]>([]);
   const [severityFilter, setSeverityFilter] = useState<"all" | "high" | "medium" | "low">("all");
 
   const stats = useMemo(() => {
@@ -61,6 +63,7 @@ export default function Home() {
         const relevantIncidents = filterPhysicalSecurityIncidents(allData);
         setIncidents(relevantIncidents);
         setFilteredIncidents(relevantIncidents);
+        setTimeFilteredIncidents(relevantIncidents);
 
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -79,18 +82,23 @@ export default function Home() {
 
   const handleFilterChange = useCallback((filtered: ThreatIncident[]) => {
     setFilteredIncidents(filtered);
+    setTimeFilteredIncidents(filtered);
+  }, []);
+
+  const handleTimeFilter = useCallback((filtered: ThreatIncident[]) => {
+    setTimeFilteredIncidents(filtered);
   }, []);
 
   const severityFilteredIncidents = useMemo(() => {
-    if (severityFilter === "all") return filteredIncidents;
-    return filteredIncidents.filter((inc) => {
+    if (severityFilter === "all") return timeFilteredIncidents;
+    return timeFilteredIncidents.filter((inc) => {
       const sev = inc.severity;
       if (sev == null) return severityFilter === "high";
       if (severityFilter === "high") return sev >= 7;
       if (severityFilter === "medium") return sev >= 4 && sev < 7;
       return sev < 4;
     });
-  }, [filteredIncidents, severityFilter]);
+  }, [timeFilteredIncidents, severityFilter]);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -190,6 +198,9 @@ export default function Home() {
               </button>
             ))}
           </div>
+
+          {/* Timeline Replay + Heatmap */}
+          <TimelineSlider incidents={filteredIncidents} onTimeFilter={handleTimeFilter} />
 
           {/* World Map */}
           <ThreatGlobe incidents={severityFilteredIncidents} />
