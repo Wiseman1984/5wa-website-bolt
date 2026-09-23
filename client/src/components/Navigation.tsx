@@ -25,12 +25,12 @@ export default function Navigation() {
   const labels = shellLanguage === "zh"
     ? {
         home: "首頁", platform: "平台", platformOverview: "平台總覽", realCases: "真實案例",
-        guardian: "Guardian AI", tokenomics: "代幣經濟", airdrop: "空投", whitepaper: "白皮書",
+        guardian: "Guardian AI", tokenomics: "代幣經濟", airdrop: "空投", riskAssessment: "風險檢測", whitepaper: "白皮書",
         menu: "切換選單", follow: "在 X 追蹤 @5wa_io",
       }
     : {
         home: "Home", platform: "Platform", platformOverview: "Platform Overview", realCases: "Real-World Cases",
-        guardian: "Guardian AI", tokenomics: "Tokenomics", airdrop: "Airdrop", whitepaper: "Whitepaper",
+        guardian: "Guardian AI", tokenomics: "Tokenomics", airdrop: "Airdrop", riskAssessment: "Risk Check", whitepaper: "Whitepaper",
         menu: "Toggle menu", follow: "Follow @5wa_io on X",
       };
 
@@ -53,6 +53,7 @@ export default function Navigation() {
     { label: labels.guardian, href: language === "zh" ? "/guardian?lang=zh" : "/guardian" },
     { label: labels.tokenomics, href: "/tokenomics" },
     { label: labels.airdrop, href: "/airdrop" },
+    { label: labels.riskAssessment, href: "/risk-assessment" },
     { label: labels.whitepaper, href: "/whitepaper" },
   ];
 
