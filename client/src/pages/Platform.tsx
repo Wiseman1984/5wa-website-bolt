@@ -106,6 +106,7 @@ export default function Platform() {
           <div className="text-center mb-14">
             <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
               How It Works
+              <span className="block text-base font-medium text-cyan-400/70 mt-2">Experimental Platform</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               A product-first workflow for turning public threat signals into practical preparation
@@ -240,7 +241,7 @@ export default function Platform() {
       {/* Product-first CTA Section */}
       <section className="py-16 md:py-20 bg-card/20">
         <div className="container max-w-3xl text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Use the Live Platform</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Use the Experimental Platform</h2>
           <p className="text-lg text-muted-foreground mb-8">
             Explore public threat intelligence or open the read-only Guardian AI workspace.
           </p>
