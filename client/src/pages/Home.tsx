@@ -19,8 +19,17 @@ export default function Home() {
 
   const [incidents, setIncidents] = useState<ThreatIncident[]>([]);
   const [filteredIncidents, setFilteredIncidents] = useState<ThreatIncident[]>([]);
-  const [stats, setStats] = useState({ total: 0, last30: 0, regions: 0 });
   const [severityFilter, setSeverityFilter] = useState<"all" | "high" | "medium" | "low">("all");
+
+  const stats = useMemo(() => {
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    return {
+      total: incidents.length,
+      last30: incidents.filter((incident) => new Date(incident.published_at) > thirtyDaysAgo).length,
+      regions: new Set(incidents.map((incident) => incident.country)).size,
+    };
+  }, [incidents]);
 
   useEffect(() => {
     async function fetchData() {
