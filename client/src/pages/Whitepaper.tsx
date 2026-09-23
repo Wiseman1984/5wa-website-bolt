@@ -9,8 +9,8 @@ export default function Whitepaper() {
   const [activeSection, setActiveSection] = useState<string>("whats-new");
 
   usePageMeta({
-    title: "$5WA Whitepaper V5 | Decentralized AI-Powered Physical Security Platform",
-    description: "Living Document — Threat Intelligence Engine, 3D/flat Threat Map, Location OpSec Guide MVP, and read-only Guardian AI beta are live.",
+    title: "$5WA Whitepaper V6 | Decentralized AI-Powered Physical Security Platform",
+    description: "Living Document V6 — Threat Intelligence Engine, Duress Protection roadmap, DePIN Physical Security Alliance, Dark Web/KYC Leak Monitoring, and B2B Service Burn tokenomics.",
     url: "https://5wa.io/whitepaper",
   });
 
@@ -21,7 +21,7 @@ export default function Whitepaper() {
   };
 
   const sections = [
-    { id: "whats-new", label: "What's New in V5" },
+    { id: "whats-new", label: "What's New in V6" },
     { id: "why", label: "1. Why Physical Security?" },
     { id: "threat-model", label: "2. Threat Model" },
     { id: "architecture", label: "3. Product Architecture" },
@@ -74,7 +74,7 @@ export default function Whitepaper() {
         {/* Header */}
         <div className="container mx-auto px-4 py-16 text-center">
           <div className="mb-6 inline-block px-4 py-2 rounded-lg border border-blue-500/30 bg-blue-500/5">
-            <span className="text-sm font-semibold text-blue-400">Living Document — V5.0</span>
+            <span className="text-sm font-semibold text-blue-400">Living Document — V6.0</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
             $5WA Whitepaper
@@ -145,13 +145,13 @@ export default function Whitepaper() {
           {/* Content */}
           <div className="container mx-auto px-4 py-12 max-w-4xl">
 
-            {/* What's New in V5 */}
+            {/* What's New in V6 */}
             <section className="mb-16 scroll-mt-20" id="whats-new">
               <div className="mb-8 pb-8 border-b border-slate-700/50">
-                <h2 className="text-3xl font-bold mb-6 text-blue-300">What's New in V5</h2>
+                <h2 className="text-3xl font-bold mb-6 text-blue-300">What's New in V6</h2>
                 <div className="p-6 rounded-lg bg-slate-800/30 border border-slate-700/50">
                   <p className="text-slate-300 leading-relaxed mb-4">
-                    This version reflects significant progress in platform development and introduces a clearer distinction between <span className="text-green-400 font-semibold">live capabilities</span>, <span className="text-yellow-400 font-semibold">in-development features</span>, and <span className="text-slate-400 font-semibold">planned roadmap items</span>.
+                    V6 introduces four strategic restructuring directions: Duress Protection Layer (decoy wallets, timelocks, Dead Man's Switch), Dark Web & KYC Leak Monitoring, DePIN Physical Security Alliance with licensed private security firms, and B2B Service Burn tokenomics. All four are roadmap items clearly marked as <span className="text-slate-400 font-semibold">planned</span> — the current live capabilities remain unchanged from V5.
                   </p>
                   <ul className="space-y-2 text-slate-300 text-sm">
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Threat Intelligence Engine (TIE) V1 is now live with automated daily collection pipeline</li>
@@ -168,6 +168,10 @@ export default function Whitepaper() {
                     <li className="flex gap-2"><span className="text-cyan-400">→</span>Revised Roadmap uses phase-based structure without specific date bindings</li>
                     <li className="flex gap-2"><span className="text-cyan-400">→</span>Updated Technical Deep Dive aligns with actual TIE architecture</li>
                     <li className="flex gap-2"><span className="text-cyan-400">→</span>Removed all quarter/year-specific timelines in favor of phase designations</li>
+                    <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> Duress Protection Layer — decoy wallets, timelock contracts, and Dead Man's Switch (planned)</li>
+                    <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> Dark Web & KYC Leak Monitoring — proactive threat intelligence beyond public news (planned)</li>
+                    <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> DePIN Physical Security Alliance — licensed private security firm network for SOS dispatch (planned)</li>
+                    <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> B2B Service Burn tokenomics — enterprise security subscriptions funded by token buyback & burn (planned)</li>
                   </ul>
                 </div>
               </div>
@@ -218,6 +222,10 @@ export default function Whitepaper() {
                   <div className="p-5 rounded-lg bg-slate-800/30 border border-slate-700/50">
                     <h4 className="font-bold text-cyan-300 mb-2">Travel & Geo-Location Risks</h4>
                     <p className="text-slate-300 text-sm">Individuals traveling, especially to high-risk regions, face increased exposure to physical threats, surveillance, and potential coercion based on their perceived crypto wealth.</p>
+                  </div>
+                  <div className="p-5 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                    <h4 className="font-bold text-cyan-300 mb-2">Dark Web & KYC Data Leaks <span className="text-xs font-normal text-yellow-400 ml-2">New in V6</span></h4>
+                    <p className="text-slate-300 text-sm">Leaked KYC documents, identity records, and wallet-to-identity mappings traded on dark web marketplaces create a direct pipeline from digital data exposure to physical targeting. Attackers purchase this data to identify high-net-worth crypto holders, their home addresses, and family connections — turning a digital breach into a physical attack vector. This threat is currently underserved by existing security platforms.</p>
                   </div>
                 </div>
               </div>
@@ -275,6 +283,7 @@ export default function Whitepaper() {
                       <li className="flex gap-2"><span className="text-slate-500">◦</span>On-Chain Anomaly Detection — integration with BlockSec Phalcon</li>
                       <li className="flex gap-2"><span className="text-slate-500">◦</span>Predictive Personal Risk Score Generation — future AI-assisted individual risk profiles and adaptive recommendations</li>
                       <li className="flex gap-2"><span className="text-slate-500">◦</span>Graph Neural Networks for Relationship Mapping</li>
+                      <li className="flex gap-2"><span className="text-yellow-400">◦</span><strong className="text-yellow-400">New in V6:</strong> Dark Web & KYC Leak Monitoring — integration with dark web intelligence providers and on-chain analytics (e.g., Chainalysis, Elliptic) to detect when user KYC data or wallet-to-identity mappings appear on dark web marketplaces, enabling proactive high-risk alerts without exposing raw leaked data</li>
                     </ul>
                   </div>
                 </div>
@@ -401,19 +410,47 @@ export default function Whitepaper() {
                   </div>
                 </div>
 
-                {/* 3.7 Guardian Network */}
+                {/* 3.7 Guardian Network — rewritten as DePIN Physical Security Alliance */}
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <h3 className="text-xl font-bold text-cyan-300">3.7 Guardian Network</h3>
+                    <h3 className="text-xl font-bold text-cyan-300">3.7 DePIN Physical Security Alliance</h3>
                     <span className="px-2 py-0.5 text-xs rounded bg-slate-500/20 text-slate-400 border border-slate-500/30">PLANNED ⏳</span>
                   </div>
                   <div className="p-6 rounded-lg bg-slate-800/30 border border-slate-700/50">
-                    <p className="text-slate-300 leading-relaxed mb-3">Global, decentralized network of nodes operated by community members:</p>
+                    <p className="text-slate-300 leading-relaxed mb-3">A Decentralized Physical Infrastructure Network (DePIN) model linking licensed private security firms — not a self-organized militia. The platform serves as a matching layer; all physical security contracts are between the user and the licensed firm directly.</p>
                     <ul className="space-y-2 text-slate-300 text-sm">
-                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Receiving & validating threats via consensus mechanism</li>
-                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Rapid alert dissemination across the network</li>
-                      <li className="flex gap-2"><span className="text-slate-500">◦</span>$5WA token rewards for node operators and contributors</li>
+                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Partnerships with licensed private security companies (e.g., G4S, GardaWorld, or local licensed firms) for SOS emergency dispatch</li>
+                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Token holders or subscribers gain access to emergency response — when a duress signal or GPS anomaly is triggered, the system auto-dispatches the nearest licensed local team</li>
+                      <li className="flex gap-2"><span className="text-slate-500">◦</span>VHNWI security suite — physical security audits, home hardening deployment, anti-stalking detection as real-world RWA services</li>
+                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Platform is a matching layer only — not the service provider. All security contracts are between the user and the licensed firm</li>
                     </ul>
+                    <div className="mt-4 p-3 rounded bg-red-500/10 border border-red-500/30">
+                      <p className="text-red-300 text-xs font-semibold">
+                        Services are subject to local laws and partner availability. The platform does not employ armed personnel and does not guarantee response outcomes.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3.9 Duress Protection Layer — NEW in V6 */}
+                <div className="mb-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <h3 className="text-xl font-bold text-cyan-300">3.9 Duress Protection Layer</h3>
+                    <span className="px-2 py-0.5 text-xs rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">PLANNED — NEW IN V6 ⏳</span>
+                  </div>
+                  <div className="p-6 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                    <p className="text-slate-300 leading-relaxed mb-3">Cryptographic protection that goes beyond text-based AI advice — directly addressing the core criticism that Guardian AI alone cannot save someone during a physical attack:</p>
+                    <ul className="space-y-2 text-slate-300 text-sm">
+                      <li className="flex gap-2"><span className="text-yellow-400">◦</span><strong className="text-cyan-300">Duress PIN & Decoy Wallet:</strong> Entering a duress password opens a decoy wallet with a small amount of real assets, buying time without revealing the primary vault</li>
+                      <li className="flex gap-2"><span className="text-yellow-400">◦</span><strong className="text-cyan-300">On-Chain Timelock:</strong> Triggering duress mode activates a chain-enforced cooling period that prevents immediate withdrawal from the primary wallet, even if the private key is surrendered</li>
+                      <li className="flex gap-2"><span className="text-yellow-400">◦</span><strong className="text-cyan-300">Dead Man's Switch:</strong> AI monitors on-chain and device activity. If the user is inactive beyond a configurable threshold, assets auto-transfer to a multi-sig social recovery contract — making real-time theft impossible</li>
+                      <li className="flex gap-2"><span className="text-yellow-400">◦</span><strong className="text-cyan-300">Silent Alarm:</strong> Duress mode triggers a background alert to trusted contacts and, when available, the DePIN security partner network</li>
+                    </ul>
+                    <div className="mt-4 p-3 rounded bg-red-500/10 border border-red-500/30">
+                      <p className="text-red-300 text-xs font-semibold">
+                        Duress Protection is a loss-reduction tool, not a safety guarantee. Users must independently assess their risk profile. The project is not liable for losses incurred during duress incidents.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
@@ -584,6 +621,21 @@ export default function Whitepaper() {
                     <span className="text-cyan-300 font-semibold">Community Airdrop Rewards</span>
                     <p className="text-slate-300 text-sm mt-1">Users earn $5WA by completing educational quizzes, with bonus rewards for Elite Guardian status.</p>
                   </div>
+                  <div className="p-5 rounded-lg bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/30">
+                    <span className="text-yellow-300 font-bold text-lg">B2B Service Burn <span className="text-xs font-normal text-yellow-400 ml-2">New in V6</span></span>
+                    <p className="text-slate-300 text-sm mt-3 leading-relaxed">
+                      Web3 teams and enterprises use $5WA to pay for team-wide physical security subscriptions (threat monitoring, OpSec audits, duress protection setup). A portion of received tokens is permanently burned via buyback & burn, linking token consumption directly to real-world security service revenue — not speculation.
+                    </p>
+                    <div className="mt-3 p-3 rounded bg-slate-700/30">
+                      <p className="text-slate-400 text-xs">
+                        Token burn is tied to service revenue, not marketed as a price-appreciation mechanism. No value guarantee is expressed or implied.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                    <span className="text-cyan-300 font-semibold">Staking for Security Insurance & Priority Dispatch <span className="text-xs font-normal text-yellow-400 ml-2">New in V6</span></span>
+                    <p className="text-slate-300 text-sm mt-1">Staking $5WA unlocks crisis-response coverage (emergency relocation, legal fees, counseling — not stolen-asset reimbursement) and priority dispatch through DePIN security partners. Staking transforms $5WA from a speculative asset into a Web3 physical security access card.</p>
+                  </div>
                 </div>
 
                 {/* 4.3 Transparency */}
@@ -664,6 +716,7 @@ export default function Whitepaper() {
                         <li className="flex gap-2"><span className="text-green-400">✅</span>Personalized alert preferences — user-defined watch regions, severity thresholds, and alert types stored locally in browser</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Customizable alert thresholds — server-side notification triggers</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Enhanced TIE with predictive capabilities</li>
+                        <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> Duress Mode MVP — decoy wallet, timelock contract, and Dead Man's Switch (pure software, no hardware partnership required)</li>
                         <li className="flex gap-2"><span className="text-green-400">✅</span>Guardian AI personalization — local preferences panel for watch regions, severity thresholds, and alert types</li>
                       </ul>
                     </div>
@@ -684,6 +737,8 @@ export default function Whitepaper() {
                         <li className="flex gap-2"><span className="text-green-400">✅</span>Personal Risk Assessment MVP — local questionnaire, transparent scoring, visual report, and targeted recommendations</li>
                         <li className="flex gap-2"><span className="text-green-400">✅</span>Advanced Geospatial Analytics — timeline replay slider and hotspot heatmap live on the threat map</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Predictive threat models — forecasting and trend prediction</li>
+                        <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> Dark Web Intelligence Pilot — dark web & KYC leak monitoring integration with threat intelligence providers</li>
+                        <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> DePIN Security Partner Pilot — initial partnerships with licensed private security firms in key Web3 hubs (Dubai, Singapore, Bangkok)</li>
                       </ul>
                     </div>
                   </div>
@@ -702,6 +757,8 @@ export default function Whitepaper() {
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>DAO Governance — on-chain voting and community control</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Crisis Response Network — geographic Guardian Ambassadors in key Web3 hubs (Dubai, Singapore, Bangkok, London, Miami), serving as the operational execution arm of the Crisis Response & Legal Defense Fund (Section 4.2)</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Advanced AI (GNN + LLM) — deep relationship mapping</li>
+                        <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> B2B Enterprise Subscriptions + Service Burn — enterprise security subscriptions funded by token buyback & burn</li>
+                        <li className="flex gap-2"><span className="text-yellow-400">⏳</span><strong className="text-yellow-400">New in V6:</strong> Full DePIN Security Network — global licensed partner coverage with SOS dispatch and VHNWI security suite</li>
                       </ul>
                     </div>
                   </div>
@@ -784,6 +841,14 @@ export default function Whitepaper() {
                     <h4 className="font-bold text-cyan-300 mb-2">Future Revenue Streams</h4>
                     <p className="text-slate-300 text-sm">Enterprise Solutions, Insurance Partnerships, and Data Monetization (with strict privacy protections) for aggregated threat intelligence insights.</p>
                   </div>
+                  <div className="p-5 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                    <h4 className="font-bold text-cyan-300 mb-2">B2B Enterprise Security Subscriptions <span className="text-xs font-normal text-yellow-400 ml-2">New in V6</span></h4>
+                    <p className="text-slate-300 text-sm">Web3 teams and enterprises pay $5WA for team-wide physical security subscriptions — threat monitoring, OpSec audits, and duress protection deployment. A portion of received tokens is burned, creating a direct link between service revenue and token consumption.</p>
+                  </div>
+                  <div className="p-5 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                    <h4 className="font-bold text-cyan-300 mb-2">DePIN Partner Dispatch Fees <span className="text-xs font-normal text-yellow-400 ml-2">New in V6</span></h4>
+                    <p className="text-slate-300 text-sm">Transaction fees (in $5WA) on physical security services dispatched through the DePIN partner network — SOS response, security audits, and VHNWI concierge services. The platform earns a matching fee; service contracts are between the user and the licensed firm.</p>
+                  </div>
                 </div>
               </div>
             </section>
@@ -861,6 +926,20 @@ export default function Whitepaper() {
                         <td className="py-3 px-4 text-center text-green-400">✓</td>
                         <td className="py-3 px-4 text-center text-slate-600">—</td>
                         <td className="py-3 px-4 text-center text-slate-400">⏳</td>
+                      </tr>
+                      <tr className="border-b border-slate-700/50">
+                        <td className="py-3 px-4 text-slate-300 font-semibold">Duress Protection (Decoy/Timelock)</td>
+                        <td className="py-3 px-4 text-center text-slate-600">—</td>
+                        <td className="py-3 px-4 text-center text-slate-600">—</td>
+                        <td className="py-3 px-4 text-center text-slate-600">—</td>
+                        <td className="py-3 px-4 text-center text-yellow-400 font-bold">⏳</td>
+                      </tr>
+                      <tr className="border-b border-slate-700/50">
+                        <td className="py-3 px-4 text-slate-300 font-semibold">Physical SOS Dispatch</td>
+                        <td className="py-3 px-4 text-center text-slate-600">—</td>
+                        <td className="py-3 px-4 text-center text-slate-600">—</td>
+                        <td className="py-3 px-4 text-center text-slate-600">—</td>
+                        <td className="py-3 px-4 text-center text-yellow-400 font-bold">⏳</td>
                       </tr>
                     </tbody>
                   </table>
@@ -997,9 +1076,9 @@ export default function Whitepaper() {
                   </div>
                 </div>
 
-                {/* 9.3 Guardian Network */}
+                {/* 9.3 DePIN Guardian Network */}
                 <div>
-                  <h3 className="text-xl font-bold mb-4 text-cyan-300">9.3 Decentralized Guardian Network (Planned)</h3>
+                  <h3 className="text-xl font-bold mb-4 text-cyan-300">9.3 DePIN Guardian Network (Planned)</h3>
                   <p className="text-slate-300 text-sm mb-4">A critical challenge in decentralized physical threat validation is that real-world incidents cannot be mathematically verified like on-chain transactions. The Guardian Network employs a <strong className="text-cyan-300">Reputation-Weighted Multi-Consensus</strong> mechanism:</p>
                   <div className="space-y-4">
                     <div className="p-4 rounded-lg bg-slate-800/30 border border-slate-700/50">
@@ -1029,6 +1108,30 @@ export default function Whitepaper() {
                     </div>
                   </div>
                 </div>
+
+                {/* 9.4 Duress Protection Architecture — NEW in V6 */}
+                <div className="mt-8">
+                  <h3 className="text-xl font-bold mb-4 text-cyan-300">9.4 Duress Protection Architecture (Planned) <span className="text-xs font-normal text-yellow-400 ml-2">New in V6</span></h3>
+                  <p className="text-slate-300 text-sm mb-4">The Duress Protection Layer moves $5WA from text-based advice to cryptographic defense. The architecture is designed to be implementable in pure software — no hardware wallet partnership is required for the MVP:</p>
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                      <span className="text-cyan-300 font-semibold">Decoy Wallet System</span>
+                      <p className="text-slate-300 text-sm mt-1">A secondary wallet address holding a small fraction of real assets. Entering a duress PIN unlocks only this wallet, creating plausible compliance without exposing the primary vault. The attacker sees a real transaction and a real balance, reducing immediate threat.</p>
+                    </div>
+                    <div className="p-4 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                      <span className="text-cyan-300 font-semibold">On-Chain Timelock Contract</span>
+                      <p className="text-slate-300 text-sm mt-1">A smart contract that, once duress mode is triggered, enforces a configurable cooling period (e.g., 24–72 hours) during which withdrawals from the primary wallet are blocked at the contract level. Even if the private key is surrendered, the attacker cannot extract funds until the timelock expires — buying critical time for recovery actions.</p>
+                    </div>
+                    <div className="p-4 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                      <span className="text-cyan-300 font-semibold">Dead Man's Switch</span>
+                      <p className="text-slate-300 text-sm mt-1">AI monitors user on-chain signing activity and device check-ins. If the user exceeds a configurable inactivity threshold (e.g., 7 days), assets automatically transfer to a pre-configured multi-sig social recovery contract. This makes prolonged captivity or disappearance insufficient to access funds.</p>
+                    </div>
+                    <div className="p-4 rounded-lg bg-slate-800/30 border border-yellow-500/20">
+                      <span className="text-cyan-300 font-semibold">ZKP-Based Anonymous Incident Reporting (PoP)</span>
+                      <p className="text-slate-300 text-sm mt-1">Zero-knowledge proofs enable verified victims or security firms to submit incident characteristics on-chain without revealing real names or precise locations. Verified reports earn $5WA intelligence rewards, creating a privacy-preserving threat intelligence loop.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -1042,6 +1145,15 @@ export default function Whitepaper() {
                 <p className="text-slate-400 leading-relaxed">
                   This whitepaper does not constitute an offer or solicitation in any jurisdiction where such activities are prohibited. Participants are responsible for determining whether their participation complies with applicable laws and regulations.
                 </p>
+                <div className="mt-6 pt-6 border-t border-slate-700/50">
+                  <h3 className="text-lg font-bold text-blue-300 mb-4">V6 Additional Risk Disclosures</h3>
+                  <ul className="space-y-3 text-slate-400 text-sm">
+                    <li className="flex gap-2"><span className="text-yellow-400">•</span><strong className="text-slate-300">Dark Web Intelligence:</strong> Threat intelligence derived from dark web monitoring is probabilistic and not guaranteed to be accurate or complete. The platform displays risk levels and incident types only — raw leaked personal data is never shown to users. The platform is not liable for actions taken or not taken based on intelligence alerts.</li>
+                    <li className="flex gap-2"><span className="text-yellow-400">•</span><strong className="text-slate-300">DePIN Security Services:</strong> Physical security services are provided by independent licensed firms, not by the $5WA platform. The platform serves solely as a matching layer. All service contracts are between the user and the licensed firm. The platform is not liable for service quality, response delays, or outcomes. Service availability varies by jurisdiction and local law.</li>
+                    <li className="flex gap-2"><span className="text-yellow-400">•</span><strong className="text-slate-300">Duress Protection:</strong> Duress mode, decoy wallets, timelocks, and Dead Man's Switch are loss-reduction tools, not safety guarantees. Users must independently assess their risk profile and not rely solely on these mechanisms. The project is not liable for losses incurred during duress incidents, including cases where duress protection is bypassed, delayed, or fails to prevent asset loss.</li>
+                    <li className="flex gap-2"><span className="text-yellow-400">•</span><strong className="text-slate-300">Token Burn & Service Revenue:</strong> The B2B service burn mechanism links token consumption to service revenue. It is not marketed as a price-appreciation mechanism. No token value increase is expressed, implied, or guaranteed. Token burn rates depend on actual enterprise adoption and service volume.</li>
+                  </ul>
+                </div>
               </div>
             </section>
 
@@ -1102,6 +1214,22 @@ export default function Whitepaper() {
                         <td className="py-3 px-4 text-slate-300">Community Channels</td>
                         <td className="py-3 px-4 text-green-400">✅ X (@5wa_io), LinkedIn, DevLog series</td>
                       </tr>
+                      <tr className="border-b border-slate-700/50">
+                        <td className="py-3 px-4 text-slate-300">Duress Protection Layer</td>
+                        <td className="py-3 px-4 text-yellow-400">⏳ Planned — V6 roadmap (decoy wallet, timelock, Dead Man's Switch)</td>
+                      </tr>
+                      <tr className="border-b border-slate-700/50">
+                        <td className="py-3 px-4 text-slate-300">Dark Web / KYC Leak Monitoring</td>
+                        <td className="py-3 px-4 text-yellow-400">⏳ Planned — V6 roadmap (dark web intelligence integration)</td>
+                      </tr>
+                      <tr className="border-b border-slate-700/50">
+                        <td className="py-3 px-4 text-slate-300">DePIN Security Alliance</td>
+                        <td className="py-3 px-4 text-yellow-400">⏳ Planned — V6 roadmap (licensed partner network)</td>
+                      </tr>
+                      <tr className="border-b border-slate-700/50">
+                        <td className="py-3 px-4 text-slate-300">B2B Service Burn</td>
+                        <td className="py-3 px-4 text-yellow-400">⏳ Planned — V6 roadmap (enterprise subscriptions + buyback burn)</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -1129,7 +1257,7 @@ export default function Whitepaper() {
 
             {/* Document footer */}
             <div className="mt-12 text-center text-sm text-slate-500">
-              <p>Document Version: 5.0 | Last Updated: September 2, 2026 | Status: Living Document</p>
+              <p>Document Version: 6.0 | Last Updated: September 23, 2026 | Status: Living Document</p>
               <p className="mt-2">
                 For the latest updates, visit{" "}
                 <a href="https://5wa.io" className="text-cyan-400 hover:underline">5wa.io</a>
