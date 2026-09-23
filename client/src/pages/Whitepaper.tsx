@@ -160,6 +160,10 @@ export default function Whitepaper() {
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Read-only Guardian AI beta is live on a dedicated page using server-side Groq inference with GPT-OSS 20B</li>
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Community Airdrop System operational — Season 1 active with Elite Guardian easter egg</li>
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Personal Risk Assessment MVP is live with a 10-question local questionnaire, five-category scoring, visual risk report, and targeted recommendations</li>
+                    <li className="flex gap-2"><span className="text-green-400">✅</span>Security Guide is live with 5 categories covering identity protection, physical security, social media safety, threat response, and travel safety</li>
+                    <li className="flex gap-2"><span className="text-green-400">✅</span>Real-World Cases library is live with severity-graded incident cards and source links</li>
+                    <li className="flex gap-2"><span className="text-green-400">✅</span>Privacy Toolkit V1 is live with interactive checklists for identity de-sensitization, travel mode hardening, and wallet risk analysis</li>
+                    <li className="flex gap-2"><span className="text-green-400">✅</span>Threat Level Filtering is live on the threat map with severity-based filtering (High / Medium / Low)</li>
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Multi-Sig Governance implemented via Gnosis Safe</li>
                     <li className="flex gap-2"><span className="text-cyan-400">→</span>Revised Roadmap uses phase-based structure without specific date bindings</li>
                     <li className="flex gap-2"><span className="text-cyan-400">→</span>Updated Technical Deep Dive aligns with actual TIE architecture</li>
@@ -350,13 +354,49 @@ export default function Whitepaper() {
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-4">
                     <h3 className="text-xl font-bold text-cyan-300">3.6 Privacy Toolkit</h3>
-                    <span className="px-2 py-0.5 text-xs rounded bg-slate-500/20 text-slate-400 border border-slate-500/30">PLANNED ⏳</span>
+                    <span className="px-2 py-0.5 text-xs rounded bg-green-500/20 text-green-400 border border-green-500/30">LIVE MVP ✅</span>
                   </div>
-                  <div className="p-6 rounded-lg bg-slate-800/30 border border-slate-700/50">
+                  <div className="p-6 rounded-lg bg-slate-800/30 border border-green-500/20">
+                    <p className="text-slate-300 leading-relaxed mb-3">Interactive checklists that help users reduce their physical and digital attack surface. All guidance runs locally in the browser with no data collection.</p>
                     <ul className="space-y-2 text-slate-300 text-sm">
-                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Identity De-sensitization — minimize linkage between on-chain activity and real-world identity</li>
-                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Travel Mode Hardening — secure devices and data during travel</li>
-                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Wallet Risk Analysis — detect patterns indicating increased exposure</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Identity De-sensitization — minimize linkage between on-chain activity and real-world identity</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Travel Mode Hardening — secure devices and data during travel with a check-in protocol</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Wallet Risk Analysis — detect patterns indicating increased exposure with multi-sig and approval audit guidance</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Progress tracking with visual completion indicators per category</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* 3.7 Security Guide */}
+                <div className="mb-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <h3 className="text-xl font-bold text-cyan-300">3.7 Security Guide</h3>
+                    <span className="px-2 py-0.5 text-xs rounded bg-green-500/20 text-green-400 border border-green-500/30">LIVE ✅</span>
+                  </div>
+                  <div className="p-6 rounded-lg bg-slate-800/30 border border-green-500/20">
+                    <p className="text-slate-300 leading-relaxed mb-3">Comprehensive educational resource covering five core security domains:</p>
+                    <ul className="space-y-2 text-slate-300 text-sm">
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Identity Protection — separating real identity from crypto activity</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Physical Security — home, office, and personal safety practices</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Social Media Safety — reducing doxxing and wealth-signaling exposure</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Threat Response — step-by-step actions during and after an incident</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Travel Safety — region-specific precautions and device hygiene</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* 3.8 Real-World Cases */}
+                <div className="mb-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <h3 className="text-xl font-bold text-cyan-300">3.8 Real-World Cases</h3>
+                    <span className="px-2 py-0.5 text-xs rounded bg-green-500/20 text-green-400 border border-green-500/30">LIVE ✅</span>
+                  </div>
+                  <div className="p-6 rounded-lg bg-slate-800/30 border border-green-500/20">
+                    <p className="text-slate-300 leading-relaxed mb-3">Documented library of real physical-security incidents targeting the crypto community:</p>
+                    <ul className="space-y-2 text-slate-300 text-sm">
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Severity-graded case cards with source links and safety warnings</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Categorized by attack type: kidnapping, robbery, extortion, home invasion, and more</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Educational framing with explicit “do not attempt to replicate” warnings</li>
                     </ul>
                   </div>
                 </div>
@@ -620,7 +660,8 @@ export default function Whitepaper() {
                       <ul className="space-y-2 text-slate-300">
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>On-Chain Security API Integration (BlockSec Phalcon)</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Multi-Channel Alert System (Telegram, Discord, Email)</li>
-                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Threat Level Filtering & customizable alert thresholds</li>
+                        <li className="flex gap-2"><span className="text-green-400">✅</span>Threat Level Filtering — severity-based filtering (High / Medium / Low) live on the threat map</li>
+                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Customizable alert thresholds — user-defined severity triggers for notifications</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Enhanced TIE with predictive capabilities</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Guardian AI advanced tier — opt-in personalization and configurable alerts, subject to privacy and security review</li>
                       </ul>
@@ -638,7 +679,7 @@ export default function Whitepaper() {
                       <ul className="space-y-2 text-slate-300">
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Desktop Client (Tauri) — system tray with OS-native notifications</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Mobile App (iOS/Android) — real-time alerts, GPS geofence warnings</li>
-                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Privacy Toolkit V1 — identity de-sensitization, travel mode</li>
+                        <li className="flex gap-2"><span className="text-green-400">✅</span>Privacy Toolkit V1 — interactive checklists for identity de-sensitization, travel mode hardening, and wallet risk analysis</li>
                         <li className="flex gap-2"><span className="text-green-400">✅</span>Personal Risk Assessment MVP — local questionnaire, transparent scoring, visual report, and targeted recommendations</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Advanced Geospatial Analytics — threat prediction models</li>
                       </ul>

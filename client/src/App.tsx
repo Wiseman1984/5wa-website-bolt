@@ -15,6 +15,8 @@ const Airdrop = lazy(() => import("./pages/Airdrop").then((m) => ({ default: m.A
 const RiskAssessment = lazy(() => import("./pages/RiskAssessment"));
 const Whitepaper = lazy(() => import("./pages/Whitepaper"));
 const Guardian = lazy(() => import("./pages/Guardian"));
+const SecurityGuide = lazy(() => import("./pages/SecurityGuide"));
+const PrivacyToolkit = lazy(() => import("./pages/PrivacyToolkit"));
 
 function Router() {
   return (
@@ -28,6 +30,8 @@ function Router() {
         <Route path={"/airdrop"} component={Airdrop} />
         <Route path={"/risk-assessment"} component={RiskAssessment} />
         <Route path={"/whitepaper"} component={Whitepaper} />
+        <Route path={"/security-guide"} component={SecurityGuide} />
+        <Route path={"/privacy-toolkit"} component={PrivacyToolkit} />
         <Route path={"/404"} component={NotFound} />
         <Route component={NotFound} />
       </Switch>

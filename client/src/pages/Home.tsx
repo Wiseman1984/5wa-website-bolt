@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from "react";
-import { AlertTriangle } from "lucide-react";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { AlertTriangle, Filter } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ThreatGlobe from "@/components/ThreatGlobe";
@@ -20,6 +20,7 @@ export default function Home() {
   const [incidents, setIncidents] = useState<ThreatIncident[]>([]);
   const [filteredIncidents, setFilteredIncidents] = useState<ThreatIncident[]>([]);
   const [stats, setStats] = useState({ total: 0, last30: 0, regions: 0 });
+  const [severityFilter, setSeverityFilter] = useState<"all" | "high" | "medium" | "low">("all");
 
   useEffect(() => {
     async function fetchData() {
@@ -70,6 +71,17 @@ export default function Home() {
   const handleFilterChange = useCallback((filtered: ThreatIncident[]) => {
     setFilteredIncidents(filtered);
   }, []);
+
+  const severityFilteredIncidents = useMemo(() => {
+    if (severityFilter === "all") return filteredIncidents;
+    return filteredIncidents.filter((inc) => {
+      const sev = inc.severity;
+      if (sev == null) return severityFilter === "high";
+      if (severityFilter === "high") return sev >= 7;
+      if (severityFilter === "medium") return sev >= 4 && sev < 7;
+      return sev < 4;
+    });
+  }, [filteredIncidents, severityFilter]);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -147,13 +159,36 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Severity Filter */}
+          <div className="flex items-center justify-center gap-2 mb-6 flex-wrap">
+            <Filter className="w-4 h-4 text-slate-500" />
+            {([
+              { key: "all", label: "All Severities", activeClass: "bg-cyan-500/15 border-cyan-500/50 text-cyan-400" },
+              { key: "high", label: "High (7-10)", activeClass: "bg-red-500/15 border-red-500/50 text-red-400" },
+              { key: "medium", label: "Medium (4-6)", activeClass: "bg-amber-500/15 border-amber-500/50 text-amber-400" },
+              { key: "low", label: "Low (1-3)", activeClass: "bg-yellow-500/15 border-yellow-500/50 text-yellow-400" },
+            ] as const).map((opt) => (
+              <button
+                key={opt.key}
+                onClick={() => setSeverityFilter(opt.key)}
+                className={
+                  severityFilter === opt.key
+                    ? `px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 ${opt.activeClass}`
+                    : "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 bg-slate-800/30 border-slate-700/50 text-slate-400 hover:text-slate-200"
+                }
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+
           {/* World Map */}
-          <ThreatGlobe incidents={filteredIncidents} />
+          <ThreatGlobe incidents={severityFilteredIncidents} />
 
           {/* Dashboard: Filters + Trend Stats + Incident List + Detail Modal */}
           <ThreatDashboard
             incidents={incidents}
-            filteredIncidents={filteredIncidents}
+            filteredIncidents={severityFilteredIncidents}
             onFilterChange={handleFilterChange}
           />
 

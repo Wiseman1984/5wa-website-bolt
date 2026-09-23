@@ -26,11 +26,13 @@ export default function Navigation() {
     ? {
         home: "首頁", platform: "平台", platformOverview: "平台總覽", realCases: "真實案例",
         guardian: "Guardian AI", tokenomics: "代幣經濟", airdrop: "空投", riskAssessment: "風險檢測", whitepaper: "白皮書",
+        securityGuide: "安全指南", privacyToolkit: "隱私工具包",
         menu: "切換選單", follow: "在 X 追蹤 @5wa_io",
       }
     : {
         home: "Home", platform: "Platform", platformOverview: "Platform Overview", realCases: "Real-World Cases",
         guardian: "Guardian AI", tokenomics: "Tokenomics", airdrop: "Airdrop", riskAssessment: "Risk Check", whitepaper: "Whitepaper",
+        securityGuide: "Security Guide", privacyToolkit: "Privacy Toolkit",
         menu: "Toggle menu", follow: "Follow @5wa_io on X",
       };
 
@@ -48,6 +50,8 @@ export default function Navigation() {
       children: [
         { label: labels.platformOverview, href: "/platform" },
         { label: labels.realCases, href: "/real-cases" },
+        { label: labels.securityGuide, href: "/security-guide" },
+        { label: labels.privacyToolkit, href: "/privacy-toolkit" },
       ],
     },
     { label: labels.guardian, href: language === "zh" ? "/guardian?lang=zh" : "/guardian" },
