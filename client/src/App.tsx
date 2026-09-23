@@ -17,6 +17,7 @@ const Whitepaper = lazy(() => import("./pages/Whitepaper"));
 const Guardian = lazy(() => import("./pages/Guardian"));
 const SecurityGuide = lazy(() => import("./pages/SecurityGuide"));
 const PrivacyToolkit = lazy(() => import("./pages/PrivacyToolkit"));
+const XCoverPreview = lazy(() => import("./pages/XCoverPreview"));
 
 function Router() {
   return (
@@ -32,6 +33,7 @@ function Router() {
         <Route path={"/whitepaper"} component={Whitepaper} />
         <Route path={"/security-guide"} component={SecurityGuide} />
         <Route path={"/privacy-toolkit"} component={PrivacyToolkit} />
+        <Route path={"/x-cover-preview"} component={XCoverPreview} />
         <Route path={"/404"} component={NotFound} />
         <Route component={NotFound} />
       </Switch>
