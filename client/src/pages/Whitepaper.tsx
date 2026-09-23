@@ -159,6 +159,7 @@ export default function Whitepaper() {
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Location OpSec Guide MVP is live with deterministic guidance for broad regions and common exposure scenarios</li>
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Read-only Guardian AI beta is live on a dedicated page using server-side Groq inference with GPT-OSS 20B</li>
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Community Airdrop System operational — Season 1 active with Elite Guardian easter egg</li>
+                    <li className="flex gap-2"><span className="text-green-400">✅</span>Personal Risk Assessment MVP is live with a 10-question local questionnaire, five-category scoring, visual risk report, and targeted recommendations</li>
                     <li className="flex gap-2"><span className="text-green-400">✅</span>Multi-Sig Governance implemented via Gnosis Safe</li>
                     <li className="flex gap-2"><span className="text-cyan-400">→</span>Revised Roadmap uses phase-based structure without specific date bindings</li>
                     <li className="flex gap-2"><span className="text-cyan-400">→</span>Updated Technical Deep Dive aligns with actual TIE architecture</li>
@@ -268,7 +269,7 @@ export default function Whitepaper() {
                     <h4 className="text-sm font-bold text-cyan-300 mt-6 mb-3 uppercase tracking-wider">Planned Enhancements</h4>
                     <ul className="space-y-2 text-slate-300 text-sm">
                       <li className="flex gap-2"><span className="text-slate-500">◦</span>On-Chain Anomaly Detection — integration with BlockSec Phalcon</li>
-                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Personal Risk Score Generation — AI-driven individual risk profiles</li>
+                      <li className="flex gap-2"><span className="text-slate-500">◦</span>Predictive Personal Risk Score Generation — future AI-assisted individual risk profiles and adaptive recommendations</li>
                       <li className="flex gap-2"><span className="text-slate-500">◦</span>Graph Neural Networks for Relationship Mapping</li>
                     </ul>
                   </div>
@@ -328,10 +329,27 @@ export default function Whitepaper() {
                   </div>
                 </div>
 
-                {/* 3.5 Privacy Toolkit */}
+                {/* 3.5 Personal Risk Assessment */}
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <h3 className="text-xl font-bold text-cyan-300">3.5 Privacy Toolkit</h3>
+                    <h3 className="text-xl font-bold text-cyan-300">3.5 Personal Risk Assessment</h3>
+                    <span className="px-2 py-0.5 text-xs rounded bg-green-500/20 text-green-400 border border-green-500/30">LIVE MVP ✅</span>
+                  </div>
+                  <div className="p-6 rounded-lg bg-slate-800/30 border border-green-500/20">
+                    <p className="text-slate-300 leading-relaxed mb-3">A privacy-first self-assessment that helps users understand their personal physical-security exposure without collecting wallet addresses, exact locations, or identity data.</p>
+                    <ul className="space-y-2 text-slate-300 text-sm">
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>10 questions covering asset exposure, social visibility, travel, storage security, and operational security</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Transparent local scoring with Low, Moderate, Elevated, High, and Critical risk levels</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Visual category breakdown and recommendations matched to the user’s highest-risk areas</li>
+                      <li className="flex gap-2"><span className="text-green-400">✓</span>Answers are processed in the browser and are not stored or sent to a server</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* 3.6 Privacy Toolkit */}
+                <div className="mb-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <h3 className="text-xl font-bold text-cyan-300">3.6 Privacy Toolkit</h3>
                     <span className="px-2 py-0.5 text-xs rounded bg-slate-500/20 text-slate-400 border border-slate-500/30">PLANNED ⏳</span>
                   </div>
                   <div className="p-6 rounded-lg bg-slate-800/30 border border-slate-700/50">
@@ -343,10 +361,10 @@ export default function Whitepaper() {
                   </div>
                 </div>
 
-                {/* 3.6 Guardian Network */}
+                {/* 3.7 Guardian Network */}
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-4">
-                    <h3 className="text-xl font-bold text-cyan-300">3.6 Guardian Network</h3>
+                    <h3 className="text-xl font-bold text-cyan-300">3.7 Guardian Network</h3>
                     <span className="px-2 py-0.5 text-xs rounded bg-slate-500/20 text-slate-400 border border-slate-500/30">PLANNED ⏳</span>
                   </div>
                   <div className="p-6 rounded-lg bg-slate-800/30 border border-slate-700/50">
@@ -621,7 +639,7 @@ export default function Whitepaper() {
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Desktop Client (Tauri) — system tray with OS-native notifications</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Mobile App (iOS/Android) — real-time alerts, GPS geofence warnings</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Privacy Toolkit V1 — identity de-sensitization, travel mode</li>
-                        <li className="flex gap-2"><span className="text-slate-400">⏳</span>Personal Risk Score — AI-generated risk assessment</li>
+                        <li className="flex gap-2"><span className="text-green-400">✅</span>Personal Risk Assessment MVP — local questionnaire, transparent scoring, visual report, and targeted recommendations</li>
                         <li className="flex gap-2"><span className="text-slate-400">⏳</span>Advanced Geospatial Analytics — threat prediction models</li>
                       </ul>
                     </div>
@@ -1024,6 +1042,10 @@ export default function Whitepaper() {
                       <tr className="border-b border-slate-700/50">
                         <td className="py-3 px-4 text-slate-300">Read-Only Guardian AI</td>
                         <td className="py-3 px-4 text-green-400">✅ Live beta — Groq GPT-OSS 20B, no tools or persistence</td>
+                      </tr>
+                      <tr className="border-b border-slate-700/50">
+                        <td className="py-3 px-4 text-slate-300">Personal Risk Assessment</td>
+                        <td className="py-3 px-4 text-green-400">✅ Live MVP — local 10-question scoring and personalized recommendations</td>
                       </tr>
                       <tr className="border-b border-slate-700/50">
                         <td className="py-3 px-4 text-slate-300">Airdrop (Season 1)</td>

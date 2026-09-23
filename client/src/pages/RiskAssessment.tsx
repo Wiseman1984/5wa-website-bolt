@@ -194,10 +194,6 @@ export default function RiskAssessment() {
         <div className="max-w-3xl mx-auto">
           {/* Header */}
           <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 rounded-full px-4 py-1.5 mb-4">
-              <ShieldCheck className="w-4 h-4 text-blue-400" />
-              <span className="text-sm text-blue-300 font-medium">Whitepaper Phase 3: Personal Risk Score</span>
-            </div>
             <h1 className="text-4xl font-bold mb-2 text-blue-400">Personal Risk Assessment</h1>
             <p className="text-lg text-gray-400 max-w-xl mx-auto">
               Answer {totalQuestions} quick questions about your crypto habits to get a personalized risk score and actionable security recommendations.
