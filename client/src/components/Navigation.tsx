@@ -86,7 +86,7 @@ export default function Navigation() {
         {/* Logo */}
         <a href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <img src="/5wa-coinlogo.png" alt="5WA Logo" className="w-8 h-8" />
-          <span className="font-bold text-lg text-foreground hidden sm:inline">5WA</span>
+          <span className="font-bold text-sm text-foreground hidden sm:inline">$5 Wrench Attack</span>
         </a>
 
         {/* Desktop Navigation */}

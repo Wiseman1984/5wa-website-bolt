@@ -156,6 +156,7 @@ export default function Home() {
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               Global Threat Intelligence
+              <span className="ml-3 text-base font-medium text-cyan-400/70 align-middle">Experimental Platform</span>
             </h2>
             <p className="text-muted-foreground text-lg">
               Real-time tracking of physical security incidents targeting crypto holders worldwide
