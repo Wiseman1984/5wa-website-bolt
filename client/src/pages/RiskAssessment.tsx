@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { RISK_QUESTIONS, calculateRisk, CATEGORY_LABELS, type RiskCategory } from "@shared/riskAssessment";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ShieldCheck, Shield, ShieldAlert, ShieldX, ShieldOff, AlertTriangle, ArrowLeft, RotateCcw, ChevronRight } from "lucide-react";
+import { ShieldCheck, Shield, ShieldAlert, ShieldX, ShieldOff, AlertTriangle, ArrowLeft, RotateCcw, ChevronRight, BrainCircuit } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -159,6 +159,12 @@ export default function RiskAssessment() {
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Retake Assessment
               </Button>
+              <a href="/guardian" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/guardian'); window.dispatchEvent(new PopStateEvent('popstate')); }}>
+                <Button className="bg-cyan-600 hover:bg-cyan-700">
+                  <BrainCircuit className="w-4 h-4 mr-2" />
+                  Ask Guardian AI
+                </Button>
+              </a>
               <a href="/airdrop" onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/airdrop'); window.dispatchEvent(new PopStateEvent('popstate')); }}>
                 <Button className="bg-blue-600 hover:bg-blue-700">
                   Take the Security Quiz
