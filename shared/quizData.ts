@@ -47,7 +47,7 @@ export const QUIZ_POOL: QuizQuestion[] = [
     ],
     correctKey: "B",
     explanation:
-      'The "$5 Wrench Attack" refers to physical coercion — an attacker uses violence or the threat of violence to force you to hand over your crypto keys or transfer funds. No amount of cryptographic security protects against a wrench to the head. Physical security awareness is the only defense.',
+      'The "$5 Wrench Attack" refers to physical coercion — an attacker uses violence or the threat of violence to force you to hand over your crypto keys or transfer funds. No amount of cryptographic security protects against a wrench to the head. The meme is based on the famous xkcd comic. Physical security awareness is the only defense — and buying $5WA to insure your skull doesn\'t hurt either.',
   },
   {
     id: "q2",
@@ -74,11 +74,11 @@ export const QUIZ_POOL: QuizQuestion[] = [
       { key: "A", text: "Tell them your exact holdings to build trust" },
       { key: "B", text: "Show them your portfolio app" },
       { key: "C", text: "Deflect or give a vague answer — never reveal specific holdings" },
-      { key: "D", text: "Tell them you only hold memecoins" },
+      { key: "D", text: "Show them your LUNC balance and hope they take pity and leave" },
     ],
     correctKey: "C",
     explanation:
-      "Revealing your holdings — even casually — makes you a target. Attackers attend crypto events specifically to identify high-value targets. A vague answer (\"I dabble a bit\") or changing the subject protects you without being rude.",
+      "Revealing your holdings — even casually — makes you a target. Attackers attend crypto events specifically to identify high-value targets. A vague answer (\"I dabble a bit\") or changing the subject protects you without being rude. (Option D is hilarious but not a security strategy.)",
   },
   {
     id: "q4",
@@ -105,7 +105,7 @@ export const QUIZ_POOL: QuizQuestion[] = [
       { key: "A", text: "To store your main holdings with extra encryption" },
       { key: "B", text: "To have a sacrificial wallet you can surrender under physical threat, protecting your real assets" },
       { key: "C", text: "To hide illegal transactions from authorities" },
-      { key: "D", text: "To earn higher staking rewards" },
+      { key: "D", text: "To store your LUNC so attackers feel bad for you and leave" },
     ],
     correctKey: "B",
     explanation:

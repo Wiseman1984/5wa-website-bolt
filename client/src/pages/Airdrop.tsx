@@ -17,9 +17,9 @@ const isAirdropClosed = new Date() > AIRDROP_END;
 
 export function Airdrop() {
   usePageMeta({
-    title: "$5WA Airdrop | Season 1 Physical Security Quiz",
+    title: "$5WA Airdrop | Proof of Helmet Quiz",
     description:
-      "Test your crypto physical security knowledge. Complete the quiz, share on X, and earn $5WA tokens. Season 1: Physical Security Basics.",
+      "Take the $5 Wrench Attack meme quiz, earn your Skull Hardness Certificate, share on X, and get airdropped $5WA tokens. Proof of Helmet, not proof of nothing.",
     url: "https://5wa.io/airdrop",
   });
 
@@ -91,10 +91,10 @@ export function Airdrop() {
 
   // Get OG share level based on correct answers (4-tier system)
   const getShareLevel = (correct: number): string => {
-    if (correct === 6) return "Guardian";
-    if (correct >= 4) return "Informed";
-    if (correct >= 2) return "Aware";
-    return "Vulnerable";
+    if (correct === 6) return "Diamond Skull";
+    if (correct >= 4) return "Iron Skull";
+    if (correct >= 2) return "Cardboard Skull";
+    return "Paper Skull";
   };
 
   // Share on X with personalized OG image preview
@@ -105,8 +105,8 @@ export function Airdrop() {
     const maxDisplay = isElite ? ELITE_BONUS_REWARD : REWARD_CAP;
     const shareUrl = `https://5wa.io/airdrop/share?score=${displayReward}&correct=${score}&level=${shareLevel}&t=${timestamp}`;
     const tweet = isElite
-      ? `\u{1F3C6} ELITE GUARDIAN! I scored ${displayReward}/${maxDisplay} on the $5WA Physical Security Quiz! \u{1F6E1}\uFE0F ${score}/6 Shields. Can you unlock the hidden bonus?\n${shareUrl} #5WA #CryptoSecurity #Airdrop`
-      : `I scored ${displayReward}/${maxDisplay} on the $5WA Physical Security Quiz! Level: ${shareLevel} (${score}/6 Shields). Test your knowledge:\n${shareUrl} #5WA #CryptoSecurity #Airdrop`;
+      ? `\u{1F3C6} DIAMOND SKULL! I scored ${displayReward}/${maxDisplay} on the $5WA Proof of Helmet Quiz! \u{1F6E1}\uFE0F ${score}/6 Shields. Can you unlock the hidden bonus?\n${shareUrl} #5WA #ProofOfHelmet #Airdrop`
+      : `I scored ${displayReward}/${maxDisplay} on the $5WA Proof of Helmet Quiz! Level: ${shareLevel} (${score}/6 Shields). Test your skull thickness:\n${shareUrl} #5WA #ProofOfHelmet #Airdrop`;
     const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
     window.open(intentUrl, "_blank");
     setCurrentStep(3);

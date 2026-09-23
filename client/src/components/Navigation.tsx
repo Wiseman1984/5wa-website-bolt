@@ -24,14 +24,14 @@ export default function Navigation() {
 
   const labels = shellLanguage === "zh"
     ? {
-        home: "首頁", platform: "平台", platformOverview: "平台總覽", realCases: "真實案例",
-        guardian: "Guardian AI", tokenomics: "代幣經濟", airdrop: "空投", riskAssessment: "風險檢測", whitepaper: "白皮書",
+        home: "首頁", platform: "平台", platformOverview: "平台總覽", realCases: "扳手事件",
+        guardian: "Wrenchy AI", tokenomics: "代幣經濟", airdrop: "空投", riskAssessment: "頭蓋骨檢測", whitepaper: "白皮書",
         securityGuide: "安全指南", privacyToolkit: "隱私工具包",
         menu: "切換選單", follow: "在 X 追蹤 @5wa_io",
       }
     : {
-        home: "Home", platform: "Platform", platformOverview: "Platform Overview", realCases: "Real-World Cases",
-        guardian: "Guardian AI", tokenomics: "Tokenomics", airdrop: "Airdrop", riskAssessment: "Risk Check", whitepaper: "Whitepaper",
+        home: "Home", platform: "Platform", platformOverview: "Platform Overview", realCases: "Wrenching Cases",
+        guardian: "Wrenchy AI", tokenomics: "Tokenomics", airdrop: "Airdrop", riskAssessment: "Skull Check", whitepaper: "Whitepaper",
         securityGuide: "Security Guide", privacyToolkit: "Privacy Toolkit",
         menu: "Toggle menu", follow: "Follow @5wa_io on X",
       };

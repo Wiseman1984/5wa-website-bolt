@@ -13,8 +13,8 @@ import { filterPhysicalSecurityIncidents } from "@shared/threatRelevance";
 export default function Home() {
   const { hero } = ENGLISH_CONTENT.homepage;
   usePageMeta({
-    title: "$5 Wrench Attack | Decentralized AI-Powered Physical Security",
-    description: "Protecting the final mile of Web3. AI-powered physical security for crypto holders.",
+    title: "$5 Wrench Attack | The Only Token Backed by Physical Wrenches",
+    description: "A $5 wrench beats a $500 hardware wallet. We can't fix that — but we can meme about it. $5WA: Proof of Build meme token with a real 3D threat globe and AI.",
     url: "https://5wa.io",
   });
 
@@ -155,11 +155,11 @@ export default function Home() {
         <div className="container relative z-10">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Global Threat Intelligence
-              <span className="ml-3 text-base font-medium text-cyan-400/70 align-middle">Experimental Platform</span>
+              The $5 Wrench Attack Museum
+              <span className="ml-3 text-base font-medium text-cyan-400/70 align-middle">Proof of Build</span>
             </h2>
             <p className="text-muted-foreground text-lg">
-              Real-time tracking of physical security incidents targeting crypto holders worldwide
+              Real-time tracking of physical attacks on crypto holders worldwide. Most meme coins have a JPEG. We have a 3D globe.
             </p>
           </div>
 
@@ -167,15 +167,15 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-card/80 border border-cyan-500/30 rounded-lg p-5 text-center backdrop-blur-sm">
               <div className="text-3xl font-bold text-cyan-400 mb-1">{stats.total}</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wider">Total Tracked</div>
+              <div className="text-sm text-muted-foreground uppercase tracking-wider">Wrench Incidents</div>
             </div>
             <div className="bg-card/80 border border-orange-500/30 rounded-lg p-5 text-center backdrop-blur-sm">
               <div className="text-3xl font-bold text-orange-400 mb-1">{stats.last30}</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wider">Last 30 Days</div>
+              <div className="text-sm text-muted-foreground uppercase tracking-wider">Recent Wrenchings</div>
             </div>
             <div className="bg-card/80 border border-red-500/30 rounded-lg p-5 text-center backdrop-blur-sm">
               <div className="text-3xl font-bold text-red-400 mb-1">{stats.regions}</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wider">Active Regions</div>
+              <div className="text-sm text-muted-foreground uppercase tracking-wider">Wrench Zones</div>
             </div>
           </div>
 

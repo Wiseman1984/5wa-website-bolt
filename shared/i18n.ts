@@ -268,8 +268,8 @@ export const contentEN: SiteContent = {
   brand: {
     name: "$5 Wrench Attack",
     shortName: "5WA",
-    tagline: "Physical Security. Digital Trust.",
-    description: "An AI-powered physical security platform combining public threat intelligence, practical OpSec guidance, and transparent infrastructure for Web3 participants.",
+    tagline: "Don't get hit by a $5 wrench. Buy $5WA to insure your skull.",
+    description: "The world's first Proof-of-Build meme token with a real threat intelligence engine, AI security assistant, and 3D threat globe. Not financial advice. Not a security service. Just the hardest-working meme in crypto.",
   },
   navigation: {
     home: "Home",
@@ -286,9 +286,9 @@ export const contentEN: SiteContent = {
   homepage: {
     hero: {
       title: "$5 Wrench Attack",
-      subtitle: "Decentralized AI-Powered Physical Security Platform",
+      subtitle: "The Only Token Backed by Physical Wrenches",
       description:
-        "Redefining Consensus: From Digital Encryption to Physical Resilience in the Age of AGI and Web3. We are building a multi-layered defense system that combines AI-powered threat intelligence, decentralized guardian networks, and privacy-preserving tools to protect Web3 participants from physical threats.",
+        "A $5 wrench beats a $500 hardware wallet. We can't fix that — but we can meme about it. $5WA is the world's first meme token with a real threat intelligence engine, 3D globe, and AI assistant. Proof of Build, not proof of nothing.",
     },
     mission: {
       title: "Our Mission",
@@ -302,20 +302,20 @@ export const contentEN: SiteContent = {
     },
     features: [
       {
-        title: "AI Threat Intelligence",
-        description: "On-chain anomaly detection, social sentiment analysis, and geopolitical risk data powered by GNNs and ML for personalized risk scoring.",
+        title: "3D Threat Globe (Proof of Build)",
+        description: "Real-time tracking of crypto physical attacks worldwide. Most meme coins have a JPEG. We have a 3D globe.",
       },
       {
-        title: "Guardian AI Agent",
-        description: "LLM-powered security assistant providing automated SOPs, emergency protocols, and personalized recommendations.",
+        title: "Wrenchy AI",
+        description: "Our AI assistant gives real OpSec advice — with the self-awareness that a $5 wrench beats any multi-sig.",
       },
       {
         title: "87.5% Deflationary Model",
         description: "From 8B genesis to 1B final target. 75% locked on PinkLock with 24-month daily linear unlock starting January 2027.",
       },
       {
-        title: "Decentralized Guardian Network",
-        description: "Community-operated nodes for anonymous threat reporting, validation, and rapid alert dissemination across the network.",
+        title: "Proof of Helmet Quiz",
+        description: "Take the meme quiz, earn your Skull Hardness Certificate, share it on X, and get airdropped $5WA. Viral by design.",
       },
     ],
   },
@@ -883,27 +883,27 @@ export const contentEN: SiteContent = {
       tiers: [
         {
           stars: "0-1",
-          level: "Vulnerable",
-          message: "You need to learn more about physical security threats in Web3. The $5 Wrench Attack is a real and growing danger.",
-          suggestion: "Read the $5WA Whitepaper and Security Guide to understand the threat landscape.",
+          level: "Paper Skull",
+          message: "Your skull is made of paper. A $5 wrench would go right through. But hey — at least you got airdropped some tokens.",
+          suggestion: "Read the Security Guide, retake the quiz, and thicken that skull.",
         },
         {
           stars: "2-3",
-          level: "Aware",
-          message: "You have basic awareness of physical security threats, but significant gaps remain that could be exploited.",
-          suggestion: "Study real-world attack cases and implement basic OpSec protocols.",
+          level: "Cardboard Skull",
+          message: "Slightly better than paper. A wrench might bounce off once. You know the basics but you'd still hand over your seed phrase under pressure.",
+          suggestion: "Review the Security Guide and try again.",
         },
         {
           stars: "4-5",
-          level: "Informed",
-          message: "You have a strong foundation of security knowledge with only minor gaps. You understand most attack vectors.",
-          suggestion: "Focus on implementing duress wallets and travel mode protocols.",
+          level: "Iron Skull",
+          message: "Solid. You understand most attack vectors and might actually survive a wrench encounter. Your OpSec is above average.",
+          suggestion: "Sharpen your edge with the advanced Security Guide.",
         },
         {
           stars: "6",
-          level: "Guardian",
-          message: "Excellent! You demonstrate complete understanding of physical security threats and countermeasures. You think like a $5WA Guardian.",
-          suggestion: "Share your knowledge with the community and help others stay safe.",
+          level: "Diamond Skull",
+          message: "Diamond hands, diamond skull. You'd deflect a wrench, quote the Bitcoin whitepaper, and show the attacker your LUNC balance to make them cry. Peak $5WA Guardian energy.",
+          suggestion: "Share your Proof of Helmet on X and help the community thicken their skulls.",
         },
       ],
     },
