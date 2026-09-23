@@ -141,6 +141,14 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
     window.setTimeout(() => window.scrollTo({ top, left: 0, behavior: "auto" }), 450);
   }, []);
 
+  // When forcedViewMode switches to map (e.g. timeline playback), save scroll position
+  // before the map initializes so restoreScrollPosition can keep the user in place.
+  useEffect(() => {
+    if (forcedViewMode === "map") {
+      scrollPositionRef.current = window.scrollY;
+    }
+  }, [forcedViewMode]);
+
   const handleTransitionToMap = useCallback(() => {
     if (viewMode === "map" || transitioning) return;
     scrollPositionRef.current = window.scrollY;
