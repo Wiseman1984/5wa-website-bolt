@@ -40,10 +40,10 @@ export const QUIZ_POOL: QuizQuestion[] = [
     reward: 100,
     question: 'When an attacker pulls out a $5 wrench and asks for your seed phrase, what is the mathematically optimal response?',
     options: [
-      { key: "A", text: "Show him your LUNC wallet balance and hope he takes pity and leaves you $5 for a taxi" },
+      { key: "A", text: "Show him your LUNA/LUNC bottom-buy holdings and hope he takes pity and leaves you $5 for a taxi" },
       { key: "B", text: "Hand over your seed phrase — you can always restore from the metal plate under your floorboards" },
       { key: "C", text: "Start reciting the Bitcoin whitepaper page 1 to convert him to decentralization" },
-      { key: "D", text: "Tell him your seed phrase is memorized but you drank too much last night and forgot it" },
+      { key: "D", text: "Tell him your seed phrase is memorized but a rug pull caused traumatic amnesia and you forgot it" },
     ],
     correctKey: "A",
     explanation:
@@ -58,7 +58,7 @@ export const QUIZ_POOL: QuizQuestion[] = [
       { key: "A", text: "Pull out your phone and show them your portfolio app — transparency builds trust" },
       { key: "B", text: "Announce your holdings loudly so everyone at the meetup knows you're a whale" },
       { key: "C", text: "Say 'I dabble a bit' and change the subject to the weather" },
-      { key: "D", text: "Show them your Doge wallet and explain you're 'in it for the technology'" },
+      { key: "D", text: "Show them your Doge wallet and with firm conviction explain you're 'in it for the technology'" },
     ],
     correctKey: "C",
     explanation:
@@ -85,7 +85,7 @@ export const QUIZ_POOL: QuizQuestion[] = [
     reward: 100,
     question: 'You receive a DM from "Binance Support" asking you to verify your seed phrase "for security purposes." This is:',
     options: [
-      { key: "A", text: "Legitimate customer service — Binance cares deeply about your seed phrase" },
+      { key: "A", text: "Legitimate customer service — especially since the profile photo is a beautiful woman, so it must be real" },
       { key: "B", text: "A social engineering attack — no exchange will EVER ask for your seed phrase" },
       { key: "C", text: "On-chain analytics — they're just checking your wallet health" },
       { key: "D", text: "Multi-sig verification — they need it to add you to the multi-sig" },
@@ -101,7 +101,7 @@ export const QUIZ_POOL: QuizQuestion[] = [
     question: 'What is the PRIMARY purpose of a "duress wallet" (decoy wallet)?',
     options: [
       { key: "A", text: "To store your main holdings with extra encryption so attackers can't find them" },
-      { key: "B", text: "To hold your LUNC so attackers feel so bad for you they leave $5 for a taxi" },
+      { key: "B", text: "To fill it with zeroed-out meme coins so the attacker sheds tears of sympathy on the spot" },
       { key: "C", text: "A sacrificial wallet with a small amount you surrender under threat, protecting your real assets" },
       { key: "D", text: "To earn higher staking rewards through the 'duress yield farming' program" },
     ],
@@ -273,7 +273,7 @@ export const QUIZ_POOL: QuizQuestion[] = [
     reward: 200,
     question: "You notice the same car parked near your house on three different days, and a stranger photographed your front door. What's the MOST appropriate immediate response?",
     options: [
-      { key: "A", text: "Walk up and confront them directly — you bench press 225, you can take them" },
+      { key: "A", text: "Charge out to confront them — you bench press 100kg daily, you can take on a toolbox wrench" },
       { key: "B", text: "Ignore it — you\'re probably being paranoid, and paranoia is bad for your mental health" },
       { key: "C", text: "Document everything (photos, plates, times), vary your routine immediately, and alert local authorities" },
       { key: "D", text: "Post about it on Crypto Twitter to warn others and get retweets" },
@@ -306,7 +306,7 @@ export const QUIZ_POOL: QuizQuestion[] = [
       { key: "A", text: "They\'re a legitimate investor who did their research — nothing to worry about" },
       { key: "B", text: "It\'s a setup for a physical extraction attack in a controlled environment where they can coerce you to transfer assets" },
       { key: "C", text: "They want to pitch you their own memecoin — annoying but harmless" },
-      { key: "D", text: "They\'re a journalist researching crypto wealth — you\'ll get a nice article" },
+      { key: "D", text: "They're a Forbes journalist — you're about to land the cover of the crypto rich list" },
     ],
     correctKey: "B",
     explanation:
