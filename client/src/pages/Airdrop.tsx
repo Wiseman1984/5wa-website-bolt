@@ -91,10 +91,10 @@ export function Airdrop() {
 
   // Get OG share level based on correct answers (4-tier system)
   const getShareLevel = (correct: number): string => {
-    if (correct === 6) return "Diamond Skull";
+    if (correct === 6) return "Titanium Skull";
     if (correct >= 4) return "Iron Skull";
-    if (correct >= 2) return "Cardboard Skull";
-    return "Paper Skull";
+    if (correct >= 2) return "Plastic Helmet";
+    return "Tofu Skull";
   };
 
   // Share on X with personalized OG image preview
@@ -105,8 +105,8 @@ export function Airdrop() {
     const maxDisplay = isElite ? ELITE_BONUS_REWARD : REWARD_CAP;
     const shareUrl = `https://5wa.io/airdrop/share?score=${displayReward}&correct=${score}&level=${shareLevel}&t=${timestamp}`;
     const tweet = isElite
-      ? `\u{1F3C6} DIAMOND SKULL! I scored ${displayReward}/${maxDisplay} on the $5WA Proof of Helmet Quiz! \u{1F6E1}\uFE0F ${score}/6 Shields. Can you unlock the hidden bonus?\n${shareUrl} #5WA #ProofOfHelmet #Airdrop`
-      : `I scored ${displayReward}/${maxDisplay} on the $5WA Proof of Helmet Quiz! Level: ${shareLevel} (${score}/6 Shields). Test your skull thickness:\n${shareUrl} #5WA #ProofOfHelmet #Airdrop`;
+      ? `\u{1F3C6} TITANIUM SKULL! I scored ${displayReward}/${maxDisplay} on the $5WA Proof of Helmet Quiz! \u{1F6E1}\uFE0F ${score}/6 Shields. Can you unlock the hidden bonus?\n${shareUrl} #5WA #ProofOfHelmet #Meme`
+      : `I just tested my skull hardness on @5wa_io! Scored ${displayReward}/${maxDisplay} — Level: ${shareLevel} (${score}/6). Don't get hit by a $5 wrench. Test yours:\n${shareUrl} #5WA #ProofOfHelmet #Meme`;
     const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
     window.open(intentUrl, "_blank");
     setCurrentStep(3);

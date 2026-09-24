@@ -879,30 +879,30 @@ export const contentEN: SiteContent = {
       ],
     },
     scoring: {
-      title: "Your Security Knowledge",
+      title: "Skull Hardness Report",
       tiers: [
         {
           stars: "0-1",
-          level: "Paper Skull",
-          message: "Your skull is made of paper. A $5 wrench would go right through. But hey — at least you got airdropped some tokens.",
-          suggestion: "Read the Security Guide, retake the quiz, and thicken that skull.",
+          level: "Tofu Skull",
+          message: "Your skull is made of tofu. A $5 wrench is still 10 meters away and you're already reciting your seed phrase. We can't help you, but $5WA can.",
+          suggestion: "Read the Security Guide, retake the quiz, and consider upgrading to at least a cardboard helmet.",
         },
         {
           stars: "2-3",
-          level: "Cardboard Skull",
-          message: "Slightly better than paper. A wrench might bounce off once. You know the basics but you'd still hand over your seed phrase under pressure.",
-          suggestion: "Review the Security Guide and try again.",
+          level: "Plastic Helmet",
+          message: "You can block a $2 wrench but a $5 one goes right through. You know the basics but you'd still fall for a fake LinkedIn recruiter with a zip file.",
+          suggestion: "Review the Security Guide and upgrade that plastic to something stronger.",
         },
         {
           stars: "4-5",
           level: "Iron Skull",
-          message: "Solid. You understand most attack vectors and might actually survive a wrench encounter. Your OpSec is above average.",
-          suggestion: "Sharpen your edge with the advanced Security Guide.",
+          message: "Solid. You understand most attack vectors and might actually survive a wrench encounter. The attacker would need at least a $10 wrench to get your keys.",
+          suggestion: "Sharpen your edge with the advanced Security Guide and stake $5WA for a titanium upgrade.",
         },
         {
           stars: "6",
-          level: "Diamond Skull",
-          message: "Diamond hands, diamond skull. You'd deflect a wrench, quote the Bitcoin whitepaper, and show the attacker your LUNC balance to make them cry. Peak $5WA Guardian energy.",
+          level: "Titanium Skull",
+          message: "Titanium skull. The wrench breaks before your skull does. You'd deflect the attack, quote the xkcd comic, show the attacker your LUNC balance, and make them cry. Peak $5WA Guardian energy.",
           suggestion: "Share your Proof of Helmet on X and help the community thicken their skulls.",
         },
       ],
@@ -916,7 +916,7 @@ export const contentEN: SiteContent = {
     sharing: {
       title: "Share Your Achievement",
       button: "Share on X",
-      tweetTemplate: "I scored {score}/6 on the $5WA Season 1 Physical Security Quiz! How well do you know the threats facing Web3 participants? Take the quiz at 5wa.io/airdrop #5WA #PhysicalSecurity",
+      tweetTemplate: "I just tested my skull hardness on @5wa_io! Scored {score}/6 on the Proof of Helmet Quiz. Don't get hit by a $5 wrench — test yours at 5wa.io/airdrop #5WA #ProofOfHelmet #Meme"
     },
     wallet: {
       title: "Claim Your Airdrop",

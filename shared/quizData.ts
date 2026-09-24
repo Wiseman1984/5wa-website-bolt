@@ -1,5 +1,5 @@
 /**
- * Season 1 Physical Security Quiz — Full Question Pool
+ * Season 1 Proof of Helmet Quiz — Full Question Pool
  *
  * 18 questions total. Each quiz session randomly selects 6 questions
  * and shuffles the option order so the quiz feels fresh every time.
@@ -38,63 +38,61 @@ export const QUIZ_POOL: QuizQuestion[] = [
     id: "q1",
     difficulty: "basic",
     reward: 100,
-    question: 'What is a "$5 Wrench Attack" in the crypto context?',
+    question: 'When an attacker pulls out a $5 wrench and asks for your seed phrase, what is the mathematically optimal response?',
     options: [
-      { key: "A", text: "A DeFi exploit using flash loans" },
-      { key: "B", text: "A physical attack where someone threatens you with violence to hand over your crypto keys" },
-      { key: "C", text: "A phishing email disguised as a hardware wallet update" },
-      { key: "D", text: "A smart contract vulnerability" },
+      { key: "A", text: "Show him your LUNC wallet balance and hope he takes pity and leaves you $5 for a taxi" },
+      { key: "B", text: "Hand over your seed phrase — you can always restore from the metal plate under your floorboards" },
+      { key: "C", text: "Start reciting the Bitcoin whitepaper page 1 to convert him to decentralization" },
+      { key: "D", text: "Tell him your seed phrase is memorized but you drank too much last night and forgot it" },
     ],
-    correctKey: "B",
+    correctKey: "A",
     explanation:
-      'The "$5 Wrench Attack" refers to physical coercion — an attacker uses violence or the threat of violence to force you to hand over your crypto keys or transfer funds. No amount of cryptographic security protects against a wrench to the head. The meme is based on the famous xkcd comic. Physical security awareness is the only defense — and buying $5WA to insure your skull doesn\'t hurt either.',
+      "The $5 Wrench Attack (based on the xkcd comic) proves that physical consensus is crypto's ultimate vulnerability. No multi-sig, no hardware wallet, no quantum-resistant algorithm survives a wrench. Your best bet? Show him your LUNC balance and pray. Or better yet — buy $5WA to insure your skull.",
   },
   {
     id: "q2",
     difficulty: "basic",
     reward: 100,
-    question:
-      "You are traveling internationally and get stopped at customs. They ask you to unlock your phone and show your crypto wallets. What is the BEST pre-travel preparation?",
+    question: "You're at a crypto meetup and someone asks 'So how much Bitcoin do you hold?' The correct OpSec response is:",
     options: [
-      { key: "A", text: "Refuse and risk detention" },
-      { key: "B", text: "Show them everything to avoid trouble" },
-      { key: "C", text: 'Use "Travel Mode" — keep only a minimal wallet on your device, with main assets on hardware wallets stored elsewhere' },
-      { key: "D", text: "Delete all crypto apps permanently" },
+      { key: "A", text: "Pull out your phone and show them your portfolio app — transparency builds trust" },
+      { key: "B", text: "Announce your holdings loudly so everyone at the meetup knows you're a whale" },
+      { key: "C", text: "Say 'I dabble a bit' and change the subject to the weather" },
+      { key: "D", text: "Show them your Doge wallet and explain you're 'in it for the technology'" },
     ],
     correctKey: "C",
     explanation:
-      'Travel Mode means carrying a "burner" wallet with minimal funds while your main holdings remain secured at home. This limits exposure at borders, during theft, or under coercion — you can hand over the travel wallet without revealing your real holdings.',
+      "Revealing your holdings makes you a target. Attackers literally attend crypto events to identify high-value marks. A vague answer protects you. Option D is hilarious but your Doge bag won't impress anyone — not even an attacker.",
   },
   {
     id: "q3",
     difficulty: "basic",
     reward: 100,
-    question: 'A stranger at a crypto meetup asks "So how much Bitcoin do you hold?" What\'s the safest response?',
+    question: "Which wallet defense mechanism can PERFECTLY withstand a $5 wrench attack?",
     options: [
-      { key: "A", text: "Tell them your exact holdings to build trust" },
-      { key: "B", text: "Show them your portfolio app" },
-      { key: "C", text: "Deflect or give a vague answer — never reveal specific holdings" },
-      { key: "D", text: "Show them your LUNC balance and hope they take pity and leave" },
+      { key: "A", text: "A 4-of-7 multi-sig with cold storage across 7 countries" },
+      { key: "B", text: "Upgrading your skull to titanium alloy" },
+      { key: "C", text: "Never leaving your house and only communicating via Telegram" },
+      { key: "D", text: "A Ledger with a 24-word seed stamped on a titanium plate" },
     ],
-    correctKey: "C",
+    correctKey: "B",
     explanation:
-      "Revealing your holdings — even casually — makes you a target. Attackers attend crypto events specifically to identify high-value targets. A vague answer (\"I dabble a bit\") or changing the subject protects you without being rude. (Option D is hilarious but not a security strategy.)",
+      "No cryptographic solution survives a wrench. Multi-sig? They'll wait for you to call your co-signers. Hardware wallet? They'll watch you unlock it. The only real defense is upgrading your skull to titanium — which is exactly what $5WA staking simulates. Helmet upgrade = staking. You're welcome.",
   },
   {
     id: "q4",
     difficulty: "basic",
     reward: 100,
-    question:
-      'You receive a DM from someone claiming to be "exchange support" asking you to verify your seed phrase. This is an example of:',
+    question: 'You receive a DM from "Binance Support" asking you to verify your seed phrase "for security purposes." This is:',
     options: [
-      { key: "A", text: "Legitimate customer service" },
-      { key: "B", text: "Social engineering attack" },
-      { key: "C", text: "On-chain analytics" },
-      { key: "D", text: "Multi-sig verification" },
+      { key: "A", text: "Legitimate customer service — Binance cares deeply about your seed phrase" },
+      { key: "B", text: "A social engineering attack — no exchange will EVER ask for your seed phrase" },
+      { key: "C", text: "On-chain analytics — they're just checking your wallet health" },
+      { key: "D", text: "Multi-sig verification — they need it to add you to the multi-sig" },
     ],
     correctKey: "B",
     explanation:
-      "No legitimate exchange will ever ask for your seed phrase. This is a classic social engineering attack designed to steal your wallet. Your seed phrase is the master key — anyone who has it controls your funds entirely.",
+      "No legitimate exchange will ever ask for your seed phrase. Ever. If someone asks, they're stealing your wallet. Your seed phrase is the master key to everything you own. Giving it away is like handing your house keys to a stranger because they said they're from the 'door company.'",
   },
   {
     id: "q5",
@@ -102,44 +100,44 @@ export const QUIZ_POOL: QuizQuestion[] = [
     reward: 100,
     question: 'What is the PRIMARY purpose of a "duress wallet" (decoy wallet)?',
     options: [
-      { key: "A", text: "To store your main holdings with extra encryption" },
-      { key: "B", text: "To have a sacrificial wallet you can surrender under physical threat, protecting your real assets" },
-      { key: "C", text: "To hide illegal transactions from authorities" },
-      { key: "D", text: "To store your LUNC so attackers feel bad for you and leave" },
+      { key: "A", text: "To store your main holdings with extra encryption so attackers can't find them" },
+      { key: "B", text: "To hold your LUNC so attackers feel so bad for you they leave $5 for a taxi" },
+      { key: "C", text: "A sacrificial wallet with a small amount you surrender under threat, protecting your real assets" },
+      { key: "D", text: "To earn higher staking rewards through the 'duress yield farming' program" },
     ],
-    correctKey: "B",
+    correctKey: "C",
     explanation:
-      "A duress wallet holds a small amount of real crypto. Under physical threat, you surrender this wallet — satisfying the attacker while your main holdings remain safe elsewhere. Some hardware wallets support a hidden passphrase that reveals a completely different set of accounts.",
+      "A duress wallet holds a small amount of real crypto. Under physical threat, you hand this over — the attacker sees a real transaction and leaves satisfied. Your main stash stays safe. Some hardware wallets support a hidden passphrase that reveals a completely different set of accounts. Option B is funny but not a strategy.",
   },
   {
     id: "q6",
     difficulty: "basic",
     reward: 100,
-    question: "Which physical security practice does $5WA recommend as a FIRST line of defense?",
+    question: "What is $5WA's recommended FIRST line of defense against physical attacks?",
     options: [
-      { key: "A", text: "Hiring armed bodyguards" },
-      { key: "B", text: "Never attending any crypto events" },
-      { key: "C", text: "Operational security (OpSec) — minimizing your visible crypto footprint and separating identities" },
-      { key: "D", text: "Storing all crypto on centralized exchanges" },
+      { key: "A", text: "Hiring two armed bodyguards and a K9 unit for every crypto meetup" },
+      { key: "B", text: "Never attending any crypto event, ever, for the rest of your life" },
+      { key: "C", text: "OpSec — minimize your visible crypto footprint so attackers can't identify you as a target" },
+      { key: "D", text: "Storing everything on a centralized exchange — 'not your keys, not your wrench problem'" },
     ],
     correctKey: "C",
     explanation:
-      "OpSec is the foundation of physical security. If attackers cannot identify you as a crypto holder, they cannot target you. Separating your crypto identity from your real-world identity, avoiding public disclosure of holdings, and maintaining a low profile are the most effective first-line defenses.",
+      "If attackers can't identify you as a crypto holder, they can't target you. Separating your crypto identity from your real-world identity is the cheapest, most effective defense. Option D is a popular cope, but exchanges get hacked too — and then you have no keys AND no wrench defense.",
   },
   {
     id: "q7",
     difficulty: "basic",
     reward: 100,
-    question: "What is the MOST secure method for storing your seed phrase long-term?",
+    question: "What's the MOST secure way to store your seed phrase long-term?",
     options: [
-      { key: "A", text: "In a password manager on your computer" },
-      { key: "B", text: "Stamped or engraved on a metal plate stored in a secure location" },
-      { key: "C", text: "Written on paper and kept in your desk drawer" },
-      { key: "D", text: "Stored as a photo in your phone's gallery" },
+      { key: "A", text: "In a password manager on your computer — it has 2FA enabled" },
+      { key: "B", text: "Stamped on a metal plate stored in a secure location — fireproof, waterproof, wrench-proof" },
+      { key: "C", text: "Written on a sticky note in your desk drawer labeled 'DO NOT STEAL'" },
+      { key: "D", text: "As a photo in your phone's gallery, right next to your passport scan" },
     ],
     correctKey: "B",
     explanation:
-      "Metal plates resist fire, water, and physical degradation that would destroy paper backups. Digital storage (password managers, photos, cloud) is vulnerable to hacking and data breaches. A metal backup in a secure location (safe deposit box, fireproof safe) is the gold standard.",
+      "Metal plates survive fire, water, and physical degradation. Paper burns. Digital storage gets hacked. A photo in your gallery is basically a gift to anyone who steals your phone. A metal backup in a secure location is the gold standard — and yes, it's more expensive than a $5 wrench, but so is losing everything you own.",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -149,96 +147,91 @@ export const QUIZ_POOL: QuizQuestion[] = [
     id: "q8",
     difficulty: "intermediate",
     reward: 150,
-    question:
-      'You post a photo on Instagram from your home office showing your desk setup. In the background, a window reflects your street address and a recognizable landmark. Why is this a physical security risk?',
+    question: 'You post a selfie from your home office on Instagram. In the background: a window reflecting your street name, a Ledger on your desk, and a framed "I HODL" poster. What\'s the risk?',
     options: [
-      { key: "A", text: "Instagram automatically shares your GPS location with law enforcement" },
-      { key: "B", text: "Attackers can use reverse image search and OSINT to identify your home, then plan a targeted physical attack" },
-      { key: "C", text: "Your hardware wallet will automatically connect to public WiFi" },
-      { key: "D", text: "The photo will cause your exchange account to be flagged" },
+      { key: "A", text: "Instagram automatically shares your GPS with Interpol — you're fine" },
+      { key: "B", text: "Attackers can reverse-image-search, cross-reference landmarks with public records, and locate your home for a wrench visit" },
+      { key: "C", text: "Your Ledger will auto-connect to public WiFi and broadcast your seed phrase" },
+      { key: "D", text: "The I HODL poster will trigger an IRS audit" },
     ],
     correctKey: "B",
     explanation:
-      "This is a real OSINT attack vector. Metadata, reflections, landmarks, and background details can be cross-referenced with public records, Google Street View, and social media to pinpoint your physical location. Practicing OpSec means auditing every photo you post for identifiable details.",
+      "This is a real OSINT attack vector. Reflections, landmarks, metadata, and background details can be cross-referenced with Google Street View and public records to pinpoint your exact address. That selfie just gave a wrench-wielding attacker your home coordinates. OpSec means auditing every photo before posting.",
   },
   {
     id: "q9",
     difficulty: "intermediate",
     reward: 150,
-    question:
-      "A delivery driver arrives at your door with a package claiming to be from a tech company you don't remember ordering from. They're insistent and ask you to sign for it. What's the risk?",
+    question: 'A "delivery driver" arrives with a package from a tech company you don\'t remember ordering from. They insist you sign for it. What\'s likely happening?',
     options: [
-      { key: "A", text: "The package is definitely a bomb and you should call the police immediately" },
-      { key: "B", text: 'This could be a pretext for social engineering — the "delivery" is fake, and the person may be gathering information about your home or testing if you\'re home' },
+      { key: "A", text: "It\'s definitely a bomb — call the police and hide under your desk" },
+      { key: "B", text: "It\'s a pretext for casing your home — fake deliveries confirm occupancy and gather intel before a physical attack" },
       { key: "C", text: "Delivery drivers always work for legitimate companies and can be fully trusted" },
-      { key: "D", text: "The package will contain malware that infects your WiFi router" },
+      { key: "D", text: "The package contains malware that will infect your WiFi router through the cardboard" },
     ],
     correctKey: "B",
     explanation:
-      "Fake deliveries are used to case homes, confirm occupancy, and establish pretexts for entry. Sophisticated attackers use this tactic before planning a physical attack. Always verify unexpected deliveries independently using the company's official number — never the number on the package.",
+      "Fake deliveries are a classic pre-attack surveillance tactic. The 'driver' is checking if you're home, what your schedule looks like, and whether you have security cameras. Always verify unexpected deliveries independently using the company's official number — never the number on the package or the driver's phone.",
   },
   {
     id: "q10",
     difficulty: "intermediate",
     reward: 150,
-    question:
-      "A stranger at a crypto meetup asks to see your hardware wallet \"just to check the model.\" What should you do?",
+    question: 'A stranger at a crypto conference asks to "just hold your hardware wallet for a second to check the model." What do you do?',
     options: [
-      { key: "A", text: "Show them briefly — it's harmless since they can't access funds without your PIN" },
-      { key: "B", text: "Politely decline and never let anyone handle your hardware wallet" },
-      { key: "C", text: "Show them but cover the screen" },
-      { key: "D", text: "Only show them if they show theirs first" },
+      { key: "A", text: "Let them hold it — they can\'t access funds without your PIN, so it\'s harmless" },
+      { key: "B", text: "Politely decline and never let anyone touch your hardware wallet — device-swap attacks are real" },
+      { key: "C", text: "Show them but cover the screen with your hand like a credit card" },
+      { key: "D", text: "Only let them hold it if they let you hold theirs first — fair trade" },
     ],
     correctKey: "B",
     explanation:
-      "Allowing anyone to handle your hardware wallet exposes you to device-swap attacks (swapping your real device for a compromised one), firmware tampering, or simply revealing which wallet model you use — making you a more specific target.",
+      "Letting someone handle your hardware wallet opens you to device-swap attacks (they hand back a compromised clone), firmware tampering, or simply revealing which model you use — making you a more specific target. Your hardware wallet is not a toy. It's not a conversation starter. It's your financial life in a USB stick.",
   },
   {
     id: "q11",
     difficulty: "intermediate",
     reward: 150,
-    question: "You're traveling internationally with crypto assets. Which practice BEST protects you?",
+    question: "You're flying internationally with significant crypto holdings. Which strategy BEST protects you from a wrench encounter at your destination?",
     options: [
-      { key: "A", text: "Carry your primary hardware wallet with full holdings for convenience" },
-      { key: "B", text: "Use a travel wallet with minimal funds and leave primary storage at home" },
-      { key: "C", text: "Store your seed phrase in your checked luggage as backup" },
-      { key: "D", text: "Keep your seed phrase memorized and carry no physical backup" },
+      { key: "A", text: "Carry your primary hardware wallet with full holdings — you need it for emergencies" },
+      { key: "B", text: "Use a travel wallet with minimal funds and leave primary storage at home in a safe" },
+      { key: "C", text: "Write your seed phrase on a piece of paper in your checked luggage as backup" },
+      { key: "D", text: "Memorize your seed phrase and carry no physical backup — you're a crypto ninja" },
     ],
     correctKey: "B",
     explanation:
-      "A travel wallet limits exposure if you're robbed, your device is seized at customs, or you're coerced. Your primary holdings should remain in secure storage at your home base. Never put your seed phrase in checked luggage — it can be searched and copied without your knowledge.",
+      "A travel wallet limits exposure if you're robbed, searched at customs, or coerced. Your main holdings stay safe at home. Option C is a terrible idea — checked luggage can be searched and copied without your knowledge. Option D sounds cool until you hit your head on a low ceiling and forget 24 words forever.",
   },
   {
     id: "q12",
     difficulty: "intermediate",
     reward: 150,
-    question:
-      "Which of the following is the MOST common way attackers use OSINT to identify crypto holders?",
+    question: "How do attackers MOST commonly use OSINT to identify crypto holders for physical targeting?",
     options: [
-      { key: "A", text: "Hacking into exchange databases directly" },
-      { key: "B", text: "Monitoring public blockchain transactions and correlating them with social media posts" },
-      { key: "C", text: "Using satellite imagery to find hardware wallets" },
-      { key: "D", text: "Intercepting encrypted wallet communications" },
+      { key: "A", text: "Hack directly into exchange databases — they have root access to Binance" },
+      { key: "B", text: "Correlate public on-chain transactions with social media posts that reveal wealth or location" },
+      { key: "C", text: "Use military satellites to detect hardware wallets from orbit" },
+      { key: "D", text: "Intercept encrypted wallet communications via quantum computing" },
     ],
     correctKey: "B",
     explanation:
-      "Attackers correlate public blockchain activity (large transactions, wallet balances visible on explorers) with social media posts that reveal wealth, mention holdings, or contain geotagged photos. This combination allows them to identify and locate high-value targets without any hacking.",
+      "Attackers don't need to hack anything. They browse blockchains for large balances, then cross-reference with Twitter, LinkedIn, and Instagram posts showing wealth signals, geotagged photos, or real names. Your on-chain activity is public. Your Instagram is public. Together, they're a treasure map for a wrench-wielding attacker.",
   },
   {
     id: "q13",
     difficulty: "intermediate",
     reward: 150,
-    question:
-      "You receive a LinkedIn message from a \"recruiter\" at a major Web3 company asking you to download a \"coding challenge\" as a zip file. This is MOST likely:",
+    question: 'A "recruiter" from a major Web3 company sends you a LinkedIn message asking you to download a "coding challenge" as a zip file. This is MOST likely:',
     options: [
-      { key: "A", text: "A legitimate recruitment process common in Web3" },
-      { key: "B", text: "A social engineering attack that may install malware to steal keys or gather intelligence for a physical attack" },
-      { key: "C", text: "A phishing attempt that only targets your email password" },
-      { key: "D", text: "Spam that can be safely ignored without concern" },
+      { key: "A", text: "A legitimate recruitment process — all Web3 companies hire via zip files" },
+      { key: "B", text: "A social engineering attack delivering malware that steals keys and maps your location for a physical attack" },
+      { key: "C", text: "Just a phishing attempt targeting your email password — nothing more" },
+      { key: "D", text: "Spam — ignore it and you\'re completely safe with zero further concern" },
     ],
     correctKey: "B",
     explanation:
-      "This mirrors the Lazarus Group's documented attack pattern. Fake recruiter messages deliver malware that can steal private keys, map your network, and gather location data that enables physical attacks. Never download files from unsolicited recruiters — verify the company independently first.",
+      "This mirrors the Lazarus Group's documented attack pattern. Fake recruiters deliver malware that steals private keys, maps your network, and gathers location data — enabling both digital theft and physical targeting. Never download files from unsolicited recruiters. Verify the company independently first. The job offer is fake; the wrench is real.",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -248,81 +241,76 @@ export const QUIZ_POOL: QuizQuestion[] = [
     id: "q14",
     difficulty: "advanced",
     reward: 200,
-    question:
-      "You receive a job offer email from a well-known crypto company offering a remote position with an attractive salary. They ask you to \"verify your identity\" by providing your home address, phone number, and a photo of your ID. What's the red flag?",
+    question: 'You get a job offer email from a well-known crypto company. They ask you to "verify your identity" by sending your home address, phone number, and a photo of your ID. What\'s the red flag?',
     options: [
-      { key: "A", text: "Remote jobs never require identity verification" },
-      { key: "B", text: "This could be a targeted social engineering attack — scammers research crypto professionals on LinkedIn, then pose as recruiters to extract personal information that enables physical targeting or account takeovers" },
-      { key: "C", text: "Crypto companies don't hire remote workers" },
-      { key: "D", text: "The email address looks official, so it's definitely legitimate" },
+      { key: "A", text: "Remote jobs never require identity verification — everyone in crypto is anonymous by default" },
+      { key: "B", text: "Attackers research crypto holders on LinkedIn, then pose as recruiters to extract personal data for SIM swapping or a physical wrench visit" },
+      { key: "C", text: "Crypto companies don\'t hire remote workers — everyone works from a bunker" },
+      { key: "D", text: "The email looks official with a real company logo, so it\'s definitely safe" },
     ],
     correctKey: "B",
     explanation:
-      "Sophisticated attackers use LinkedIn and public profiles to identify high-net-worth individuals, then impersonate recruiters to extract personal information. Your home address + phone number + ID photo is everything needed for SIM swapping, identity theft, or planning a physical attack. Legitimate companies use secure portals for ID verification.",
+      "Sophisticated attackers use LinkedIn to identify high-net-worth crypto holders, then impersonate recruiters to extract home addresses, phone numbers, and ID photos. That's everything needed for SIM swapping, identity theft, or planning a wrench visit. Legitimate companies use secure portals for ID verification — not email attachments.",
   },
   {
     id: "q15",
     difficulty: "advanced",
     reward: 200,
-    question:
-      "After a SIM-swap attack compromises your phone number, what is the MOST dangerous escalation path toward a physical attack?",
+    question: "After a SIM-swap attack compromises your phone number, what's the MOST dangerous escalation path toward a physical wrench encounter?",
     options: [
-      { key: "A", text: "The attacker uses your number to reset your exchange password" },
-      { key: "B", text: "The attacker accesses your real-time location through phone carrier services, then coordinates a physical interception" },
-      { key: "C", text: "The attacker sends spam messages to your contacts" },
-      { key: "D", text: "The attacker uses your number to sign up for new services" },
+      { key: "A", text: "The attacker resets your exchange password and drains your account — game over" },
+      { key: "B", text: "The attacker accesses your real-time location through carrier services or Find My Phone, then coordinates a physical interception" },
+      { key: "C", text: "The attacker sends embarrassing messages to your contacts" },
+      { key: "D", text: "The attacker uses your number to sign up for spam newsletters" },
     ],
     correctKey: "B",
     explanation:
-      "SIM-swap attacks can expose real-time location data through carrier services or linked apps (Find My Phone, Google Maps timeline). This enables attackers to physically locate and intercept targets. A SIM swap is often the first step in a multi-stage attack that ends with physical coercion.",
+      "SIM-swap attacks expose real-time location data through carrier services, Find My Phone, or Google Maps timeline. This enables attackers to physically locate and intercept you. A SIM swap is often step one in a multi-stage attack that ends with a wrench at your door. Secure your SIM with a carrier PIN — it's the cheapest helmet upgrade you'll ever buy.",
   },
   {
     id: "q16",
     difficulty: "advanced",
     reward: 200,
-    question:
-      "You notice the same car parked near your home on three different days, and a stranger photographed your house. What is the MOST appropriate immediate response?",
+    question: "You notice the same car parked near your house on three different days, and a stranger photographed your front door. What's the MOST appropriate immediate response?",
     options: [
-      { key: "A", text: "Confront the person directly to ask what they're doing" },
-      { key: "B", text: "Ignore it — you're probably being paranoid" },
+      { key: "A", text: "Walk up and confront them directly — you bench press 225, you can take them" },
+      { key: "B", text: "Ignore it — you\'re probably being paranoid, and paranoia is bad for your mental health" },
       { key: "C", text: "Document everything (photos, plates, times), vary your routine immediately, and alert local authorities" },
-      { key: "D", text: "Post about it on social media to warn others" },
+      { key: "D", text: "Post about it on Crypto Twitter to warn others and get retweets" },
     ],
     correctKey: "C",
     explanation:
-      "This matches pre-attack surveillance patterns documented in crypto home invasions. Documentation helps law enforcement build a case. Varying your routine disrupts the attacker's planning. Never confront (escalates danger) or post online (tips off the attacker that you're aware and may cause them to act sooner).",
+      "This matches pre-attack surveillance patterns documented in real crypto home invasion cases. Document everything for law enforcement. Vary your routine to disrupt their planning. Never confront (escalates danger) and never post online (tips off the attacker that you're aware, which may cause them to act sooner). Your retweets won't stop a wrench.",
   },
   {
     id: "q17",
     difficulty: "advanced",
     reward: 200,
-    question:
-      "In 2024, attackers traveled from Texas to Minnesota to kidnap a crypto holder's family. How did they MOST likely identify the target's home address?",
+    question: "In 2024, attackers traveled from Texas to Minnesota to kidnap a crypto holder's family. How did they MOST likely identify the target's home address?",
     options: [
-      { key: "A", text: "They hacked the local property tax database" },
-      { key: "B", text: "They correlated the victim's large on-chain transactions with KYC exchange data, then used public property records and social media to locate their residence" },
-      { key: "C", text: "They followed the victim home from a crypto conference" },
-      { key: "D", text: "They bribed a crypto exchange employee for the address" },
+      { key: "A", text: "They hacked the local property tax database — it was a sophisticated cyber attack" },
+      { key: "B", text: "They correlated large on-chain transactions with KYC exchange data, then used public property records and social media to locate the residence" },
+      { key: "C", text: "They followed the victim home from a crypto conference — classic tail job" },
+      { key: "D", text: "They bribed a crypto exchange employee for the address — inside job" },
     ],
     correctKey: "B",
     explanation:
-      "This references a real DOJ case. Attackers used blockchain analysis to identify large holders, cross-referenced with exchange KYC data (obtained through social engineering or data breaches), then used public property records to find physical addresses. The combination of on-chain wealth signals and real-world identity data is the core attack vector.",
+      "This references a real DOJ case. Attackers used blockchain analysis to identify large holders, cross-referenced with exchange KYC data (obtained through social engineering or data breaches), then used public property records to find physical addresses. The combination of on-chain wealth signals and real-world identity data is the core attack vector. Your transactions are public. Your KYC is leakable. Your address is on file.",
   },
   {
     id: "q18",
     difficulty: "advanced",
     reward: 200,
-    question:
-      'A "crypto investor" invites you to discuss a potential investment at a private office. They know your wallet holdings and mention specific transactions. What is the HIGHEST-RISK scenario?',
+    question: 'A "crypto investor" invites you to discuss a potential investment at a private office. They know your wallet holdings and mention specific transactions. What is the HIGHEST-RISK scenario?',
     options: [
-      { key: "A", text: "They're a legitimate investor who did their research" },
-      { key: "B", text: "It's a setup for a physical extraction attack in a controlled environment where they can coerce you to transfer assets" },
-      { key: "C", text: "They want to pitch you their own token project" },
-      { key: "D", text: "They're a journalist researching crypto wealth" },
+      { key: "A", text: "They\'re a legitimate investor who did their research — nothing to worry about" },
+      { key: "B", text: "It\'s a setup for a physical extraction attack in a controlled environment where they can coerce you to transfer assets" },
+      { key: "C", text: "They want to pitch you their own memecoin — annoying but harmless" },
+      { key: "D", text: "They\'re a journalist researching crypto wealth — you\'ll get a nice article" },
     ],
     correctKey: "B",
     explanation:
-      "Luring targets to controlled locations is a documented attack pattern. Knowledge of your specific holdings indicates targeted research — legitimate investors don't reference your exact on-chain activity in initial meetings. A private office removes witnesses and escape routes. Always meet strangers in public places and tell someone where you're going.",
+      "Luring targets to controlled locations is a documented attack pattern. Knowledge of your specific holdings indicates targeted research — legitimate investors don't reference your exact on-chain activity in initial meetings. A private office removes witnesses and escape routes. Always meet strangers in public places, tell someone where you're going, and never assume a wrench can't be waiting in a conference room.",
   },
 ];
 
