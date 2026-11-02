@@ -6,73 +6,43 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { WalletContextProvider } from "./lib/walletProvider";
 
 const Home = lazy(() => import("./pages/Home"));
-const Platform = lazy(() => import("./pages/Platform"));
-const RealCases = lazy(() => import("./pages/RealCases"));
-const Tokenomics = lazy(() => import("./pages/Tokenomics"));
-const Airdrop = lazy(() => import("./pages/Airdrop").then((m) => ({ default: m.Airdrop })));
-const RiskAssessment = lazy(() => import("./pages/RiskAssessment"));
-const Whitepaper = lazy(() => import("./pages/Whitepaper"));
-const Guardian = lazy(() => import("./pages/Guardian"));
-const SecurityGuide = lazy(() => import("./pages/SecurityGuide"));
-const PrivacyToolkit = lazy(() => import("./pages/PrivacyToolkit"));
-const XCoverPreview = lazy(() => import("./pages/XCoverPreview"));
+const Museum = lazy(() => import("./pages/Museum"));
+const DefenseHub = lazy(() => import("./pages/DefenseHub"));
+const Roadmap = lazy(() => import("./pages/Roadmap"));
 
 function Router() {
   return (
     <Suspense fallback={null}>
       <Switch>
-        <Route path={"/"} component={Home} />
-        <Route path={"/platform"} component={Platform} />
-        <Route path={"/real-cases"} component={RealCases} />
-        <Route path={"/guardian"} component={Guardian} />
-        <Route path={"/tokenomics"} component={Tokenomics} />
-        <Route path={"/airdrop"} component={Airdrop} />
-        <Route path={"/risk-assessment"} component={RiskAssessment} />
-        <Route path={"/whitepaper"} component={Whitepaper} />
-        <Route path={"/security-guide"} component={SecurityGuide} />
-        <Route path={"/privacy-toolkit"} component={PrivacyToolkit} />
-        <Route path={"/x-cover-preview"} component={XCoverPreview} />
-        <Route path={"/404"} component={NotFound} />
+        <Route path="/" component={Home} />
+        <Route path="/museum" component={Museum} />
+        <Route path="/defense-hub" component={DefenseHub} />
+        <Route path="/roadmap" component={Roadmap} />
+        <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
   );
 }
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-const SITE_BG = "";
-function App() {
+
+export default function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="dark"
-      >
+      <ThemeProvider defaultTheme="dark">
         <LanguageProvider>
-          <TooltipProvider>
-            <Toaster />
-            {/* Global background wrapper - applies circuit board background to all pages */}
-            <div
-              className="min-h-screen"
-              style={{
-                backgroundColor: '#030712',
-              }}
-            >
-              {/* Dark overlay to ensure readability */}
-              <div
-                className="min-h-screen"
-                style={{ backgroundColor: 'rgba(3, 7, 18, 0.42)' }}
-              >
+          <WalletContextProvider>
+            <TooltipProvider>
+              <Toaster />
+              <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)]">
                 <Router />
               </div>
-            </div>
-          </TooltipProvider>
+            </TooltipProvider>
+          </WalletContextProvider>
         </LanguageProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );
 }
-export default App;

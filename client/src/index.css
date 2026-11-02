@@ -45,7 +45,22 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
+  --brand-yellow: #FFD700;
+  --brand-cyan: #00D9F5;
+  --brand-white: #FFFFFF;
+  --brand-black: #000000;
+  --bg-page: #080B10;
+  --bg-surface: #0B1120;
+  --bg-elevated: #101827;
+  --border-default: #26364A;
+  --text-primary: #F4F7FB;
+  --text-secondary: #B4C0D0;
+  --text-muted: #8796AA;
+  --status-success: #22C55E;
+  --status-warning: #F59E0B;
+  --status-danger: #EF4444;
+  --status-info: #00D9F5;
+  --primary: var(--brand-cyan);
   --primary-foreground: var(--color-blue-50);
   --sidebar-primary: var(--color-blue-600);
   --sidebar-primary-foreground: var(--color-blue-50);
@@ -81,25 +96,25 @@
 }
 
 .dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
+  --primary: var(--brand-cyan);
+  --primary-foreground: var(--brand-black);
   --sidebar-primary: var(--color-blue-500);
   --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.08 0.002 285.823 / 55%);
-  --foreground: oklch(0.95 0.002 65);
-  --card: oklch(0.12 0.003 285.885);
-  --card-foreground: oklch(0.95 0.002 65);
+  --background: var(--bg-page);
+  --foreground: var(--text-primary);
+  --card: var(--bg-surface);
+  --card-foreground: var(--text-primary);
   --popover: oklch(0.12 0.003 285.885);
   --popover-foreground: oklch(0.95 0.002 65);
   --secondary: oklch(0.15 0.004 286.033);
   --secondary-foreground: oklch(0.85 0.003 65);
   --muted: oklch(0.35 0.008 286.033);
-  --muted-foreground: oklch(0.75 0.02 286.067);
+  --muted-foreground: var(--text-secondary);
   --accent: oklch(0.55 0.25 259.815);
   --accent-foreground:  oklch(0.08 0.002 65);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 12%);
+  --border: var(--border-default);
   --input: oklch(1 0 0 / 18%);
   --ring: oklch(0.55 0.25 259.815);
   --chart-1: var(--color-blue-300);
@@ -119,8 +134,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html,
+  body,
+  #root {
+    min-height: 100%;
+    background-color: var(--bg-page);
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
   code, pre {
@@ -190,6 +212,9 @@
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.1);
   }
 
+  .hero-logo {
+    clip-path: circle(50%);
+  }
 
   .lock-icon-glow {
     filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.6));
