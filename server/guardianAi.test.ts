@@ -5,8 +5,10 @@ import {
   extractGuardianResponse,
   getEmergencyResponse,
   getSensitiveInputResponse,
+  getOutOfScopeResponse,
   guardianAskInputSchema,
   isImmediateDangerQuestion,
+  isWithinWrenchyScope,
 } from "./routers/guardianAi";
 
 const validInput = {
@@ -70,6 +72,13 @@ describe("Guardian AI safety boundary", () => {
     expect(containsSensitiveLocationOrWallet("Wallet 0x1234567890abcdef1234567890abcdef12345678")).toBe(true);
     expect(containsSensitiveLocationOrWallet("I am travelling in Taipei")).toBe(false);
     expect(getSensitiveInputResponse("zh")).toContain("移除精確地址");
+  });
+
+  it("keeps free-form questions inside the Wrenchy scope", () => {
+    expect(isWithinWrenchyScope("How do I secure my wallet before travel?")).toBe(true);
+    expect(isWithinWrenchyScope("Can you write a Python script?")).toBe(false);
+    expect(getOutOfScopeResponse()).toContain("defensive physical security");
+    expect(getOutOfScopeResponse("zh")).toContain("只回答防禦性的");
   });
 
   it("extracts text responses and rejects empty model output", () => {

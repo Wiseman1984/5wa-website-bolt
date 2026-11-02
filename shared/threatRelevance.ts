@@ -51,12 +51,20 @@ const physicalAttackTypes = new Set([
 
 export function isPhysicalSecurityIncident({
   title,
+  attack_type,
 }: ThreatRelevanceInput): boolean {
   const normalizedTitle = (title ?? "").trim();
 
-  if (!normalizedTitle) return false;
+  if (!normalizedTitle && !attack_type) return false;
 
-  return physicalThreatPattern.test(normalizedTitle);
+  if (normalizedTitle && physicalThreatPattern.test(normalizedTitle)) return true;
+
+  if (attack_type) {
+    const normalizedType = attack_type.trim().toLowerCase().replace(/[-_]/g, " ");
+    if (physicalAttackTypes.has(normalizedType)) return true;
+  }
+
+  return false;
 }
 
 export function filterPhysicalSecurityIncidents<T extends ThreatRelevanceInput>(

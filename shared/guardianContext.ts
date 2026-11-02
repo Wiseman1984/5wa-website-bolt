@@ -31,5 +31,5 @@ export function parseGuardianContext(search: string, fallbackLanguage: Language 
 
 export function buildGuardianHref(regionId: OpsecRegionId, scenarioId: OpsecScenarioId, language: Language = "en") {
   const params = new URLSearchParams({ region: regionId, scenario: scenarioId, lang: language });
-  return `/guardian?${params.toString()}`;
+  return `/defense-hub?tab=wrenchy&${params.toString()}`;
 }

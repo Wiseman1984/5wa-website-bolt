@@ -11,7 +11,7 @@
 import { type Express, type Request, type Response, type NextFunction } from "express";
 
 const BASE_URL = "https://5wa.io";
-const DEFAULT_OG_IMAGE = `${BASE_URL}/og-default.png`;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/og-default.png?v=6`;
 const SITE_NAME = "$5 Wrench Attack";
 const TWITTER_SITE = "@5wa_io";
 
@@ -40,51 +40,72 @@ interface PageMeta {
   title: string;
   description: string;
   ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
   url: string;
 }
 
 const PAGE_META: Record<string, PageMeta> = {
   "/": {
-    title: "$5 Wrench Attack | Decentralized AI-Powered Physical Security",
+    title: "$5 Wrench Attack | Proof of Build, Proof of Helmet",
     description:
-      "Real-time global threat intelligence for Web3 participants. AI-powered physical security platform tracking crypto-targeted attacks worldwide.",
-    ogImage: `${BASE_URL}/og-default.png`,
+      "The hardest-working meme in crypto. Real-time threat globe, Wrenchy AI, and a skull hardness quiz. Don't get hit by a $5 wrench.",
+    ogImage: `${BASE_URL}/og-default.png?v=6`,
     url: `${BASE_URL}/`,
   },
+  "/defense-hub": {
+    title: "$5WA Defense Hub | Skull Check & Wrenchy AI",
+    description: "Take the $5WA Skull Check, see your helmet level, and learn practical physical security habits.",
+    url: `${BASE_URL}/defense-hub`,
+  },
   "/platform": {
-    title: "$5WA Platform | Threat Intelligence & Location OpSec",
+    title: "$5WA Platform | Wrenchy AI, Threat Globe & Helmet Toolkit",
     description:
-      "Live physical-security tools: public threat intelligence, deterministic Location OpSec guidance, and read-only Guardian AI.",
+      "Live tools, not JPEGs: 3D threat globe, read-only Wrenchy AI, and checklists to harden your skull. Proof of Build.",
     url: `${BASE_URL}/platform`,
   },
   "/guardian": {
-    title: "$5WA Guardian AI | Read-Only Physical Security Guidance",
+    title: "Wrenchy AI | Real OpSec, Self-Aware About Wrenches",
     description:
-      "Read-only Groq-powered physical-security guidance grounded in the 5WA Location OpSec Guide and bounded public threat intelligence.",
+      "Ask Wrenchy AI for real physical-security guidance — it knows a $5 wrench beats any multi-sig. Powered by Groq.",
     url: `${BASE_URL}/guardian`,
   },
   "/tokenomics": {
-    title: "$5WA Tokenomics | Supply, Allocation & Lock-Up",
+    title: "$5WA Tokenomics | 87.5% Burned, 75% Locked, 100% Meme",
     description:
-      "Verifiable $5WA supply lifecycle, post-burn allocation, PinkLock schedule, utility, and on-chain references.",
+      "From 8B genesis to 1B final. 7B burned, 750M locked on PinkLock. The supply shrinks faster than your attack surface.",
     url: `${BASE_URL}/tokenomics`,
   },
   "/airdrop": {
-    title: "$5WA Airdrop | Season 1 Physical Security Quiz",
+    title: "$5WA Airdrop | Season 1: Skull Hardness Test",
     description:
-      "Test your crypto physical security knowledge. Complete the quiz, share on X, and earn $5WA tokens. Season 1: Physical Security Basics.",
+      "6 questions. Black humor. Real OpSec. Test your skull thickness, earn a certificate, share on X, get $5WA. Proof of Helmet.",
     url: `${BASE_URL}/airdrop`,
   },
   "/whitepaper": {
-    title: "$5WA Whitepaper V5 | Decentralized AI-Powered Physical Security Platform",
+    title: "$5WA Meme Manifesto | Proof of Build, Proof of Helmet",
     description:
-      "Living Document — TIE, 3D/flat Threat Map, Location OpSec Guide MVP, and read-only Groq Guardian AI beta are live.",
+      "The shortest, funniest, hardest-core whitepaper in crypto. 4 chapters. Zero fluff. 100% meme. 100% real.",
     url: `${BASE_URL}/whitepaper`,
+  },
+  "/risk-assessment": {
+    title: "Skull Check | $5WA — How Thick Is Your Skull?",
+    description:
+      "How thick is your skull? Answer a few questions about your crypto habits, get your personal wrench-risk score, and find out if you're tofu or titanium.",
+    url: `${BASE_URL}/risk-assessment`,
+  },
+  "/privacy-toolkit": {
+    title: "Helmet Toolkit | Hardening Your Skull Against Wrenches",
+    description:
+      "Actionable checklists to upgrade your skull from tofu to titanium. Identity, travel, and wallet hardening.",
+    url: `${BASE_URL}/privacy-toolkit`,
   },
 };
 
 function buildBotHtml(meta: PageMeta): string {
   const image = meta.ogImage ?? DEFAULT_OG_IMAGE;
+  const imageWidth = meta.ogImageWidth ?? 1200;
+  const imageHeight = meta.ogImageHeight ?? 630;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -98,8 +119,8 @@ function buildBotHtml(meta: PageMeta): string {
   <meta property="og:title" content="${escapeHtml(meta.title)}" />
   <meta property="og:description" content="${escapeHtml(meta.description)}" />
   <meta property="og:image" content="${escapeHtml(image)}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="${imageWidth}" />
+  <meta property="og:image:height" content="${imageHeight}" />
   <meta property="og:url" content="${escapeHtml(meta.url)}" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -128,13 +149,35 @@ function escapeHtml(str: string): string {
  * Middleware that intercepts bot requests to main pages and serves
  * proper OG meta tags. Real users pass through to the SPA.
  */
+function getRequestMeta(req: Request): PageMeta | undefined {
+  const meta = PAGE_META[req.path];
+  if (!meta || req.path !== "/defense-hub") return meta;
+
+  const tier = typeof req.query.tier === "string" ? req.query.tier : "";
+  const score = typeof req.query.score === "string" ? Number(req.query.score) : NaN;
+  const tierMeta: Record<string, { name: string; image: string }> = {
+    "tofu-skull": { name: "Tofu Skull", image: "/og-tofu-skull.png?v=1" },
+    "plastic-helmet": { name: "Plastic Helmet", image: "/og-plastic-helmet.png?v=1" },
+    "titanium-skull": { name: "Titanium Skull", image: "/og-titanium-skull.png?v=1" },
+  };
+  const result = tierMeta[tier];
+  if (!result || !Number.isInteger(score) || score < 0 || score > 6) return meta;
+
+  const query = new URLSearchParams({ tier, score: String(score) }).toString();
+  return {
+    title: `$5WA Skull Check — ${result.name} (${score}/6)`,
+    description: `I took the $5WA Skull Check and got ${result.name}: ${score}/6. Check your physical security habits and see how thick your skull is.`,
+    ogImage: `${BASE_URL}${result.image}`,
+    url: `${BASE_URL}/defense-hub?${query}`,
+  };
+}
+
 function botMetaMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  const pathname = req.path;
-  const meta = PAGE_META[pathname];
+  const meta = getRequestMeta(req);
 
   // Only intercept known pages for bots
   if (!meta || !isBot(req.get("user-agent"))) {
