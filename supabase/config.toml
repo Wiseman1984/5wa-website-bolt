@@ -6,3 +6,9 @@ verify_jwt = false
 
 [functions.threat-sync]
 verify_jwt = false
+
+[functions.advisory-sync]
+verify_jwt = false
+
+[functions.verify-wallet]
+verify_jwt = false

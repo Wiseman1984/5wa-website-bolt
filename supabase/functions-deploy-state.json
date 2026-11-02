@@ -1,0 +1,25 @@
+{
+  "projectId": "71274180",
+  "functions": {
+    "advisory-sync": {
+      "hasChanged": false,
+      "hash": "b31983e8ac1562679cf2f726f50188f06513e5561c8d28511a25abdf64e50e07"
+    },
+    "airdrop_submit": {
+      "hasChanged": false,
+      "hash": "583571a7cfea2ae4e299cd258769f6ed55e9f90e9b601849f0ec9b2ab946627f"
+    },
+    "guardian-ai": {
+      "hasChanged": false,
+      "hash": "9b695bd318fc77a8152184c72568e43cb130c33f0d377a0ad9f23e5dd6bfcd3e"
+    },
+    "threat-sync": {
+      "hasChanged": false,
+      "hash": "0c5fd4aa7f11a6217e7f5b4dd5aac37552333696c097361f55a0497370894ae0"
+    },
+    "verify-wallet": {
+      "hasChanged": false,
+      "hash": "20221078ee22bc456b588a1a1f4669f8a39a3c38fa1dce4ccaabfc081948314f"
+    }
+  }
+}
