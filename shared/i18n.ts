@@ -280,7 +280,7 @@ export const contentEN: SiteContent = {
     realCases: "Landmark Cases",
     securityGuide: "Security Guide",
     airdrop: "Airdrop",
-    whitepaper: "Whitepaper",
+    whitepaper: "Manifesto",
     language: "Language",
   },
   homepage: {
@@ -291,14 +291,14 @@ export const contentEN: SiteContent = {
         "A $5 wrench beats a $500 hardware wallet. We can't fix that — but we can meme about it. $5WA is the world's first meme token with a real threat intelligence engine, 3D globe, and AI assistant. Proof of Build, not proof of nothing.",
     },
     mission: {
-      title: "Our Mission",
+      title: "Why $5WA?",
       content:
-        "We are building a strong consensus around privacy and security awareness. The $5 Wrench Attack represents the ultimate truth: digital security is only as strong as its physical protection. Our token project embodies this philosophy through extreme deflationary mechanics and transparent lock-up mechanisms.",
+        "You spent $500 on a hardware wallet. You stamped your seed phrase on titanium. You set up a 4-of-7 multi-sig across 7 countries. Then someone bought a $5 wrench from Home Depot. No cryptography survives physical coercion. $5WA is the meme that tells the truth about it — and the token that memes your way to a titanium skull.",
     },
     concept: {
-      title: "The $5 Wrench Attack Concept",
+      title: "The $5 Wrench Attack",
       content:
-        "In cybersecurity, the \"$5 Wrench Attack\" refers to a scenario where someone uses a simple tool (like a $5 wrench) to physically compromise a system, bypassing all digital security measures. This metaphor reminds us that security is multifaceted—it requires both digital and physical safeguards. Our token project celebrates this principle by combining security education with innovative tokenomics.",
+        "In cybersecurity, the \"$5 Wrench Attack\" refers to a scenario where someone uses a simple tool (like a $5 wrench) to physically compromise a system, bypassing all digital security measures. The xkcd comic said it best. We turned it into a meme token with real products. Proof of Build, Proof of Helmet.",
     },
     features: [
       {
@@ -320,8 +320,8 @@ export const contentEN: SiteContent = {
     ],
   },
   tokenomics: {
-    title: "Token Economics",
-    subtitle: "Precision-Engineered Deflation",
+    title: "Wrenchomics",
+    subtitle: "Token Economics, But Make It Meme",
     overview: {
       totalSupply: "1 Billion",
       burned: "7 Billion (87.5%)",
@@ -329,7 +329,7 @@ export const contentEN: SiteContent = {
       circulating: "50 Million (5%)",
     },
     description:
-      "Total supply adjusted to 1,000,000,000 (1 Billion) 5WA after a large-scale burn. Our economic model ensures long-term market health and participant consensus through transparent lock-up and ecosystem reserves.",
+      "From 8B genesis to 1B final. 7 billion tokens permanently burned — the supply shrinks faster than your attack surface. 75% locked on PinkLock so the liquidity curve is smoother than your skull after a wrench.",
     sections: {
       distribution: {
         title: "Token Distribution (Post-Burn)",
@@ -352,10 +352,10 @@ export const contentEN: SiteContent = {
     },
   },
   burnMechanism: {
-    title: "Quarterly Strategic Burn",
-    subtitle: "Deflationary Mechanism",
+    title: "Quarterly Burn Protocol",
+    subtitle: "Attack Surface Reduction",
     description:
-      "To achieve our 90% supply reduction target, we implement quarterly strategic burns of unused tokens. Every quarter, we audit token usage across both vesting tracks and permanently remove unused tokens via Multi-Sig wallet to dead address.",
+      "Every quarter, we audit what's unused and burn it to a dead address via Multi-Sig. Less supply, less attack surface. The deflation your helmet deserves.",
     mechanism: {
       title: "How It Works",
       steps: [
@@ -456,8 +456,8 @@ export const contentEN: SiteContent = {
     },
   },
   buyGuide: {
-    title: "How to Buy 5WA",
-    subtitle: "Step-by-Step Purchase Guide",
+    title: "How to Buy $5WA",
+    subtitle: "Get Your Helmet On",
     introduction:
       "The primary acquisition method for $5WA tokens will be through our DODO crowdfunding mechanism (Coming Soon). In the meantime, you can purchase on PancakeSwap DEX. Always verify the contract address before making any transactions.",
     steps: [
@@ -551,9 +551,9 @@ export const contentEN: SiteContent = {
       ],
     },
     risks: {
-      title: "Risk Disclaimer",
+      title: "Reality Check",
       content:
-        "Cryptocurrency investments carry significant risks. The value of tokens can fluctuate dramatically. Only invest what you can afford to lose. Do your own research (DYOR) and consult with financial advisors before making investment decisions.",
+        "Crypto is volatile. You could lose everything. A $5 wrench doesn't care about your portfolio. Only invest what you can afford to lose, and DYOR. Not financial advice — just common sense from a meme that knows it's a meme.",
     },
   },
   realCases: {
@@ -832,13 +832,13 @@ export const contentEN: SiteContent = {
   },
   airdrop: {
     title: "$5WA Airdrop",
-    subtitle: "Season 1: Physical Security Basics",
-    description: "Test your knowledge of physical security threats facing Web3 participants. Answer 6 questions about physical coercion and social engineering attack vectors, earn 5WA tokens based on your score, and help build a safer community.",
+    subtitle: "Season 1: Skull Hardness Test",
+    description: "6 questions. Black humor. Real OpSec. Test your skull thickness against the $5 wrench attack, earn your Skull Hardness Certificate, share it on X, and get airdropped $5WA tokens. Proof of Helmet, not proof of nothing.",
     narrative: {
-      title: "Why did we design the $5WA mechanism so cautiously?",
-      content: "Just as this quiz demonstrates, true security comes from **knowledge and preparation**.\n\n• Our 24-month linear unlock = the 'time buffer' in physical defense.\n• Our 87.5% token burn = reducing the system's 'attack surface'.\n• Our decentralized treasury management = 'multi-sig defense' at the physical level.\n\n$5WA: Safeguarding your physical security consensus in the AGI era.\n\nThis is a seasonal educational campaign. Future seasons will cover different threat vectors from the $5WA whitepaper, including supply chain attacks, travel & geo-location risks, and advanced OpSec.",
+      title: "Why Proof of Helmet?",
+      content: "You spent $500 on a hardware wallet, $200 on a metal seed plate, and 40 hours setting up a 4-of-7 multi-sig across 7 countries.\n\nThen someone bought a $5 wrench from Home Depot.\n\n• Staking $5WA = upgrading your helmet from paper to titanium.\n• Our 87.5% token burn = reducing the system's attack surface.\n• Our 24-month linear unlock = the time buffer you wish you had when a wrench is approaching your skull.\n\nDon't get hit by a $5 wrench. Buy $5WA to insure your skull.\n\nFuture seasons will cover supply chain attacks, travel risks, and advanced OpSec — all with the same black humor you came here for.",
     },
-    privacy: "This assessment does not collect any personal data. Your privacy is our priority.",
+    privacy: "This quiz does not collect any personal data. Your privacy is our priority.",
     checklist: {
       title: "Security Knowledge Quiz",
       stages: [
@@ -933,8 +933,8 @@ export const contentEN: SiteContent = {
     },
   },
   whitepaper: {
-    title: "Whitepaper",
-    subtitle: "Official 5WA Whitepaper",
+    title: "Meme Manifesto",
+    subtitle: "The shortest, funniest, hardest-core whitepaper in crypto",
     narrative: {
       title: "1. Project Narrative & Vision",
       vanishingBorder: {
@@ -1033,7 +1033,7 @@ export const contentEN: SiteContent = {
           period: "2027 Q1–Q2: Radar & Empowerment",
           items: [
             "5WA Security Alert Bot V2: Predictive capabilities with Signal/Discord integration.",
-            "Privacy Toolkit Launch: Identity de-sensitization, travel mode hardening, wallet risk analysis.",
+            "Helmet Toolkit Launch: Identity de-sensitization, travel mode hardening, wallet risk analysis.",
             "iOS/Android App (Beta): Real-time alerts, risk management, and personalized recommendations.",
             "Panic Button Integration: One-tap emergency response activation.",
           ],
@@ -1059,7 +1059,7 @@ export const contentEN: SiteContent = {
   footer: {
     copyright: "© 2025 $5 Wrench Attack. All rights reserved.",
     disclaimer:
-      "This website is for informational purposes only. It is not financial advice. Always conduct your own research before investing.",
+      "Not financial advice. Not a security service. Just the hardest-working meme in crypto. Don't get hit by a $5 wrench. DYOR.",
     links: {
       privacy: "Privacy Policy",
       terms: "Terms of Service",
