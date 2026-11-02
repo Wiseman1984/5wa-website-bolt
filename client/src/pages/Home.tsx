@@ -1,243 +1,29 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { AlertTriangle, Filter } from "lucide-react";
+import { useState } from "react";
+import logoSrc from "@/coinlogo.png";
+import { Check, Clipboard, ExternalLink, ShieldCheck } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import ThreatGlobe from "@/components/ThreatGlobe";
-import TimelineSlider from "@/components/TimelineSlider";
-import ThreatDashboard, { type ThreatIncident } from "@/components/ThreatDashboard";
-import { ENGLISH_CONTENT } from "@shared/i18n";
+import { toast } from "sonner";
 import { usePageMeta } from "@/hooks/usePageMeta";
-import { supabase } from "@/lib/supabase";
-import { filterPhysicalSecurityIncidents } from "@shared/threatRelevance";
+import { FIVE_WA_MINT } from "@shared/solanaConfig";
+
+const PUMP_FUN_URL = import.meta.env.VITE_PUMP_FUN_URL ?? "";
 
 export default function Home() {
-  const { hero } = ENGLISH_CONTENT.homepage;
-  usePageMeta({
-    title: "$5 Wrench Attack | The Only Token Backed by Physical Wrenches",
-    description: "A $5 wrench beats a $500 hardware wallet. We can't fix that — but we can meme about it. $5WA: Proof of Build meme token with a real 3D threat globe and AI.",
-    url: "https://5wa.io",
-  });
-
-  const [incidents, setIncidents] = useState<ThreatIncident[]>([]);
-  const [filteredIncidents, setFilteredIncidents] = useState<ThreatIncident[]>([]);
-  const [timeFilteredIncidents, setTimeFilteredIncidents] = useState<ThreatIncident[]>([]);
-  const [severityFilter, setSeverityFilter] = useState<"all" | "high" | "medium" | "low">("all");
-  const [timelinePlaying, setTimelinePlaying] = useState(false);
-
-  const [stats, setStats] = useState({ total: 0, last30: 0, regions: 0 });
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const PAGE_SIZE = 1000;
-        let allData: ThreatIncident[] = [];
-        let from = 0;
-
-        while (true) {
-          const { data, error } = await supabase
-            .from("threat_incidents")
-            .select("id, country, published_at, attack_type, title, source_url, latitude, longitude, severity, ai_summary")
-            .neq("country", "Unknown")
-            .order("published_at", { ascending: false })
-            .range(from, from + PAGE_SIZE - 1);
-
-          if (error) {
-            console.error("Supabase error:", error);
-            return;
-          }
-          if (!data || data.length === 0) break;
-
-          allData = allData.concat(data);
-
-          if (data.length < PAGE_SIZE) break;
-          from += PAGE_SIZE;
-        }
-
-        if (allData.length === 0) {
-          console.warn("No threat incidents returned from database");
-          return;
-        }
-
-        const relevantIncidents = filterPhysicalSecurityIncidents(allData);
-        setIncidents(relevantIncidents);
-        setFilteredIncidents(relevantIncidents);
-        setTimeFilteredIncidents(relevantIncidents);
-
-        const thirtyDaysAgo = new Date();
-        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        const last30 = allData.filter(
-          (d) => new Date(d.published_at) > thirtyDaysAgo
-        ).length;
-        const regions = new Set(allData.map((d) => d.country)).size;
-
-        setStats({ total: allData.length, last30, regions });
-      } catch (err) {
-        console.error("Failed to fetch threat data:", err);
-      }
-    }
-    fetchData();
-  }, []);
-
-  const handleFilterChange = useCallback((filtered: ThreatIncident[]) => {
-    setFilteredIncidents(filtered);
-    setTimeFilteredIncidents(filtered);
-  }, []);
-
-  const handleTimeFilter = useCallback((filtered: ThreatIncident[]) => {
-    setTimeFilteredIncidents(filtered);
-  }, []);
-
-  const handlePlayStateChange = useCallback((playing: boolean) => {
-    setTimelinePlaying(playing);
-  }, []);
-
-  const severityFilteredIncidents = useMemo(() => {
-    if (severityFilter === "all") return timeFilteredIncidents;
-    return timeFilteredIncidents.filter((inc) => {
-      const sev = inc.severity;
-      if (sev == null) return severityFilter === "high";
-      if (severityFilter === "high") return sev >= 7;
-      if (severityFilter === "medium") return sev >= 4 && sev < 7;
-      return sev < 4;
-    });
-  }, [timeFilteredIncidents, severityFilter]);
-
-  return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
-      <Navigation />
-
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 md:py-32">
-        <div className="absolute inset-0 metal-gradient opacity-40"></div>
-        <div className="absolute inset-0 scan-lines"></div>
-
-        <div className="container relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="flex justify-center mb-8">
-              <img
-                src="/5wa-coinlogo.png"
-                alt="5WA Token Logo"
-                className="w-32 h-32 drop-shadow-lg rounded-full"
-              />
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-foreground">
-              {hero.title}
-            </h1>
-            <p className="text-xl md:text-2xl text-accent mb-6 font-semibold">
-              {hero.subtitle}
-            </p>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-              {hero.description}
-            </p>
-            <div className="flex justify-center">
-              <a
-                href="#threat-map"
-                onClick={(event) => {
-                  event.preventDefault();
-                  document.getElementById("threat-map")?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
-                className="btn-primary inline-block"
-              >
-                View Threat Map
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Threat Map Section */}
-      <section id="threat-map" className="scroll-mt-20 py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(0,255,255,0.1) 50px),
-            repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(0,255,255,0.1) 50px)`,
-        }}></div>
-
-        <div className="container relative z-10">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              The $5 Wrench Attack Museum
-              <span className="ml-3 text-base font-medium text-cyan-400/70 align-middle">Proof of Build</span>
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Real-time tracking of physical attacks on crypto holders worldwide. Most meme coins have a JPEG. We have a 3D globe.
-            </p>
-          </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div className="bg-card/80 border border-cyan-500/30 rounded-lg p-5 text-center backdrop-blur-sm">
-              <div className="text-3xl font-bold text-cyan-400 mb-1">{stats.total}</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wider">Wrench Incidents</div>
-            </div>
-            <div className="bg-card/80 border border-orange-500/30 rounded-lg p-5 text-center backdrop-blur-sm">
-              <div className="text-3xl font-bold text-orange-400 mb-1">{stats.last30}</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wider">Recent Wrenchings</div>
-            </div>
-            <div className="bg-card/80 border border-red-500/30 rounded-lg p-5 text-center backdrop-blur-sm">
-              <div className="text-3xl font-bold text-red-400 mb-1">{stats.regions}</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-wider">Wrench Zones</div>
-            </div>
-          </div>
-
-          {/* Severity Filter */}
-          <div className="flex items-center justify-center gap-2 mb-6 flex-wrap">
-            <Filter className="w-4 h-4 text-slate-500" />
-            {([
-              { key: "all", label: "All Severities", activeClass: "bg-cyan-500/15 border-cyan-500/50 text-cyan-400" },
-              { key: "high", label: "High (7-10)", activeClass: "bg-red-500/15 border-red-500/50 text-red-400" },
-              { key: "medium", label: "Medium (4-6)", activeClass: "bg-amber-500/15 border-amber-500/50 text-amber-400" },
-              { key: "low", label: "Low (1-3)", activeClass: "bg-yellow-500/15 border-yellow-500/50 text-yellow-400" },
-            ] as const).map((opt) => (
-              <button
-                key={opt.key}
-                onClick={() => setSeverityFilter(opt.key)}
-                className={
-                  severityFilter === opt.key
-                    ? `px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 ${opt.activeClass}`
-                    : "px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 bg-slate-800/30 border-slate-700/50 text-slate-400 hover:text-slate-200"
-                }
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Timeline Replay + Heatmap */}
-          <TimelineSlider
-            incidents={filteredIncidents}
-            onTimeFilter={handleTimeFilter}
-            onPlayStateChange={handlePlayStateChange}
-          />
-
-          {/* World Map — auto-switch to flat map during timeline playback */}
-          <ThreatGlobe
-            incidents={severityFilteredIncidents}
-            forcedViewMode={timelinePlaying ? "map" : null}
-          />
-
-          {/* Dashboard: Filters + Trend Stats + Incident List + Detail Modal */}
-          <ThreatDashboard
-            incidents={incidents}
-            filteredIncidents={severityFilteredIncidents}
-            onFilterChange={handleFilterChange}
-          />
-
-          {/* CTA */}
-          <div className="text-center mt-8">
-            <a
-              href="https://x.com/5wa_io"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-accent/10 border border-accent/30 text-accent px-6 py-3 rounded-lg hover:bg-accent/20 transition-colors font-medium"
-            >
-              <AlertTriangle className="w-4 h-4" />
-              Get Real-time Alerts → Follow @5wa_io
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
-  );
+  usePageMeta({ title: "$5WA | Proof of Build Meme Token", description: "A fair-launch meme token backed by a real 3D threat museum and practical physical security tools.", url: "https://5wa.io" });
+  const [copied, setCopied] = useState(false);
+  const copyCa = async () => {
+    if (!FIVE_WA_MINT) { toast.info("Official contract address will appear after the Pump.fun launch."); return; }
+    await navigator.clipboard.writeText(FIVE_WA_MINT);
+    setCopied(true);
+    toast.success("Official CA copied");
+    window.setTimeout(() => setCopied(false), 1800);
+  };
+  const CopyIcon = copied ? Check : Clipboard;
+  return <div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)]"><Navigation /><main>
+    <section className="relative overflow-hidden border-b border-cyan-400/10 px-4 py-20 md:py-28"><div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.2),transparent_48%)]" /><div className="container relative z-10 max-w-5xl"><div className="grid items-center gap-10 lg:grid-cols-[1.18fr_0.82fr]"><div><div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-400/25 bg-cyan-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-cyan-200"><ShieldCheck className="h-4 w-4" /> Proof of Build</div><h1 className="max-w-2xl text-5xl font-black leading-[1.05] tracking-tight sm:text-6xl lg:max-w-3xl lg:text-5xl">A $5 wrench beats a $500 hardware wallet.</h1><p className="mt-6 max-w-2xl text-xl font-semibold leading-relaxed text-cyan-200">Buy $5WA to insure your skull.</p><p className="mt-5 max-w-2xl text-base leading-relaxed text-slate-400">Most meme coins have a JPEG. We have a 3D globe, physical threat intelligence, and tools that make the joke useful.</p><div className="mt-8 flex flex-wrap gap-3">{PUMP_FUN_URL ? <a href={PUMP_FUN_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-[var(--brand-yellow)] px-5 py-3 text-sm font-black text-[var(--brand-black)]" style={{ backgroundColor: "#FFD700" }}><ExternalLink className="h-4 w-4" /> Buy on Pump.fun</a> : <button aria-disabled="true" onClick={() => toast.info("Pump.fun launch link will appear soon.")} className="inline-flex cursor-not-allowed items-center gap-2 rounded-xl bg-[var(--brand-yellow)] px-5 py-3 text-sm font-black text-[var(--brand-black)]" style={{ backgroundColor: "#FFD700", opacity: 1 }}><ExternalLink className="h-4 w-4" /> Buy on Pump.fun — link pending</button>}<button onClick={copyCa} className="inline-flex items-center gap-2 rounded-xl border border-cyan-400/40 bg-cyan-400/10 px-5 py-3 text-sm font-bold text-cyan-100 transition hover:bg-cyan-400/20"><CopyIcon className="h-4 w-4" /> {copied ? "Copied" : "Copy Official CA"}</button></div></div><div className="flex justify-center"><div className="hero-logo aspect-square w-full max-w-sm overflow-hidden rounded-full"><img src={logoSrc} alt="$5WA Logo" className="h-full w-full scale-[1.22] object-cover mix-blend-screen" /></div></div></div></div></section>
+    <section className="container max-w-5xl px-4 py-10"><div className="rounded-2xl border border-[var(--brand-yellow)]/25 bg-[var(--brand-yellow)]/5 p-5 md:p-7"><p className="text-sm leading-relaxed text-yellow-100"><strong>The Pivot Story.</strong> We spent months building a serious B2B crypto security platform. Nobody cared. So we turned it into a 100% fair-launch meme token backed by actual Proof of Build.</p></div><div className="mt-6 grid gap-4 md:grid-cols-3"><Stat title="Supply" value="1,000,000,000 $5WA" /><Stat title="Circulation" value="100% fair launch" /><Stat title="Rules" value="0% Tax · No Mint" /></div></section>
+    <section className="container max-w-5xl px-4 pb-16"><div className="rounded-2xl border border-[var(--brand-cyan)]/20 bg-[var(--bg-surface)] p-8 text-center"><p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">Proof of Helmet</p><h2 className="mt-2 text-3xl font-black">How thick is your skull?</h2><p className="mt-3 text-slate-400">Take the Skull Check, get your defense tier, and share your result card on X.</p><a href="/defense-hub" className="mt-5 inline-block rounded-xl bg-cyan-300 px-5 py-3 text-sm font-black text-black">Take the Skull Check →</a></div></section>
+  </main><Footer /></div>;
 }
+function Stat({ title, value }: { title: string; value: string }) { return <div className="rounded-xl border border-cyan-400/15 bg-[#07101d] p-5"><p className="text-xs uppercase tracking-[0.18em] text-slate-500">{title}</p><p className="mt-2 text-lg font-black text-cyan-100">{value}</p></div>; }

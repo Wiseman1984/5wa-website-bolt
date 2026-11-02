@@ -14,13 +14,13 @@ import { useEffect } from "react";
 interface PageMetaOptions {
   title: string;
   description: string;
-  /** Full URL to the OG image (1200x630). Defaults to https://5wa.io/og-default.png */
+  /** Full URL to the OG image (1200x630). Defaults to https://5wa.io/og-default.png?v=6 */
   ogImage?: string;
   /** Canonical URL for this page */
   url?: string;
 }
 
-const DEFAULT_OG_IMAGE = "https://5wa.io/og-default.png";
+const DEFAULT_OG_IMAGE = "https://5wa.io/og-default.png?v=6";
 const SITE_NAME = "$5 Wrench Attack";
 const TWITTER_SITE = "@5wa_io";
 

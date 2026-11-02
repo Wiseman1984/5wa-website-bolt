@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -22,7 +22,7 @@ import {
 import { buildGuardianHref } from "@shared/guardianContext";
 import { getOpsecUiCopy } from "@shared/opsecUi";
 import { useLanguage } from "@/contexts/LanguageContext";
-import OpsecLanguageSwitch from "@/components/OpsecLanguageSwitch";
+import OfficialTravelAdvisory from "@/components/OfficialTravelAdvisory";
 
 const RISK_STYLES: Record<OpsecRiskLevel, { color: string; border: string; bg: string }> = {
   guarded: { color: "text-cyan-300", border: "border-cyan-500/35", bg: "bg-cyan-500/10" },
@@ -57,11 +57,18 @@ export default function LocationOpsecGuide({ onContextChange }: LocationOpsecGui
   const { language } = useLanguage();
   const [regionId, setRegionId] = useState<OpsecRegionId>("global");
   const [scenarioId, setScenarioId] = useState<OpsecScenarioId>("daily-routine");
+  const [country, setCountry] = useState<string | null>(null);
   const copy = getOpsecUiCopy(language).guide;
   const regions = useMemo(() => getOpsecRegions(language), [language]);
   const scenarios = useMemo(() => getOpsecScenarios(language), [language]);
   const guide = useMemo(() => getOpsecGuide(regionId, scenarioId, language), [regionId, scenarioId, language]);
   const risk = RISK_STYLES[guide.riskLevel];
+  const selectedRegion = regions.find((region) => region.id === regionId);
+
+  useEffect(() => {
+    const availableCountries = selectedRegion?.countries ?? [];
+    setCountry((current) => current && availableCountries.includes(current) ? current : availableCountries[0] ?? null);
+  }, [selectedRegion]);
 
   const updateRegion = (next: OpsecRegionId) => {
     setRegionId(next);
@@ -78,12 +85,11 @@ export default function LocationOpsecGuide({ onContextChange }: LocationOpsecGui
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(6,182,212,0.12),transparent_38%)]" />
       <div className="container relative z-10 max-w-6xl">
         <div className="mb-10 text-center">
-          <div className="mb-4 flex flex-wrap items-center justify-center gap-3">
+          <div className="mb-4 flex items-center justify-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">
               <MapPinned className="h-3.5 w-3.5" />
               {copy.badge}
             </div>
-            <OpsecLanguageSwitch />
           </div>
           <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl">{copy.title}</h2>
           <p className="mx-auto max-w-3xl text-base leading-relaxed text-muted-foreground md:text-lg">
@@ -91,13 +97,14 @@ export default function LocationOpsecGuide({ onContextChange }: LocationOpsecGui
           </p>
         </div>
 
-        <div className="mb-6 grid gap-4 rounded-2xl border border-cyan-500/20 bg-[#07101d]/90 p-4 shadow-[0_0_40px_rgba(6,182,212,0.08)] backdrop-blur md:grid-cols-[1fr_1fr_auto] md:p-6">
-          <label className="space-y-2 text-sm font-medium text-slate-200">
+        <div className="mb-6 grid gap-4 rounded-2xl border border-cyan-500/20 bg-[#07101d]/90 p-4 shadow-[0_0_40px_rgba(6,182,212,0.08)] backdrop-blur md:grid-cols-2 xl:grid-cols-[minmax(180px,1fr)_minmax(230px,1.15fr)_minmax(220px,1fr)_minmax(300px,1.8fr)] md:p-6">
+          <label className="min-w-0 space-y-2 text-sm font-medium text-slate-200">
             {copy.broadRegion}
+            <span className="block min-h-8 text-xs font-normal leading-4 text-slate-500">Drives situational advice below</span>
             <select
               value={regionId}
               onChange={(event) => updateRegion(event.target.value as OpsecRegionId)}
-              className="w-full rounded-lg border border-cyan-500/25 bg-[#050b14] px-3 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/15"
+              className="w-full min-w-0 rounded-lg border border-cyan-500/25 bg-[#050b14] px-3 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/15"
             >
               {regions.map((region) => (
                 <option key={region.id} value={region.id}>{region.label}</option>
@@ -105,12 +112,13 @@ export default function LocationOpsecGuide({ onContextChange }: LocationOpsecGui
             </select>
           </label>
 
-          <label className="space-y-2 text-sm font-medium text-slate-200">
+          <label className="min-w-0 space-y-2 text-sm font-medium text-slate-200">
             {copy.activity}
+            <span className="block min-h-8 text-xs font-normal leading-4 text-slate-500">Drives situational advice below</span>
             <select
               value={scenarioId}
               onChange={(event) => updateScenario(event.target.value as OpsecScenarioId)}
-              className="w-full rounded-lg border border-cyan-500/25 bg-[#050b14] px-3 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/15"
+              className="w-full min-w-0 rounded-lg border border-cyan-500/25 bg-[#050b14] px-3 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/15"
             >
               {scenarios.map((scenario) => (
                 <option key={scenario.id} value={scenario.id}>{scenario.label}</option>
@@ -118,14 +126,35 @@ export default function LocationOpsecGuide({ onContextChange }: LocationOpsecGui
             </select>
           </label>
 
-          <div className="flex items-end">
-            <div className={`w-full rounded-lg border px-4 py-3 md:min-w-36 ${risk.border} ${risk.bg}`}>
+          <label className="min-w-0 space-y-2 text-sm font-medium text-slate-200">
+            Official advisory country
+            <span className="block min-h-8 text-xs font-normal leading-4 text-slate-500">Queries government advisory data</span>
+            <select
+              value={country ?? ""}
+              onChange={(event) => setCountry(event.target.value || null)}
+              disabled={!selectedRegion?.countries.length}
+              className="w-full min-w-0 rounded-lg border border-cyan-500/25 bg-[#050b14] px-3 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/15 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <option value="">No country selected</option>
+              {(selectedRegion?.countries ?? []).map((availableCountry) => (
+                <option key={availableCountry} value={availableCountry}>{availableCountry}</option>
+              ))}
+            </select>
+          </label>
+
+          <div className="flex min-w-0 items-end">
+            <div className={`w-full rounded-lg border px-4 py-3 ${risk.border} ${risk.bg}`}>
               <div className="text-[10px] uppercase tracking-[0.16em] text-slate-500">{copy.riskPosture}</div>
               <div className={`mt-1 flex items-center gap-2 text-sm font-bold ${risk.color}`}>
                 <ShieldAlert className="h-4 w-4" /> {copy.riskLabels[guide.riskLevel]}
               </div>
+              <p className="mt-1.5 text-[10px] leading-snug text-slate-500">Situational risk based on your selected activity. Separate from official government advisories.</p>
             </div>
           </div>
+        </div>
+
+        <div className="mb-6">
+          <OfficialTravelAdvisory country={country} />
         </div>
 
         <div className="mb-6 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">

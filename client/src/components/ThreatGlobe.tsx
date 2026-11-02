@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { Globe as GlobeIcon, Map } from "lucide-react";
+import { Globe as GlobeIcon, Map, Wrench } from "lucide-react";
 import {
   FLAT_MAP_MAX_ZOOM,
   FLAT_MAP_MIN_ZOOM,
@@ -44,6 +44,16 @@ interface ThreatIncident {
 interface ThreatGlobeProps {
   incidents: ThreatIncident[];
   forcedViewMode?: "globe" | "map" | null;
+}
+
+interface GlobePoint {
+  lat: number;
+  lng: number;
+  color: string;
+  size: number;
+  pulsePeriod: number;
+  pulseSpeed: number;
+  incident: ThreatIncident;
 }
 
 function GlobeAmbientCircuit() {
@@ -108,6 +118,10 @@ function getSeverityLabel(severity: number | null | undefined): string {
   return "Low";
 }
 
+function wrenchMarkerSvg(color: string): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`;
+}
+
 function getPulseTiming(id: string): { period: number; speed: number; offset: number } {
   let hash = 0;
   for (let index = 0; index < id.length; index += 1) {
@@ -115,10 +129,36 @@ function getPulseTiming(id: string): { period: number; speed: number; offset: nu
   }
   const normalized = Math.abs(hash);
   return {
-    period: 1100 + (normalized % 1300),
-    speed: 1.15 + (normalized % 70) / 100,
+    period: 2800 + (normalized % 4200),
+    speed: 0.35 + (normalized % 45) / 100,
     offset: (normalized % 1000) / 1000,
   };
+}
+
+function loadWrenchIcon(map: any, name: string, color: string): Promise<void> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 64;
+      canvas.height = 64;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) { resolve(); return; }
+      ctx.drawImage(img, 0, 0, 64, 64);
+      if (!map.hasImage(name)) {
+        map.addImage(name, ctx.getImageData(0, 0, 64, 64), { pixelRatio: 2 });
+      }
+      resolve();
+    };
+    img.onerror = () => resolve();
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(wrenchMarkerSvg(color));
+  });
+}
+
+function getSeverityIconName(severity: number | null | undefined): string {
+  if (severity == null || severity >= 7) return "wrench-high";
+  if (severity >= 4) return "wrench-medium";
+  return "wrench-low";
 }
 
 export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobeProps) {
@@ -128,6 +168,7 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
   const [tooltip, setTooltip] = useState<{ x: number; y: number; incident: ThreatIncident } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const globeRef = useRef<any>(null);
+  const pointsDataRef = useRef<GlobePoint[]>([]);
   const mapRef = useRef<any>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const globeContainerRef = useRef<HTMLDivElement>(null);
@@ -216,13 +257,20 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
           lat: i.latitude!,
           lng: i.longitude!,
           color: getSeverityColor(i.severity),
-          size: 0.4,
+          size: 0.3,
           pulsePeriod: pulse.period,
           pulseSpeed: pulse.speed,
           incident: i,
         };
       });
   }, [incidents]);
+
+  useEffect(() => {
+    pointsDataRef.current = pointsData;
+    if (viewMode === "globe" && globeRef.current) {
+      globeRef.current.pointsData(pointsData).ringsData(pointsData);
+    }
+  }, [pointsData, viewMode]);
 
   // Initialize globe
   useEffect(() => {
@@ -276,23 +324,23 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
         .pathDashGap(0)
         .pathDashAnimateTime(0)
         .pathTransitionDuration(0)
-        // Points layer for incidents
+        // Small surface points identify the event centers without text glyphs.
         .pointsData(pointsData)
         .pointLat("lat")
         .pointLng("lng")
         .pointColor("color")
-        .pointAltitude(0.01)
         .pointRadius("size")
+        .pointAltitude(0.002)
         .pointsMerge(false)
-        // Pulsing rings around each incident point
+        // Flat rings stay attached to the globe surface while rotating.
         .ringsData(pointsData)
         .ringLat("lat")
         .ringLng("lng")
         .ringColor("color")
-        .ringMaxRadius(2.5)
+        .ringMaxRadius(0.95)
         .ringPropagationSpeed((point: any) => point.pulseSpeed)
         .ringRepeatPeriod((point: any) => point.pulsePeriod)
-        .ringAltitude(0.015);
+        .ringAltitude(0.001);
 
       // Auto-rotate
       const controls = globe.controls();
@@ -318,7 +366,7 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
       window.setTimeout(applyInitialCamera, 700);
 
       // Point hover
-      globe.onPointHover((point: any, prevPoint: any) => {
+      const handleGlobeHover = (point: any, prevPoint: any) => {
         if (point && containerRef.current) {
           const rect = containerRef.current.getBoundingClientRect();
           // Get mouse position from the globe's pointer event
@@ -333,16 +381,35 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
         } else {
           setTooltip(null);
         }
-      });
+      };
+      (globe as any).onPointHover(handleGlobeHover);
+
+      let markerScale = 1;
+      const updateMarkerScale = () => {
+        const distance = globe.camera().position.distanceTo(controls.target);
+        const zoomProgress = Math.max(
+          0,
+          Math.min(
+            1,
+            (distance - GLOBE_MIN_CAMERA_DISTANCE) /
+              (GLOBE_MAX_CAMERA_DISTANCE - GLOBE_MIN_CAMERA_DISTANCE),
+          ),
+        );
+        markerScale = 0.4 + zoomProgress * 0.6;
+        globe.pointRadius((point: GlobePoint) => point.size * markerScale);
+        globe.ringMaxRadius(() => 0.95 * markerScale);
+      };
 
       // Zoom detection for transition: use distance to the active controls target rather than
       // camera length, which changes after a user rotates the globe.
       const maybeTransitionToMap = () => {
+        updateMarkerScale();
         const distance = globe.camera().position.distanceTo(controls.target);
         if (distance <= GLOBE_MAP_TRANSITION_DISTANCE) {
           handleTransitionToMap();
         }
       };
+      updateMarkerScale();
       controls.addEventListener("change", maybeTransitionToMap);
 
       // Keep rotation visible while still respecting manual rotation. It pauses during pointer
@@ -375,6 +442,7 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
       };
 
       globeRef.current = globe;
+      globe.pointsData(pointsDataRef.current).ringsData(pointsDataRef.current);
     }).catch((error) => {
       console.error("Failed to initialize Threat Globe", error);
     });
@@ -389,12 +457,6 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewMode, dimensions.width, dimensions.height]);
-
-  // Update globe points data without reinitializing
-  useEffect(() => {
-    if (viewMode !== "globe" || !globeRef.current) return;
-    globeRef.current.pointsData(pointsData).ringsData(pointsData);
-  }, [pointsData, viewMode]);
 
   // Initialize Mapbox flat map
   useEffect(() => {
@@ -562,6 +624,7 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
                 ai_summary: i.ai_summary || "",
                 color: getSeverityColor(i.severity),
                 pulseOffset: getPulseTiming(i.id).offset,
+                severityIcon: getSeverityIconName(i.severity),
               },
             })),
         };
@@ -597,19 +660,35 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
           },
         });
 
-        // Core dot layer
-        map.addLayer({
-          id: "incidents-core",
-          type: "circle",
-          source: "incidents",
-          paint: {
-            "circle-radius": 4,
-            "circle-color": ["get", "color"],
-            "circle-opacity": 0.9,
-            "circle-stroke-width": 1,
-            "circle-stroke-color": ["get", "color"],
-            "circle-stroke-opacity": 0.5,
-          },
+        // Wrench icon images for each severity tier
+        const wrenchIcons = [
+          { name: "wrench-high", color: "#ef4444", stroke: "#f87171" },
+          { name: "wrench-medium", color: "#f59e0b", stroke: "#fbbf24" },
+          { name: "wrench-low", color: "#eab308", stroke: "#facc15" },
+        ];
+        Promise.all(wrenchIcons.map((spec) => loadWrenchIcon(map, spec.name, spec.color))).then(() => {
+          if (!mounted) return;
+          wrenchIcons.forEach((spec) => {
+            if (map.getLayer(spec.name)) return;
+            map.addLayer({
+              id: spec.name,
+              type: "symbol",
+              source: "incidents",
+              filter: ["==", ["get", "severityIcon"], spec.name],
+              layout: {
+                "icon-image": spec.name,
+                "icon-size": 0.5,
+                "icon-allow-overlap": true,
+                "icon-ignore-placement": true,
+              },
+              paint: {
+                "icon-opacity": 1,
+                "icon-halo-color": "#060b14",
+                "icon-halo-width": 1,
+                "icon-halo-blur": 0.2,
+              },
+            });
+          });
         });
 
         // Animate the pulse ring — each feature has a fixed pulseOffset so they desync
@@ -644,7 +723,7 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
           maxWidth: "320px",
         });
 
-        map.on("mouseenter", "incidents-core", (e) => {
+        const showPopup = (e: any) => {
           map.getCanvas().style.cursor = "pointer";
           const feature = e.features?.[0];
           if (!feature) return;
@@ -671,11 +750,14 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
               </div>
             `)
             .addTo(map);
-        });
-
-        map.on("mouseleave", "incidents-core", () => {
+        };
+        const hidePopup = () => {
           map.getCanvas().style.cursor = "";
           popup.remove();
+        };
+        wrenchIcons.forEach((spec) => {
+          map.on("mouseenter", spec.name, showPopup);
+          map.on("mouseleave", spec.name, hidePopup);
         });
 
         // Mapbox is mounted in the same fixed viewport as the globe. Resize after opacity/layout
@@ -732,6 +814,7 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
             ai_summary: i.ai_summary || "",
             color: getSeverityColor(i.severity),
             pulseOffset: getPulseTiming(i.id).offset,
+            severityIcon: getSeverityIconName(i.severity),
           },
         })),
     };
@@ -837,15 +920,15 @@ export default function ThreatGlobe({ incidents, forcedViewMode }: ThreatGlobePr
       <div className="absolute bottom-3 left-3 z-30 bg-[#0c1220]/90 border border-cyan-500/30 rounded-lg px-3 py-2 backdrop-blur-sm">
         <div className="flex flex-wrap items-center gap-3 text-[10px]">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_4px_rgba(239,68,68,0.6)]"></span>
+            <Wrench className="w-3 h-3 text-red-500" style={{ filter: "drop-shadow(0 0 4px rgba(239,68,68,0.6))" }} />
             <span className="text-gray-400">High (7-10)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_4px_rgba(245,158,11,0.6)]"></span>
+            <Wrench className="w-3 h-3 text-orange-500" style={{ filter: "drop-shadow(0 0 4px rgba(245,158,11,0.6))" }} />
             <span className="text-gray-400">Medium (4-6)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_4px_rgba(234,179,8,0.6)]"></span>
+            <Wrench className="w-3 h-3 text-yellow-500" style={{ filter: "drop-shadow(0 0 4px rgba(234,179,8,0.6))" }} />
             <span className="text-gray-400">Low (1-3)</span>
           </div>
           <div className="flex items-center gap-1.5">

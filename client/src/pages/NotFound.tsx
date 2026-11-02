@@ -19,8 +19,8 @@ export default function NotFound() {
           <p className="text-lg text-muted-foreground mb-8">
             The page you're looking for doesn't exist or has been moved.
           </p>
-          <Link href="/">
-            <a className="btn-primary inline-block">Back to Home</a>
+          <Link href="/" className="btn-primary inline-block">
+            Back to Home
           </Link>
         </div>
       </section>

@@ -1,141 +1,39 @@
-
-import { useLanguage } from "@/contexts/LanguageContext";
+import logoSrc from "@/coinlogo.png";
 
 export default function Footer() {
-  const { language } = useLanguage();
-  const shellLanguage = window.location.pathname === "/guardian" ? language : "en";
-  const copy = shellLanguage === "zh"
-    ? {
-        airdropLead: "參加 Season 1 空投 →",
-        airdropText: "透過安全知識測驗獲得 $5WA 代幣",
-        takeQuiz: "參加測驗",
-        brandDescription: "面向 Web3 參與者的 AI 實體安全平台，結合公開威脅情報、實用 OpSec 指引與透明基礎設施。",
-        quickLinks: "快速連結",
-        legal: "法律資訊",
-        home: "首頁",
-        platform: "平台",
-        tokenomics: "代幣經濟",
-        airdrop: "空投",
-        whitepaper: "白皮書",
-        privacy: "隱私政策",
-        terms: "服務條款",
-        contact: "聯絡我們",
-        disclaimer: "本網站僅供資訊參考，不構成財務建議。投資前請自行研究。",
-        copyright: "© 2025 $5 Wrench Attack。保留所有權利。",
-      }
-    : {
-        airdropLead: "Join Season 1 Airdrop →",
-        airdropText: "Earn $5WA tokens by proving your security knowledge",
-        takeQuiz: "Take the Quiz",
-        brandDescription: "An AI-powered physical security platform combining public threat intelligence, practical OpSec guidance, and transparent infrastructure for Web3 participants.",
-        quickLinks: "Quick Links",
-        legal: "Legal",
-        home: "Home",
-        platform: "Platform",
-        tokenomics: "Tokenomics",
-        airdrop: "Airdrop",
-        whitepaper: "Whitepaper",
-        privacy: "Privacy Policy",
-        terms: "Terms of Service",
-        contact: "Contact",
-        disclaimer: "This website is for informational purposes only. It is not financial advice. Always conduct your own research before investing.",
-        copyright: "© 2025 $5 Wrench Attack. All rights reserved.",
-      };
   return (
-    <footer className="bg-card border-t border-border mt-20">
+    <footer className="border-t border-cyan-400/15 bg-[var(--bg-surface)]">
       <div className="container py-12">
-        {/* Airdrop CTA */}
-        <div className="mb-8 p-4 bg-cyan-500/5 border border-cyan-500/20 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-sm text-gray-300">
-            <span className="text-cyan-400 font-semibold">{copy.airdropLead}</span> {copy.airdropText}
-          </p>
-          <a href="/airdrop" className="shrink-0 text-sm font-semibold text-cyan-400 hover:text-cyan-300 border border-cyan-500/40 rounded px-4 py-1.5 hover:bg-cyan-500/10 transition-colors">
-            {copy.takeQuiz}
-          </a>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {/* Brand */}
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div>
-            <h3 className="text-lg font-bold text-foreground mb-2">
-              $5 Wrench Attack
-            </h3>
-            <p className="text-muted-foreground text-sm">
-              {copy.brandDescription}
+            <div className="flex items-center gap-3">
+              <img src={logoSrc} alt="$5WA Logo" className="h-10 w-10 object-contain" />
+              <h3 className="text-lg font-bold text-slate-100">$5 Wrench Attack</h3>
+            </div>
+            <p className="mt-3 max-w-xs text-sm text-slate-400">
+              The hardest-working meme in crypto. A $5 wrench beats a $500 hardware wallet — we can't fix that, but we can meme about it. Proof of Build, Proof of Helmet.
             </p>
           </div>
-
-          {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">{copy.quickLinks}</h4>
+            <h4 className="mb-4 font-semibold text-slate-100">Site</h4>
             <ul className="space-y-2">
-              <li>
-                <a href="/" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  {copy.home}
-                </a>
-              </li>
-              <li>
-                <a href="/platform" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  {copy.platform}
-                </a>
-              </li>
-              <li>
-                <a href={language === "zh" ? "/guardian?lang=zh" : "/guardian"} className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  Guardian AI
-                </a>
-              </li>
-              <li>
-                <a href="/tokenomics" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  {copy.tokenomics}
-                </a>
-              </li>
-              <li>
-                <a href="/airdrop" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  {copy.airdrop}
-                </a>
-              </li>
-              <li>
-                <a href="/whitepaper" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  {copy.whitepaper}
-                </a>
-              </li>
+              {[["Home", "/"], ["Museum", "/museum"], ["Defense Hub", "/defense-hub"], ["Roadmap & Manifesto", "/roadmap"]].map(([label, href]) => (
+                <li key={href}><a href={href} className="text-sm text-slate-400 transition hover:text-cyan-300">{label}</a></li>
+              ))}
             </ul>
           </div>
-
-          {/* Legal */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">{copy.legal}</h4>
+            <h4 className="mb-4 font-semibold text-slate-100">Legal</h4>
             <ul className="space-y-2">
-              <li>
-                <a href="/whitepaper" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  {copy.privacy}
-                </a>
-              </li>
-              <li>
-                <a href="/whitepaper" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  {copy.terms}
-                </a>
-              </li>
-              <li>
-                <a href="mailto:team@5wa.io" className="text-muted-foreground hover:text-accent transition-colors text-sm">
-                  {copy.contact}
-                </a>
-              </li>
+              <li><a href="/terms" className="text-sm text-slate-400 transition hover:text-cyan-300">Terms of Service</a></li>
+              <li><a href="/privacy" className="text-sm text-slate-400 transition hover:text-cyan-300">Privacy Policy</a></li>
+              <li><a href="mailto:team@5wa.io" className="text-sm text-slate-400 transition hover:text-cyan-300">Contact</a></li>
             </ul>
           </div>
         </div>
-
-        {/* Divider */}
-        <div className="border-t border-border pt-8">
-          {/* Disclaimer */}
-          <p className="text-xs text-muted-foreground mb-4">
-            {copy.disclaimer}
-          </p>
-
-          {/* Copyright */}
-          <p className="text-xs text-muted-foreground">
-            {copy.copyright}
-          </p>
+        <div className="mt-8 border-t border-white/5 pt-6">
+          <p className="text-xs text-slate-500">Not financial advice. Not a security service. Just the hardest-working meme in crypto. Don't get hit by a $5 wrench. DYOR.</p>
+          <p className="mt-2 text-xs text-slate-600">© 2025 $5 Wrench Attack. All rights reserved.</p>
         </div>
       </div>
     </footer>

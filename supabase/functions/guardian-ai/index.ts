@@ -116,6 +116,21 @@ function hasSensitiveData(q: string) {
     || /[\u3400-\u9fff]{2,}(?:路|街|大道|巷)\s*\d{1,5}\s*號/.test(q)
     || /\b0x[a-fA-F0-9]{40}\b/.test(q);
 }
+
+const WRENCHY_SCOPE_PATTERN = /(wrench|opsec|operational security|physical security|personal safety|privacy|security|protect|safe|safety|threat|risk|scam|phish|stalk|follow|kidnap|robber|coerc|home|family|travel|hotel|meeting|conference|otc|wallet|crypto|bitcoin|ethereum|seed phrase|private key|recovery|device|account|password|2fa|mfa|doxx|address|location|identity|custody|transaction|funds|asset|emergency|intruder|break[- ]?in|surveillance|public profile|social media|exchange)/i;
+const WRENCHY_SCOPE_ZH_PATTERN = /(扳手|作業安全|運營安全|實體安全|人身安全|隱私|安全|保護|威脅|風險|詐騙|釣魚|跟蹤|綁架|搶劫|脅迫|住家|家人|旅行|飯店|會面|會議|錢包|加密貨幣|比特幣|以太坊|助記詞|私鑰|復原|裝置|帳號|密碼|雙重驗證|人肉|地址|位置|身分|保管|交易|資金|資產|緊急|入侵|監視|社群|交易所)/;
+
+function isWithinWrenchyScope(question: string) {
+  const normalized = question.trim().toLowerCase();
+  if (/^(hello|hi|hey|help|what can you do|你可以做什麼|你能做什麼|幫助)[?!。！\s]*$/i.test(normalized)) return true;
+  return WRENCHY_SCOPE_PATTERN.test(normalized) || WRENCHY_SCOPE_ZH_PATTERN.test(question);
+}
+
+function outOfScopeResponse(lang: Language) {
+  if (lang === "zh") return "我是 Wrenchy AI，只回答防禦性的實體安全、OPSEC、隱私、人身安全、加密資產保管衛生，以及相關的 $5WA 指引。請改問與住家、旅行、會面、裝置、帳號或錢包安全有關的問題。";
+  return "I’m Wrenchy AI, focused on defensive physical security, OPSEC, privacy, personal safety, crypto-custody hygiene, and related $5WA guidance. Please ask about securing your home, travel, meetings, devices, accounts, or wallet access.";
+}
+
 function emergencyResponse(lang: Language) {
   if (lang === "zh") return "## 立即以人身安全為優先\n\n如果危險可能正在發生，**請停止使用本助理；在不增加風險的前提下，移動至有人員管理的公共場所、安全房間或其他較安全的位置**。\n\n- 聯絡當地緊急服務，或請附近可信任的人代為報案。\n- 不要與可疑攻擊者對質、跟蹤或嘗試自行確認其身分。\n- 人身安全優先於裝置、錢包、復原資料或資金。\n- 如果無法安全說話，使用事先約定的脅迫暗語，或裝置上可用的低調緊急功能。\n\nGuardian AI 是唯讀工具，無法聯絡緊急服務、追蹤任何人或代替你採取行動。";
   return "## Immediate safety first\n\nIf danger may be happening now, **stop using this assistant and move toward a staffed public place, secure room, or other safer location if you can do so without increasing risk**.\n\n- Contact your local emergency services or ask a trusted person nearby to call.\n- Do not confront, follow, or attempt to identify a suspected attacker.\n- Prioritize life safety over devices, wallets, recovery material, or funds.\n- If speaking openly is unsafe, use your pre-agreed duress phrase or a discreet emergency feature available on your device.\n\nGuardian AI is read-only and cannot contact emergency services, track anyone, or act on your behalf.";
@@ -148,6 +163,7 @@ function buildSystemPrompt(input: AskInput) {
 PERSONALITY:
 - You are Wrenchy — a helpful, slightly self-deprecating AI who knows that all the cryptography in the world can't stop a wrench.
 - You give genuinely useful, practical security advice. The humor is in the delivery, not in dumbing down the content.
+- Only answer questions about defensive physical security, OPSEC, privacy, personal safety, crypto-custody hygiene, and related $5WA guidance. For unrelated requests, refuse briefly and redirect to this scope.
 - You can use light crypto-culture humor (e.g., "show them your LUNC balance", "diamond hands, diamond skull") but never at the expense of accurate safety guidance.
 - You are NOT a joke bot. When the situation is serious, drop the humor entirely and be direct.
 
@@ -187,6 +203,9 @@ RESPONSE FORMAT:${format}`;
 // ---------------------------------------------------------------------------
 
 async function getGroqApiKey(): Promise<string> {
+  const envKey = Deno.env.get("GROQ_API_KEY");
+  if (envKey && envKey.trim().length > 0) return envKey.trim();
+
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!supabaseUrl || !serviceRoleKey) throw new Error("Missing Supabase env");
@@ -219,8 +238,7 @@ async function callGroq(messages: Array<{ role: string; content: string }>) {
     body: JSON.stringify({ model: "openai/gpt-oss-20b", messages, max_completion_tokens: 4096 }),
   });
   if (!res.ok) {
-    const txt = await res.text();
-    throw new Error(`Groq API error: ${res.status} ${txt}`);
+    throw new Error("Wrenchy AI is temporarily unavailable. Please try again later.");
   }
   const data = await res.json();
   const content = data.choices?.[0]?.message?.content;
@@ -258,6 +276,9 @@ Deno.serve(async (req: Request) => {
     }
     if (hasSensitiveData(body.question)) {
       return new Response(JSON.stringify({ answer: sensitiveResponse(body.language), model: "privacy-protocol", readOnly: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+    if (!isWithinWrenchyScope(body.question)) {
+      return new Response(JSON.stringify({ answer: outOfScopeResponse(body.language), model: "scope-protocol", readOnly: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
     // Call Groq

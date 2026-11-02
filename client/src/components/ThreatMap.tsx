@@ -3,7 +3,7 @@ import { geoNaturalEarth1, geoPath, type GeoPermissibleObjects } from "d3-geo";
 import { feature } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { FeatureCollection, Geometry } from "geojson";
-import { ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import { ZoomIn, ZoomOut, RotateCcw, Wrench } from "lucide-react";
 import { getCursorFocusedZoomTransform } from "@shared/mapZoom";
 
 // Import world-atlas TopoJSON (110m resolution — lightweight)
@@ -414,10 +414,12 @@ export default function ThreatMap({ incidents }: ThreatMapProps) {
                     </circle>
                     {/* Inner glow */}
                     <circle cx={x} cy={y} r="3.75" fill={colors.pulse} stroke="none" opacity={Math.min(0.7, pulseOpacity + 0.1)} />
-                    {/* Core dot */}
-                    <circle
-                      cx={x} cy={y} r="2.75"
-                      fill={colors.fill} stroke={colors.stroke} strokeWidth="0.8"
+                    {/* Core wrench marker */}
+                    <path
+                      d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
+                      transform={`translate(${x - 12 * 0.35} ${y - 12 * 0.35}) scale(0.35)`}
+                      fill={colors.fill} stroke={colors.stroke} strokeWidth="1.5"
+                      strokeLinecap="round" strokeLinejoin="round"
                       className="cursor-pointer"
                       style={{ filter: `drop-shadow(0 0 ${glowBlur}px ${colors.glow})` }}
                       onMouseEnter={(e) => handleDotHover(incident, e)}
@@ -492,15 +494,15 @@ export default function ThreatMap({ incidents }: ThreatMapProps) {
       {/* Legend */}
       <div className="absolute bottom-3 left-4 flex items-center gap-4 text-xs text-muted-foreground z-20">
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(255,60,30,0.8)]" title="Severity 7-10"></div>
+          <Wrench className="w-3 h-3 text-red-500" style={{ filter: "drop-shadow(0 0 4px rgba(255,60,30,0.8))" }} />
           <span>High</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.8)]" title="Severity 4-6"></div>
+          <Wrench className="w-3 h-3 text-amber-500" style={{ filter: "drop-shadow(0 0 4px rgba(245,158,11,0.8))" }} />
           <span>Medium</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400 shadow-[0_0_6px_rgba(234,179,8,0.7)]" title="Severity 1-3"></div>
+          <Wrench className="w-3 h-3 text-yellow-400" style={{ filter: "drop-shadow(0 0 4px rgba(234,179,8,0.7))" }} />
           <span>Low</span>
         </div>
         <div className="flex items-center gap-1.5">

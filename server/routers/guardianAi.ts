@@ -71,6 +71,22 @@ export function containsSensitiveLocationOrWallet(question: string) {
   return coordinates.test(question) || streetAddress.test(question) || cjkStreetAddress.test(question) || walletAddress.test(question);
 }
 
+const WRENCHY_SCOPE_PATTERN = /(wrench|opsec|operational security|physical security|personal safety|privacy|security|protect|safe|safety|threat|risk|scam|phish|stalk|follow|kidnap|robber|coerc|home|family|travel|hotel|meeting|conference|otc|wallet|crypto|bitcoin|ethereum|seed phrase|private key|recovery|device|account|password|2fa|mfa|doxx|address|location|identity|custody|transaction|funds|asset|emergency|intruder|break[- ]?in|surveillance|public profile|social media|exchange)/i;
+const WRENCHY_SCOPE_ZH_PATTERN = /(扳手|作業安全|運營安全|實體安全|人身安全|隱私|安全|保護|威脅|風險|詐騙|釣魚|跟蹤|綁架|搶劫|脅迫|住家|家人|旅行|飯店|會面|會議|錢包|加密貨幣|比特幣|以太坊|助記詞|私鑰|復原|裝置|帳號|密碼|雙重驗證|人肉|地址|位置|身分|保管|交易|資金|資產|緊急|入侵|監視|社群|交易所)/;
+
+export function isWithinWrenchyScope(question: string) {
+  const normalized = question.trim().toLowerCase();
+  if (/^(hello|hi|hey|help|what can you do|你可以做什麼|你能做什麼|幫助)[?!。！\s]*$/i.test(normalized)) return true;
+  return WRENCHY_SCOPE_PATTERN.test(normalized) || WRENCHY_SCOPE_ZH_PATTERN.test(question);
+}
+
+export function getOutOfScopeResponse(language: Language = "en") {
+  if (language === "zh") {
+    return "我是 Wrenchy AI，只回答防禦性的實體安全、OPSEC、隱私、人身安全、加密資產保管衛生，以及相關的 $5WA 指引。請改問與住家、旅行、會面、裝置、帳號或錢包安全有關的問題。";
+  }
+  return "I’m Wrenchy AI, focused on defensive physical security, OPSEC, privacy, personal safety, crypto-custody hygiene, and related $5WA guidance. Please ask about securing your home, travel, meetings, devices, accounts, or wallet access.";
+}
+
 export function getSensitiveInputResponse(language: Language = "en") {
   if (language === "zh") {
     return "為保護你的隱私，請移除精確地址、座標或錢包地址，並只使用廣泛地區、城市或旅行情境重新提問。Guardian AI 不需要精確位置或錢包資料也能提供防禦性建議。";
@@ -119,7 +135,7 @@ export function buildGuardianSystemPrompt(input: GuardianAskInput) {
   return `You are Guardian AI, the read-only physical-security assistant for the $5 Wrench Attack platform.
 
 NON-NEGOTIABLE BOUNDARIES:
-- Give defensive physical-security and operational-security guidance only.
+- Give defensive physical-security and operational-security guidance only. If a request is unrelated, refuse briefly and redirect to this scope.
 - You have no tools, wallet connection, browser, messaging, tracking, database write, emergency dispatch, or transaction capability.
 - Never claim to monitor the user, know their location, contact authorities, freeze funds, or take action.
 - Never request an exact address, live location, wallet address, seed phrase, private key, balance, identity document, phone number, or travel booking.
@@ -190,6 +206,10 @@ export const guardianAiRouter = router({
 
       if (containsSensitiveLocationOrWallet(input.question)) {
         return { answer: getSensitiveInputResponse(input.language), model: "privacy-protocol", readOnly: true as const };
+      }
+
+      if (!isWithinWrenchyScope(input.question)) {
+        return { answer: getOutOfScopeResponse(input.language), model: "scope-protocol", readOnly: true as const };
       }
 
       try {
